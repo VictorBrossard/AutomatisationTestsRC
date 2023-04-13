@@ -1,9 +1,10 @@
 # Author        : Victor BROSSARD
-# Description   : Classe test
+# Description   : Ouvre simulateur et RC
 
-class Test:
+import pathPopUp
+
+class Init:
 
     # Constructor
-    def __init__(self) -> None:
-        pass
-
+    def __init__(self):
+        pathSimu = pathPopUp("Simulateur")
