@@ -1,6 +1,7 @@
 # Automatisation des tests RC
-Projet : Automatisation des tests du logiciel qui réalise l’interface entre l’opérateur et la machine.
-Entreprise : Europlacer.
+Projet : Automatisation des tests du logiciel qui réalise l’interface entre l’opérateur et la machine
+
+Entreprise : Europlacer
 
 ## Objectif
 1. Mettre en place l’environnement de test, et être capable de démarrer automatiquement le logiciel sous test ainsi que le simulateur de la machine.
