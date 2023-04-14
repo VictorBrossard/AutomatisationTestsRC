@@ -4,6 +4,7 @@
 import PathPopUp
 import subprocess
 import os
+
 from PathPopUp import *
 from tkinter import *
 
@@ -30,14 +31,10 @@ class Init:
     def simuInit(self):
         simuPopUp = PathPopUp("Simulateur")
         simuPopUp.mainloop()
-        print(simuPopUp.getPath())
         return simuPopUp.getPath()
     
     #
     def rcInit(self):
         rcPopUp = PathPopUp("RC")
         rcPopUp.mainloop()
-        print(rcPopUp.getPath())
         return rcPopUp.getPath()
-    
-initia = Init()
