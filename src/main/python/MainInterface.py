@@ -3,9 +3,7 @@
 
 import tkinter as tk
 import tkinter.messagebox
-import Init
 import subprocess
-import os
 
 from tkinter import *
 from tkinter import ttk
@@ -39,10 +37,10 @@ class MainInterface(tk.Tk):
 
     #
     def execute(self):
-        try:
-            subprocess.run(['taskkill', '/f', '/im', 'rc5.exe'], shell=True)
-        except Exception as e:
-            print(e)
+        #try:
+        #    subprocess.run(['taskkill', '/f', '/im', 'rc5.exe'], shell=True)
+        #except Exception as e:
+        #    print(e)
 
         try:
             subprocess.run(['taskkill', '/f', '/im', 'simulat.exe'], shell=True)
@@ -54,7 +52,3 @@ class MainInterface(tk.Tk):
 
 def cantClose():
     tkinter.messagebox.showinfo('Fermeture de la fenêtre impossible','Appuyer sur EXIT pour quitter')
-
-lol = Init()
-test = MainInterface()
-test.mainloop()

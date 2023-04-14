@@ -4,6 +4,7 @@
 import PathPopUp
 import subprocess
 import os
+import tkinter.messagebox
 
 from PathPopUp import *
 from tkinter import *
@@ -12,21 +13,12 @@ class Init:
 
     # Constructor
     def __init__(self):
-        simuPath = self.simuInit()
-        rcPath = self.rcInit()
+        self.simuPath = self.simuInit()
+        self.rcPath = self.rcInit()
 
-        try:
-            os.chdir(simuPath)
-            subprocess.run(['start', 'simulat.exe'], shell=True)
-        except Exception as e:
-            print("WRONG : ", e)
-
-        try:
-            os.chdir(rcPath)
-            subprocess.run(['start', 'rc5.exe'], shell=True)
-        except Exception as e:
-            print("WRONG 2", e)
-
+        self.startSimu()
+        self.startRC()
+        
     #
     def simuInit(self):
         simuPopUp = PathPopUp("Simulateur")
@@ -38,3 +30,28 @@ class Init:
         rcPopUp = PathPopUp("RC")
         rcPopUp.mainloop()
         return rcPopUp.getPath()
+    
+    #
+    def startSimu(self):
+        try:
+            os.chdir(self.simuPath)
+            subprocess.run(['start', 'simulat.exe'], shell=True)
+        except Exception as e:
+            tkinter.messagebox.showinfo('ERROR chemin Simulateur',e)
+
+    #
+    def startRC(self):
+        try:
+            os.chdir(self.rcPath)
+            subprocess.run(['start', 'rc5.exe'], shell=True)
+        except Exception as e:
+            tkinter.messagebox.showinfo('ERROR chemin RC',e)
+
+    #
+    def getSimuPath(self):
+        return self.simuPath
+    
+    #
+    def getRCPath(self):
+        return self.rcPath
+        
