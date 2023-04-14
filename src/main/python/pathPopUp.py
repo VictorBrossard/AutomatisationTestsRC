@@ -25,6 +25,7 @@ class PathPopUp(tk.Tk):
 
         self.implementation(name)
 
+    #
     def implementation(self,fileName):
 
         # padding
@@ -42,17 +43,19 @@ class PathPopUp(tk.Tk):
         ok_button = ttk.Button(self, text='Ok', command=self.execute)
         ok_button.grid(column=2, row=0, **padding)
 
+    #
     def execute(self):
         #self.output_label.config(text=self.path.get())
         self.destroy()
 
+    #
     def getPath(self):
         return self.path.get()
     
 def cantClose():
     tkinter.messagebox.showinfo('Fermeture de la fenêtre impossible','Entrez un chemin pour fermer le pop-up.')
-
+    
 #if __name__ == "init":   
-popu = PathPopUp("Simulateur")
-popu.mainloop()
-print(popu.getPath())
+#popu = PathPopUp("Simulateur")
+#popu.mainloop()
+#print(popu.getPath())
