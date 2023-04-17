@@ -1,21 +1,22 @@
 # Author        : Victor BROSSARD
-# Description   : Classe principal
+# Description   : Main file
 
-import Init
+#-----------------------------------------------------------------------------------------------------
+# Import of files useful for code execution
 import MainInterface
-import tkinter
 import subprocess
 import os
 import PathsFile
 
-from Init import *
-from MainInterface import *
-from tkinter import *
-from PathsFile import *
+from MainInterface import MainInterface
+from PathsFile import PathsFile
 
+#-----------------------------------------------------------------------------------------------------
+# Main function that executes all useful parts of the code
 def main():
     PathsFile()
     test = MainInterface()
     test.mainloop()
 
+# Execution of the main function
 main()
