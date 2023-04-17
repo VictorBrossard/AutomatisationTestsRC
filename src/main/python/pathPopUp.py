@@ -16,7 +16,7 @@ class PathPopUp(tk.Tk):
         self.title('Chemin ' + name)
         self.geometry("400x50")
         self.resizable(width=0, height=0)
-        self.protocol("WM_DELETE_WINDOW", cantClose)
+        self.protocol("WM_DELETE_WINDOW", cant_close)
 
         self.path = tk.StringVar()
 
@@ -36,21 +36,21 @@ class PathPopUp(tk.Tk):
         ttk.Label(self, text = "Entrez le chemin "+ fileName +": ").grid(column = 0, row = 0, **padding)
 
         # Entry 
-        textEntry = ttk.Entry(self, textvariable=self.path)
-        textEntry.grid(column=1, row=0, **padding)
-        textEntry.focus()
+        text_entry = ttk.Entry(self, textvariable=self.path)
+        text_entry.grid(column=1, row=0, **padding)
+        text_entry.focus()
 
         # Button
-        okButton = ttk.Button(self, text='Ok', command=self.execute)
-        okButton.grid(column=2, row=0, **padding)
+        ok_button = ttk.Button(self, text='Ok', command=self.close_pop_up)
+        ok_button.grid(column=2, row=0, **padding)
 
     #
-    def execute(self):
+    def close_pop_up(self):
         self.destroy()
 
     #
-    def getPath(self):
+    def get_path(self):
         return self.path.get()
     
-def cantClose():
+def cant_close():
     tkinter.messagebox.showinfo('Fermeture de la fenêtre impossible','Entrez un chemin pour fermer le pop-up.')

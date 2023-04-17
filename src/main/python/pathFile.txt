@@ -1,1 +1,2 @@
-C:\EUROPLACER\ep\win64 
+C:\EUROPLACER\CN simulator\Simulator
+C:\EUROPLACER\ep\win64

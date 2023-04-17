@@ -9,49 +9,69 @@ import tkinter.messagebox
 from PathPopUp import *
 from tkinter import *
 
-class Init:
+class Init(object):
 
     # Constructor
     def __init__(self):
-        self.simuPath = self.simuInit()
-        self.rcPath = self.rcInit()
-
-        self.startSimu()
-        self.startRC()
+        self.simu_path = ""
+        self.rc_path = ""
         
     #
-    def simuInit(self):
-        simuPopUp = PathPopUp("Simulateur")
-        simuPopUp.mainloop()
-        return simuPopUp.getPath()
+    def simu_init(self):
+        simu_pop_up = PathPopUp("Simulateur")
+        simu_pop_up.mainloop()
+        return simu_pop_up.get_path()
     
     #
-    def rcInit(self):
-        rcPopUp = PathPopUp("RC")
-        rcPopUp.mainloop()
-        return rcPopUp.getPath()
+    def rc_init(self):
+        rc_pop_up = PathPopUp("RC")
+        rc_pop_up.mainloop()
+        return rc_pop_up.get_path()
     
     #
-    def startSimu(self):
+    def start_simu(self):
         try:
-            os.chdir(self.simuPath)
+            os.chdir(self.simu_path)
             subprocess.run(['start', 'simulat.exe'], shell=True)
         except Exception as e:
             tkinter.messagebox.showinfo('ERROR chemin Simulateur',e)
 
     #
-    def startRC(self):
+    def start_rc(self):
         try:
-            os.chdir(self.rcPath)
+            os.chdir(self.rc_path)
             subprocess.run(['start', 'rc5.exe'], shell=True)
         except Exception as e:
             tkinter.messagebox.showinfo('ERROR chemin RC',e)
 
     #
-    def getSimuPath(self):
-        return self.simuPath
+    def get_simu_path(self):
+        return self.simu_path
     
     #
-    def getRCPath(self):
-        return self.rcPath
+    def get_rc_path(self):
+        return self.rc_path
+    
+class InitWhithPaths(Init):
+
+    # Constructor
+    def __init__(self, simu_way, rc_way):
+        Init.__init__(self)
+
+        self.simu_path = simu_way
+        self.rc_path = rc_way
         
+        self.start_simu()
+        self.start_rc()
+
+class InitWithoutPaths(Init):
+
+    # Constructor
+    def __init__(self):
+        Init.__init__(self)
+
+        self.simu_path = self.simu_init()
+        self.rc_path = self.rc_init()
+        
+        self.start_simu()
+        self.start_rc()

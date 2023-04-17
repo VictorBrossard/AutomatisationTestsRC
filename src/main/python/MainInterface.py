@@ -18,7 +18,7 @@ class MainInterface(tk.Tk):
         self.title('Interface Principale')
         self.geometry("400x100")
         self.resizable(width=0, height=0)
-        self.protocol("WM_DELETE_WINDOW", cantClose)
+        self.protocol("WM_DELETE_WINDOW", cant_close)
 
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -32,11 +32,11 @@ class MainInterface(tk.Tk):
         padding = {'padx': 5, 'pady': 5}
 
         # Button
-        exitButton = ttk.Button(self, text='EXIT', command=self.execute)
-        exitButton.grid(column=1, row=1, **padding)
+        exit_button = ttk.Button(self, text='EXIT', command=self.close_softwares)
+        exit_button.grid(column=1, row=1, **padding)
 
     #
-    def execute(self):
+    def close_softwares(self):
         #try:
         #    subprocess.run(['taskkill', '/f', '/im', 'rc5.exe'], shell=True)
         #except Exception as e:
@@ -50,5 +50,5 @@ class MainInterface(tk.Tk):
         self.destroy()
 
 
-def cantClose():
+def cant_close():
     tkinter.messagebox.showinfo('Fermeture de la fenêtre impossible','Appuyer sur EXIT pour quitter')
