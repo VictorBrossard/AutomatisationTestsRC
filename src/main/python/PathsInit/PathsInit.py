@@ -23,7 +23,7 @@ class PathsInit(object):
     # Function that asks the user for the path to access the simulator
     def simu_init(self):
         # Opening the pop-up that asks the user for the path
-        simu_pop_up = UserEntryPopUp("Chemin Simulateur", "test")
+        simu_pop_up = UserEntryPopUp("Chemin Simulateur", "Entrez le chemin pour accéder au simulateur : ")
         simu_pop_up.mainloop()
 
         # Returns the path given by the user
@@ -32,7 +32,7 @@ class PathsInit(object):
     # Function that asks the user for the path to access RC
     def rc_init(self):
         # Opening the pop-up that asks the user for the path
-        rc_pop_up = UserEntryPopUp("Chemin RC", "test")
+        rc_pop_up = UserEntryPopUp("Chemin RC", "Entrez le chemin pour accéder à RC : ")
         rc_pop_up.mainloop()
 
         # Returns the path given by the user

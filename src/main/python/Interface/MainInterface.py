@@ -12,6 +12,8 @@ import time
 
 from tkinter import ttk
 from Interaction.Interaction import Interaction
+from Interaction.Interaction import rc_window_foreground
+from Interface.UserEntryPopUp import UserEntryPopUp
 
 #-----------------------------------------------------------------------------------------------------
 # 
@@ -66,6 +68,9 @@ class MainInterface(tk.Tk):
         exit_button = ttk.Button(self, text='EXIT', command=self.close_softwares)   # Creation of the button
         exit_button.grid(column=1, row=1, **padding)                                # Object position
 
+        destroy_button = ttk.Button(self, text='DESTROY', command=self.close_interface) # Creation of the button
+        destroy_button.grid(column=2, row=1, **padding)                                 # Object position
+
         start_button = ttk.Button(self, text='START', command=self.start_test)
         start_button.grid(column=0, row=0, **padding)
 
@@ -96,19 +101,23 @@ class MainInterface(tk.Tk):
         # Close interface
         self.destroy()
 
+    #
+    def close_interface(self):
+        self.destroy()
+
     # 
     def start_test(self):
+        ################ Minimisation de la fenêre de l'interface principal
         self.wm_state('iconic')
-        hwnd = win32gui.FindWindow(None, 'Menu Général')
-        win32gui.SetForegroundWindow(hwnd)
+
+        rc_window_foreground()
 
     #
     def calibration(self):
         self.wm_state('iconic')
         Interaction().calibration()
         time.sleep(2)
-        self.wm_state('normal')
-
+        self.wm_state('normal') ######### remise à la normale
 
 #-----------------------------------------------------------------------------------------------------
 # Function that returns a pop up to warn that the interface cannot be closed in this way

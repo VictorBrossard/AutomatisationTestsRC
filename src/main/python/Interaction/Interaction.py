@@ -5,9 +5,9 @@
 # Import of files useful for code execution
 import pyautogui
 import win32gui
-import time
 
 from Interface.UserEntryPopUp import UserEntryPopUp
+from Interaction.Screenshot import Screenshot
 
 #-----------------------------------------------------------------------------------------------------
 #
@@ -19,17 +19,28 @@ class Interaction:
 
     #
     def close_rc(self):
-        try :
-            hwnd = win32gui.FindWindow(None, 'Menu Général')
-        except Exception:
-            print('je suis là')
-            uepu = UserEntryPopUp("ERROR WINDOW NAME", "Donnez le nom de la fenêtre de RC : ")
-            uepu.mainloop()
-            hwnd = uepu.get_user_entry()
-        
-        win32gui.SetForegroundWindow(hwnd)
+        #
+        rc_window_foreground()
+
+        #
         pyautogui.click(1804, 956)
 
     #
     def calibration(self):
-        print('calibrage')
+        rc_window_foreground()
+        Screenshot()
+
+#-----------------------------------------------------------------------------------------------------
+#
+def rc_window_foreground():
+    ###### NOM DE LE FENETRE
+    hwnd = win32gui.FindWindow(None, 'Menu Général')
+
+    #### SI LE NOM EST PAS TROUVE ON REDEMANDE LE NOM OR VU QU ON LE STOCK PAS CA FAIT UNE BOUCLE
+    try :
+        win32gui.SetForegroundWindow(hwnd)
+    except Exception:
+        uepu = UserEntryPopUp("ERROR WINDOW NAME", "Donnez le nom de la fenêtre de RC : ")
+        uepu.mainloop()
+        hwnd = uepu.get_user_entry()
+        win32gui.SetForegroundWindow(hwnd)

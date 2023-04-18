@@ -9,11 +9,11 @@ import os
 
 from PathsInit.PathsInitWithoutPaths import PathsInitWithoutPaths
 from PathsInit.PathsInitWithPaths import  PathsInitWithPaths
+from FilesManagement.InitFolders import CONSTANT_PATHFILE_FOLDER_PATH  ########## chemin où l'on stock le fichier pathfile
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants
 CONSTANT_NAME_FILE = 'pathFile.txt'
-CONSTANT_PATH_FILE_STORE_PATHS = os.getcwd() # File directory
 
 #-----------------------------------------------------------------------------------------------------
 # Class that manages the file that stores the software paths
@@ -22,7 +22,7 @@ class PathsFile(object):
     # Constructor
     def __init__(self):
         # Check if the file exists
-        if os.path.exists(CONSTANT_PATH_FILE_STORE_PATHS + '/' + CONSTANT_NAME_FILE):
+        if os.path.exists(CONSTANT_PATHFILE_FOLDER_PATH + '\\' + CONSTANT_NAME_FILE):
             self.open_paths_file()
         else:
             self.create_paths_file()
@@ -30,14 +30,14 @@ class PathsFile(object):
     # Function that creates the file that stores the paths in case it does not exist and opens the programs thanks to these paths
     def create_paths_file(self):
         # Creation of the file in the current directory 
-        os.chdir(CONSTANT_PATH_FILE_STORE_PATHS) # Change the current working directory by giving the path
+        os.chdir(CONSTANT_PATHFILE_FOLDER_PATH) # Change the current working directory by giving the path
         subprocess.run(['type', 'nul', '>', CONSTANT_NAME_FILE], shell=True)
 
         # Opening software without knowing the paths (will ask the user for the paths)
         paths_to_store = PathsInitWithoutPaths()
 
         # Save the paths in the file we have created
-        os.chdir(CONSTANT_PATH_FILE_STORE_PATHS)
+        os.chdir(CONSTANT_PATHFILE_FOLDER_PATH)
         path_file = open(CONSTANT_NAME_FILE, 'w') # Opening the file in write mode ('w')
         path_file.write(paths_to_store.get_simu_path() + "\n" + paths_to_store.get_rc_path())
         path_file.close()
@@ -45,13 +45,13 @@ class PathsFile(object):
     # Function that allows, if the file exists, to open the programs thanks to the paths in the file 
     def open_paths_file(self):
         # Get the path for the simulator which is in the first line of the file
-        os.chdir(CONSTANT_PATH_FILE_STORE_PATHS)
+        os.chdir(CONSTANT_PATHFILE_FOLDER_PATH)
         path_file = open(CONSTANT_NAME_FILE, 'r')       # Opening the file in read mode ('r')
         simu_path = path_file.readlines()[0].rstrip()   # Get the first line of the file
         path_file.close()
 
         # Get the path for RC which is in the second line of the file
-        os.chdir(CONSTANT_PATH_FILE_STORE_PATHS)
+        os.chdir(CONSTANT_PATHFILE_FOLDER_PATH)
         path_file = open(CONSTANT_NAME_FILE, 'r')
         rc_path = path_file.readlines()[1].rstrip() # rstrip removes the line break which is automatically taken into account with the readlines function
         path_file.close()
