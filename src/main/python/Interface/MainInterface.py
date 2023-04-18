@@ -1,14 +1,26 @@
 # Author        : Victor BROSSARD
-# Description   : Interface graphique général du projet
+# Description   : General graphical interface of the project
 
 #-----------------------------------------------------------------------------------------------------
-# Import of files useful for code execution 
+# Import of files useful for code execution
 import tkinter as tk
 import tkinter.messagebox
 import subprocess
 import ctypes
+import win32gui
+import time
 
 from tkinter import ttk
+from Interaction.Interaction import Interaction
+
+#-----------------------------------------------------------------------------------------------------
+# 
+
+testList = [
+    'Loup',
+    'Chien',
+    'Chat'
+]
 
 #-----------------------------------------------------------------------------------------------------
 # Class that manages the main interface
@@ -31,6 +43,10 @@ class MainInterface(tk.Tk):
         self.geometry(str(height) + "x" + str(width) + "+" + str(x) + "+" + str(y)) # Set window size and position | str() = any type to string
         self.resizable(width=0, height=0)                                           # Prevents any modification of window size
         self.protocol("WM_DELETE_WINDOW", cant_close)                               # Prevents the window from being closed by the red cross
+        self.wm_attributes("-topmost", True)
+
+        #
+        self.select = tk.StringVar(self)
 
         # Configuring the placement of interface objects
         self.columnconfigure(0, weight=1)
@@ -50,13 +66,27 @@ class MainInterface(tk.Tk):
         exit_button = ttk.Button(self, text='EXIT', command=self.close_softwares)   # Creation of the button
         exit_button.grid(column=1, row=1, **padding)                                # Object position
 
+        start_button = ttk.Button(self, text='START', command=self.start_test)
+        start_button.grid(column=0, row=0, **padding)
+
+        calibration_button = ttk.Button(self, text='Calibrage', command=self.calibration)
+        calibration_button.grid(column=2, row=0, **padding)
+
+        # Menu
+        #opt = ttk.OptionMenu(self, self.select, *testList)
+        #opt.config(width=90, font=('Helvetica', 12))
+        #opt.grid(column=0, row=0, **padding)
+
     # Function that closes software and the interface
     def close_softwares(self):
         # Close software
-        #try:
-        #    subprocess.run(['taskkill', '/f', '/im', 'rc5.exe'], shell=True)
-        #except Exception as e:
-        #    pass
+        try:
+            self.wm_state('iconic')
+            Interaction().close_rc()
+        except Exception:
+            pass
+
+        time.sleep(1)
 
         try:
             subprocess.run(['taskkill', '/f', '/im', 'simulat.exe'], shell=True)
@@ -65,6 +95,20 @@ class MainInterface(tk.Tk):
 
         # Close interface
         self.destroy()
+
+    # 
+    def start_test(self):
+        self.wm_state('iconic')
+        hwnd = win32gui.FindWindow(None, 'Menu Général')
+        win32gui.SetForegroundWindow(hwnd)
+
+    #
+    def calibration(self):
+        self.wm_state('iconic')
+        Interaction().calibration()
+        time.sleep(2)
+        self.wm_state('normal')
+
 
 #-----------------------------------------------------------------------------------------------------
 # Function that returns a pop up to warn that the interface cannot be closed in this way

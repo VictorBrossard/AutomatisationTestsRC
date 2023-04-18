@@ -3,13 +3,12 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
-import MainInterface
 import subprocess
 import os
 import PathsFile
 
-from MainInterface import MainInterface
-from PathsFile import PathsFile
+from Interface.MainInterface import MainInterface
+from PathsFile.PathsFile import PathsFile
 
 #-----------------------------------------------------------------------------------------------------
 # Main function that executes all useful parts of the code

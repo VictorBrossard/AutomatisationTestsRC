@@ -1,19 +1,18 @@
 # Author        : Victor BROSSARD
-# Description   : Ouvre simulateur et RC
+# Description   : Object that opens simulator and RC
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
-import PathPopUp
 import subprocess
 import os
 import tkinter.messagebox
 import sys
 
-from PathPopUp import PathPopUp
+from Interface.UserEntryPopUp import UserEntryPopUp
 
 #-----------------------------------------------------------------------------------------------------
 # Class that uses software paths to open them
-class Init(object):
+class PathsInit(object):
 
     # Constructor
     def __init__(self):
@@ -24,20 +23,20 @@ class Init(object):
     # Function that asks the user for the path to access the simulator
     def simu_init(self):
         # Opening the pop-up that asks the user for the path
-        simu_pop_up = PathPopUp("Simulateur")
+        simu_pop_up = UserEntryPopUp("Chemin Simulateur", "test")
         simu_pop_up.mainloop()
 
         # Returns the path given by the user
-        return simu_pop_up.get_path()
+        return simu_pop_up.get_user_entry()
     
     # Function that asks the user for the path to access RC
     def rc_init(self):
         # Opening the pop-up that asks the user for the path
-        rc_pop_up = PathPopUp("RC")
+        rc_pop_up = UserEntryPopUp("Chemin RC", "test")
         rc_pop_up.mainloop()
 
         # Returns the path given by the user
-        return rc_pop_up.get_path()
+        return rc_pop_up.get_user_entry()
     
     # Function that opens the simulator
     def start_simu(self):
@@ -75,37 +74,3 @@ class Init(object):
     # Function that returns the variable rc_path
     def get_rc_path(self):
         return self.rc_path
-
-#-----------------------------------------------------------------------------------------------------   
-# Child class of Init which knows the paths of the software
-class InitWhithPaths(Init):
-
-    # Constructor
-    def __init__(self, simu_way, rc_way):
-        # Parent constuctor
-        Init.__init__(self)
-
-        # Initializes object variables
-        self.simu_path = simu_way
-        self.rc_path = rc_way
-        
-        # Open software
-        self.start_simu()
-        self.start_rc()
-
-#-----------------------------------------------------------------------------------------------------
-# Child class of Init which does not know the paths of the software so we will ask the user for them
-class InitWithoutPaths(Init):
-
-    # Constructor
-    def __init__(self):
-        # Parent constuctor
-        Init.__init__(self)
-
-        # Initializes object variables
-        self.simu_path = self.simu_init()
-        self.rc_path = self.rc_init()
-        
-        # Open software
-        self.start_simu()
-        self.start_rc()

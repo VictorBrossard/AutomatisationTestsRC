@@ -7,8 +7,8 @@
 import subprocess
 import os
 
-from Init import InitWhithPaths, InitWithoutPaths
-from MainInterface import MainInterface
+from PathsInit.PathsInitWithoutPaths import PathsInitWithoutPaths
+from PathsInit.PathsInitWithPaths import  PathsInitWithPaths
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants
@@ -34,7 +34,7 @@ class PathsFile(object):
         subprocess.run(['type', 'nul', '>', CONSTANT_NAME_FILE], shell=True)
 
         # Opening software without knowing the paths (will ask the user for the paths)
-        paths_to_store = InitWithoutPaths()
+        paths_to_store = PathsInitWithoutPaths()
 
         # Save the paths in the file we have created
         os.chdir(CONSTANT_PATH_FILE_STORE_PATHS)
@@ -57,4 +57,4 @@ class PathsFile(object):
         path_file.close()
     
         # Opening software knowing the paths (no need to ask the user)
-        InitWhithPaths(simu_path, rc_path)
+        PathsInitWithPaths(simu_path, rc_path)
