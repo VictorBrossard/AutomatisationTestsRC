@@ -8,6 +8,7 @@ import tkinter.messagebox
 import ctypes
 
 from tkinter import ttk
+from UsefulFunction.UsefulFunction import cant_close
 
 #-----------------------------------------------------------------------------------------------------
 # Class that handles software path pop-ups
@@ -68,8 +69,3 @@ class UserEntryPopUp(tk.Tk):
     # Function that returns the variable path
     def get_user_entry(self):
         return self.user_entry.get()
-    
-#-----------------------------------------------------------------------------------------------------
-# Function that returns a pop up to warn that the interface cannot be closed in this way
-def cant_close():
-    tkinter.messagebox.showinfo('Fermeture de la fenêtre impossible','Entrez un chemin pour fermer le pop-up.')

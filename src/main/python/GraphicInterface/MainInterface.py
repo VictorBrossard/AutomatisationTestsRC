@@ -4,10 +4,8 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 import tkinter as tk
-import tkinter.messagebox
 import subprocess
 import ctypes
-import win32gui
 import time
 
 from tkinter import ttk
@@ -15,7 +13,8 @@ from Interaction.Interaction import Interaction
 from Interaction.Interaction import rc_window_foreground
 from Interaction.InputRecorder import InputRecorder
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
-from GraphicInterface.UserEntryPopUpMainInterface import UserEntryPopUpMainInterface
+from GraphicInterface.UserEntryPopUp import UserEntryPopUp
+from UsefulFunction.UsefulFunction import cant_close
 
 #-----------------------------------------------------------------------------------------------------
 # 
@@ -79,7 +78,7 @@ class MainInterface(tk.Tk):
         screenshot_button = ttk.Button(self, text='Screenshot', command=self.screenshot)
         screenshot_button.grid(column=2, row=0, **padding)
 
-        record_button = ttk.Button(self, text='Record Tests', command=self.record_test)
+        record_button = ttk.Button(self, text='Record Tests', command=self.record_tests)
         record_button.grid(column=2, row=1, **padding)
 
         # Menu
@@ -125,18 +124,12 @@ class MainInterface(tk.Tk):
         self.wm_state('normal') ######### remise à la normale
 
     #
-    def record_test(self):
-        self.wm_state('iconic')
-
+    def record_tests(self):
+        self.destroy()
         #
-        pop_up = UserEntryPopUpMainInterface(self, "Record Tests", "Entrez le nom du test : ")
+        pop_up = UserEntryPopUp("Record Tests", "Entrez le nom du test : ")
         pop_up.mainloop()
 
-        #
-        InputRecorder(pop_up.get_user_entry(), CONSTANT_TESTS_FOLDER_PATH)
-        self.wm_state('normal')
-
-#-----------------------------------------------------------------------------------------------------
-# Function that returns a pop up to warn that the interface cannot be closed in this way
-def cant_close():
-    tkinter.messagebox.showinfo('Fermeture de la fenêtre impossible','Appuyer sur EXIT pour quitter')
+        InputRecorder(pop_up.get_user_entry(), CONSTANT_TESTS_FOLDER_PATH).start_record()
+        
+        self.__init__()

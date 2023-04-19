@@ -1,16 +1,16 @@
 # Author        : Victor BROSSARD
-# Description   : GUI pop-up to request path
+# Description   : 
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
 import tkinter as tk
-import tkinter.messagebox
 import ctypes
 
 from tkinter import ttk
+from UsefulFunction.UsefulFunction import cant_close
 
 #-----------------------------------------------------------------------------------------------------
-# Class that handles software path pop-ups
+# 
 class UserEntryPopUpMainInterface(tk.Toplevel):
 
     # Constructor
@@ -69,8 +69,3 @@ class UserEntryPopUpMainInterface(tk.Toplevel):
     # Function that returns the variable path
     def get_user_entry(self):
         return self.user_entry.get()
-    
-#-----------------------------------------------------------------------------------------------------
-# Function that returns a pop up to warn that the interface cannot be closed in this way
-def cant_close():
-    tkinter.messagebox.showinfo('Fermeture de la fenêtre impossible','Entrez un chemin pour fermer le pop-up.')

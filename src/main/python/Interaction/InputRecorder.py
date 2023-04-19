@@ -18,6 +18,7 @@ class InputRecorder:
     # Constructor
     def __init__(self, name, folder_path):
         #
+        self.running = False
         self.folder_path = folder_path
         self.name_file = name + ".txt"
 
@@ -30,19 +31,25 @@ class InputRecorder:
         self.file = open(self.file_path, "w")
         
         #
-        self.mouse_listener = mouse.Listener(on_click=self.on_mouse_click)
+        self.mouse_listener = mouse.Listener(on_click=self.on_mouse_click, on_scroll=self.on_scroll)
         self.keyboard_listener = keyboard.Listener(on_press=self.on_keyboard_press)
 
     # 
     def start_record(self):
+        self.running = True
         self.mouse_listener.start()
         self.keyboard_listener.start()
+
+        ##### Boucle qui empêche le code de s'arrêter tant qu'on a pas fait stop
+        while self.running:
+            pass
         
     #
     def stop_record(self):
         self.mouse_listener.stop()
         self.keyboard_listener.stop()
         self.file.close()
+        self.running = False
         
     #
     def on_mouse_click(self, x, y, button, pressed):
@@ -63,8 +70,13 @@ class InputRecorder:
         self.write_in_file(f"Key;{key_name}")
 
         if key_name == 'a': self.stop_record() 
+
+    def on_scroll(self, x, y, dx, dy):
+        self.write_in_file(f"Scroll;{x};{y};{dx};{dy}")
         
     #
     def write_in_file(self, message):
-        self.file.write(f"{message}\n")
+        now = time.time()
+        self.file.write(f"{message};{now}\n")
+        self.file.flush() #  forcer l'écriture de tout le contenu du tampon du fichier sur le disque dur.
 

@@ -6,7 +6,7 @@
 import pyautogui
 import win32gui
 
-from Interface.UserEntryPopUp import UserEntryPopUp
+from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 from Interaction.Screenshot import Screenshot
 
 #-----------------------------------------------------------------------------------------------------
