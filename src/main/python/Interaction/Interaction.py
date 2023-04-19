@@ -26,7 +26,7 @@ class Interaction:
         pyautogui.click(1804, 956)
 
     #
-    def calibration(self):
+    def screenshot(self):
         rc_window_foreground()
         Screenshot()
 

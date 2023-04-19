@@ -13,7 +13,9 @@ import time
 from tkinter import ttk
 from Interaction.Interaction import Interaction
 from Interaction.Interaction import rc_window_foreground
-from Interface.UserEntryPopUp import UserEntryPopUp
+from Interaction.InputRecorder import InputRecorder
+from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
+from GraphicInterface.UserEntryPopUpMainInterface import UserEntryPopUpMainInterface
 
 #-----------------------------------------------------------------------------------------------------
 # 
@@ -34,8 +36,8 @@ class MainInterface(tk.Tk):
         super().__init__()
 
         # Window size and position
-        height = 400
-        width = 100
+        height = 500
+        width = 500
         user = ctypes.windll.user32                             # User information
         x = int((user.GetSystemMetrics(0) / 2) - (height / 2))  # int() = any type to int
         y = int((user.GetSystemMetrics(1) / 2) - (width / 2))   # user32.GetSystemMetrics() = screen size (0 = height and 1 = width)
@@ -48,7 +50,7 @@ class MainInterface(tk.Tk):
         self.wm_attributes("-topmost", True)
 
         #
-        self.select = tk.StringVar(self)
+        self.input_file_name = tk.StringVar(self)
 
         # Configuring the placement of interface objects
         self.columnconfigure(0, weight=1)
@@ -66,16 +68,19 @@ class MainInterface(tk.Tk):
 
         # Button
         exit_button = ttk.Button(self, text='EXIT', command=self.close_softwares)   # Creation of the button
-        exit_button.grid(column=1, row=1, **padding)                                # Object position
+        exit_button.grid(column=2, row=3, **padding)                                # Object position
 
         destroy_button = ttk.Button(self, text='DESTROY', command=self.close_interface) # Creation of the button
-        destroy_button.grid(column=2, row=1, **padding)                                 # Object position
+        destroy_button.grid(column=2, row=4, **padding)                                 # Object position
 
         start_button = ttk.Button(self, text='START', command=self.start_test)
         start_button.grid(column=0, row=0, **padding)
 
-        calibration_button = ttk.Button(self, text='Calibrage', command=self.calibration)
-        calibration_button.grid(column=2, row=0, **padding)
+        screenshot_button = ttk.Button(self, text='Screenshot', command=self.screenshot)
+        screenshot_button.grid(column=2, row=0, **padding)
+
+        record_button = ttk.Button(self, text='Record Tests', command=self.record_test)
+        record_button.grid(column=2, row=1, **padding)
 
         # Menu
         #opt = ttk.OptionMenu(self, self.select, *testList)
@@ -113,11 +118,23 @@ class MainInterface(tk.Tk):
         rc_window_foreground()
 
     #
-    def calibration(self):
+    def screenshot(self):
         self.wm_state('iconic')
-        Interaction().calibration()
+        Interaction().screenshot()
         time.sleep(2)
         self.wm_state('normal') ######### remise à la normale
+
+    #
+    def record_test(self):
+        self.wm_state('iconic')
+
+        #
+        pop_up = UserEntryPopUpMainInterface(self, "Record Tests", "Entrez le nom du test : ")
+        pop_up.mainloop()
+
+        #
+        InputRecorder(pop_up.get_user_entry(), CONSTANT_TESTS_FOLDER_PATH)
+        self.wm_state('normal')
 
 #-----------------------------------------------------------------------------------------------------
 # Function that returns a pop up to warn that the interface cannot be closed in this way

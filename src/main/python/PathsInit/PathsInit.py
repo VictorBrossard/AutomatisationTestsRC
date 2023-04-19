@@ -8,7 +8,7 @@ import os
 import tkinter.messagebox
 import sys
 
-from Interface.UserEntryPopUp import UserEntryPopUp
+from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 
 #-----------------------------------------------------------------------------------------------------
 # Class that uses software paths to open them
