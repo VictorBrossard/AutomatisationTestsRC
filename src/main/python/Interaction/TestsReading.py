@@ -26,33 +26,33 @@ class TestReading():
             test_file = open(file_path, "r")
 
             for line in test_file:
-                self.find_action(line)
+                self.__find_action(line)
         except Exception as e:
             tkinter.messagebox.showinfo('ERROR chemin RC',e)
 
-    def find_action(self, line):
+    def __find_action(self, line):
         """
         """
         first_word = line.split(";")[0]
 
         if first_word == "Click":
-            self.click_input(line) 
+            self.__click_input(line) 
         if first_word == "Key":
-            self.key_input(line)
+            self.__key_input(line)
         if first_word == "Scroll":
-            self.scroll_input(line)
+            self.__scroll_input(line)
 
-    def click_input(self, line):
+    def __click_input(self, line):
         """
         """
         print(line)
 
-    def key_input(self, line):
+    def __key_input(self, line):
         """
         """
         print(line)
 
-    def scroll_input(self, line):
+    def __scroll_input(self, line):
         """
         """
         print(line)

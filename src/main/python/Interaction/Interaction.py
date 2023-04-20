@@ -8,6 +8,8 @@ import win32gui
 
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 from Interaction.Screenshot import Screenshot
+from Interaction.InputRecorder import InputRecorder
+from Interaction.TestsReading import TestReading
 
 #-----------------------------------------------------------------------------------------------------
 #
@@ -29,6 +31,19 @@ class Interaction:
     def screenshot(self):
         rc_window_foreground()
         Screenshot()
+
+    def write_test(self):
+        #
+        pop_up = UserEntryPopUp("Record Tests", "Entrez le nom du test : ")
+        pop_up.mainloop()
+
+        InputRecorder(pop_up.get_user_entry()).start_record()
+
+    def reading_test(self, file_name):
+        """
+        """
+        rc_window_foreground()
+        TestReading().read_test_file(file_name)
 
 #-----------------------------------------------------------------------------------------------------
 #

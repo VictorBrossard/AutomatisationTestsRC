@@ -13,16 +13,16 @@ from Interaction.TestsReading import TestReading
 
 #-----------------------------------------------------------------------------------------------------
 # Main function that executes all useful parts of the code
-def main():
+def __main():
     run_as_admin()
     InitFolders()
     PathsFile()
     test = MainInterface()
     test.mainloop()
 
-def test():
+def __test():
     #InputRecorder("c'est juste un test", CONSTANT_TESTS_FOLDER_PATH).start_record()
     TestReading().read_test_file("c'est juste un test")
 
 # Execution of the main function
-main()
+__main()

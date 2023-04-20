@@ -41,10 +41,10 @@ class UserEntryPopUp(tk.Tk):
         self.columnconfigure(2, weight=1)
 
         # Adds interface objects to the interface
-        self.implementation(desc)
+        self.__implementation(desc)
 
     # Function that adds interface objects to the interface
-    def implementation(self, desc):
+    def __implementation(self, desc):
 
         # Padding
         padding = {'padx': 5, 'pady': 5}
@@ -59,11 +59,11 @@ class UserEntryPopUp(tk.Tk):
         text_entry.focus_set()                                      # Set focus to text input
 
         # Button
-        ok_button = ttk.Button(self, text='OK', command=self.close_pop_up)  # Creation of the button
+        ok_button = ttk.Button(self, text='OK', command=self.__close_pop_up)  # Creation of the button
         ok_button.grid(column=1, row=2, **padding)                          # Object position
 
     # Function that closes the interface
-    def close_pop_up(self):
+    def __close_pop_up(self):
         self.destroy()
 
     # Function that returns the variable path

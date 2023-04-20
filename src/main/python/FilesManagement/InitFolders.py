@@ -26,19 +26,19 @@ class InitFolders:
 
     # Constructor
     def __init__(self):
-        self.create_folder("AutomatisationRC", CONSTANT_INIT_PATH)
+        self.__create_folder("AutomatisationRC", CONSTANT_INIT_PATH)
 
-        self.create_folder("Files", CONSTANT_MAIN_FOLDER_PATH)
+        self.__create_folder("Files", CONSTANT_MAIN_FOLDER_PATH)
 
-        self.create_folder("screenshots", CONSTANT_FILES_FOLDER_PATH)
-        self.create_folder("tests", CONSTANT_FILES_FOLDER_PATH)
-        self.create_folder("settings", CONSTANT_FILES_FOLDER_PATH)
+        self.__create_folder("screenshots", CONSTANT_FILES_FOLDER_PATH)
+        self.__create_folder("tests", CONSTANT_FILES_FOLDER_PATH)
+        self.__create_folder("settings", CONSTANT_FILES_FOLDER_PATH)
 
-        self.create_folder("filesNames", CONSTANT_SETTINGS_FOLDER_PATH)
-        self.create_folder("pathFile", CONSTANT_SETTINGS_FOLDER_PATH)
+        self.__create_folder("filesNames", CONSTANT_SETTINGS_FOLDER_PATH)
+        self.__create_folder("pathFile", CONSTANT_SETTINGS_FOLDER_PATH)
 
     #    
-    def create_folder(self, name_folder, path):
+    def __create_folder(self, name_folder, path):
         #
         if not os.path.exists(path + "\\" + name_folder):
             #

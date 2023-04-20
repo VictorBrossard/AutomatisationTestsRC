@@ -23,12 +23,12 @@ class PathsFile(object):
     def __init__(self):
         # Check if the file exists
         if os.path.exists(CONSTANT_PATHFILE_FOLDER_PATH + '\\' + CONSTANT_NAME_FILE):
-            self.open_paths_file()
+            self.__open_paths_file()
         else:
-            self.create_paths_file()
+            self.__create_paths_file()
 
     # Function that creates the file that stores the paths in case it does not exist and opens the programs thanks to these paths
-    def create_paths_file(self):
+    def __create_paths_file(self):
         # Creation of the file 
         os.chdir(CONSTANT_PATHFILE_FOLDER_PATH) # Change the current working directory by giving the path
         subprocess.run(['type', 'nul', '>', CONSTANT_NAME_FILE], shell=True)
@@ -43,7 +43,7 @@ class PathsFile(object):
         file_path.close()
 
     # Function that allows, if the file exists, to open the programs thanks to the paths in the file 
-    def open_paths_file(self):
+    def __open_paths_file(self):
         # Get the path for the simulator which is in the first line of the file
         os.chdir(CONSTANT_PATHFILE_FOLDER_PATH)
         file_path = open(CONSTANT_NAME_FILE, 'r')       # Opening the file in read mode ('r')

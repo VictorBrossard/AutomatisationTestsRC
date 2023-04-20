@@ -11,9 +11,6 @@ import time
 from tkinter import ttk
 from Interaction.Interaction import Interaction
 from Interaction.Interaction import rc_window_foreground
-from Interaction.InputRecorder import InputRecorder
-from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
-from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 from UsefulFunction.UsefulFunction import cant_close
 
 #-----------------------------------------------------------------------------------------------------
@@ -57,28 +54,28 @@ class MainInterface(tk.Tk):
         self.columnconfigure(2, weight=1)
 
         # Adds interface objects to the interface
-        self.implementation()
+        self.__implementation()
 
     # Function that adds interface objects to the interface
-    def implementation(self):
+    def __implementation(self):
 
         # Padding
         padding = {'padx': 5, 'pady': 5}
 
         # Button
-        exit_button = ttk.Button(self, text='EXIT', command=self.close_softwares)   # Creation of the button
+        exit_button = ttk.Button(self, text='EXIT', command=self.__close_softwares)   # Creation of the button
         exit_button.grid(column=2, row=3, **padding)                                # Object position
 
-        destroy_button = ttk.Button(self, text='DESTROY', command=self.close_interface) # Creation of the button
+        destroy_button = ttk.Button(self, text='DESTROY', command=self.__close_interface) # Creation of the button
         destroy_button.grid(column=2, row=4, **padding)                                 # Object position
 
-        start_button = ttk.Button(self, text='START', command=self.start_test)
+        start_button = ttk.Button(self, text='START', command=self.__start_test)
         start_button.grid(column=0, row=0, **padding)
 
-        screenshot_button = ttk.Button(self, text='Screenshot', command=self.screenshot)
+        screenshot_button = ttk.Button(self, text='Screenshot', command=self.__screenshot)
         screenshot_button.grid(column=2, row=0, **padding)
 
-        record_button = ttk.Button(self, text='Record Tests', command=self.record_tests)
+        record_button = ttk.Button(self, text='Record Tests', command=self.__record_tests)
         record_button.grid(column=2, row=1, **padding)
 
         # Menu
@@ -87,7 +84,7 @@ class MainInterface(tk.Tk):
         #opt.grid(column=0, row=0, **padding)
 
     # Function that closes software and the interface
-    def close_softwares(self):
+    def __close_softwares(self):
         # Close software
         try:
             self.wm_state('iconic')
@@ -106,30 +103,29 @@ class MainInterface(tk.Tk):
         self.destroy()
 
     #
-    def close_interface(self):
+    def __close_interface(self):
         self.destroy()
 
     # 
-    def start_test(self):
+    def __start_test(self):
         ################ Minimisation de la fenêre de l'interface principal
         self.wm_state('iconic')
 
         rc_window_foreground()
 
+        Interaction().reading_test("test1")
+
     #
-    def screenshot(self):
+    def __screenshot(self):
         self.wm_state('iconic')
         Interaction().screenshot()
         time.sleep(2)
         self.wm_state('normal') ######### remise à la normale
 
     #
-    def record_tests(self):
+    def __record_tests(self):
         self.destroy()
-        #
-        pop_up = UserEntryPopUp("Record Tests", "Entrez le nom du test : ")
-        pop_up.mainloop()
-
-        InputRecorder(pop_up.get_user_entry(), CONSTANT_TESTS_FOLDER_PATH).start_record()
+        
+        Interaction().write_test()
         
         self.__init__()

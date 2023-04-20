@@ -12,7 +12,7 @@ from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 
 #-----------------------------------------------------------------------------------------------------
 # Class that uses software paths to open them
-class PathsInit(object):
+class _PathsInit(object):
 
     # Constructor
     def __init__(self):
@@ -21,7 +21,7 @@ class PathsInit(object):
         self.rc_path = ""
         
     # Function that asks the user for the path to access the simulator
-    def simu_init(self):
+    def _simu_init(self):
         # Opening the pop-up that asks the user for the path
         simu_pop_up = UserEntryPopUp("Chemin Simulateur", "Entrez le chemin pour accéder au simulateur : ")
         simu_pop_up.mainloop()
@@ -30,7 +30,7 @@ class PathsInit(object):
         return simu_pop_up.get_user_entry()
     
     # Function that asks the user for the path to access RC
-    def rc_init(self):
+    def _rc_init(self):
         # Opening the pop-up that asks the user for the path
         rc_pop_up = UserEntryPopUp("Chemin RC", "Entrez le chemin pour accéder à RC : ")
         rc_pop_up.mainloop()
@@ -39,7 +39,7 @@ class PathsInit(object):
         return rc_pop_up.get_user_entry()
     
     # Function that opens the simulator
-    def start_simu(self):
+    def _start_simu(self):
         try:
             # Opening the software 
             os.chdir(self.simu_path)                                    # Change the current working directory by giving the path
@@ -54,7 +54,7 @@ class PathsInit(object):
             
 
     # Function that opens RC
-    def start_rc(self):
+    def _start_rc(self):
         try:
             # Opening the software
             os.chdir(self.rc_path)                              # Change the current working directory by giving the path
