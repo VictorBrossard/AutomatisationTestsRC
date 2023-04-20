@@ -4,7 +4,6 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
 import tkinter as tk
-import tkinter.messagebox
 import ctypes
 
 from tkinter import ttk

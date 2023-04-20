@@ -9,7 +9,7 @@ import win32gui
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 from Interaction.Screenshot import Screenshot
 from Interaction.InputRecorder import InputRecorder
-from Interaction.TestsReading import TestReading
+from Interaction.ExecuteTest import ExecuteTest
 
 #-----------------------------------------------------------------------------------------------------
 #
@@ -25,7 +25,7 @@ class Interaction:
         rc_window_foreground()
 
         #
-        pyautogui.click(1804, 956)
+        ExecuteTest().read_test_file("close_rc")
 
     #
     def screenshot(self):
@@ -39,11 +39,11 @@ class Interaction:
 
         InputRecorder(pop_up.get_user_entry()).start_record()
 
-    def reading_test(self, file_name):
+    def execute_test(self, file_name):
         """
         """
         rc_window_foreground()
-        TestReading().read_test_file(file_name)
+        ExecuteTest().read_test_file(file_name)
 
 #-----------------------------------------------------------------------------------------------------
 #

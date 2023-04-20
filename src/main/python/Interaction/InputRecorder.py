@@ -39,9 +39,8 @@ class InputRecorder:
         self.mouse_listener.start()
         self.keyboard_listener.start()
 
-        ##### Boucle qui empêche le code de s'arrêter tant qu'on a pas fait stop
         while self.running:
-            pass
+            pass ##### Boucle qui empêche le code de s'arrêter tant qu'on a pas fait stop
         
     #
     def __stop_record(self):
@@ -55,8 +54,10 @@ class InputRecorder:
         button_name = button.name
         if pressed:
             self.__write_in_file(f"Click;{button_name};{x};{y}")
+        if button == mouse.Button.middle:
+            self.__write_in_file(f"Click;middle;{x};{y}")
 
-        #action = "Click" if pressed else "Release"
+        ##################action = "Click" if pressed else "Release"
         
     #
     def __on_keyboard_press(self, key):

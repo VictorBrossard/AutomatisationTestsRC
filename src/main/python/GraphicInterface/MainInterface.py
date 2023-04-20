@@ -10,7 +10,6 @@ import time
 
 from tkinter import ttk
 from Interaction.Interaction import Interaction
-from Interaction.Interaction import rc_window_foreground
 from UsefulFunction.UsefulFunction import cant_close
 
 #-----------------------------------------------------------------------------------------------------
@@ -92,8 +91,6 @@ class MainInterface(tk.Tk):
         except Exception:
             pass
 
-        time.sleep(1)
-
         try:
             subprocess.run(['taskkill', '/f', '/im', 'simulat.exe'], shell=True)
         except Exception:
@@ -111,9 +108,9 @@ class MainInterface(tk.Tk):
         ################ Minimisation de la fenêre de l'interface principal
         self.wm_state('iconic')
 
-        rc_window_foreground()
+        Interaction().execute_test("ecrit")
 
-        Interaction().reading_test("test1")
+        self.wm_state('normal')
 
     #
     def __screenshot(self):

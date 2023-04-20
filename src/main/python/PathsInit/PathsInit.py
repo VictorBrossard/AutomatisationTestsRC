@@ -9,6 +9,7 @@ import tkinter.messagebox
 import sys
 
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
+from FilesManagement.InitFolders import CONSTANT_PATHFILE_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 # Class that uses software paths to open them
@@ -46,7 +47,7 @@ class _PathsInit(object):
             subprocess.run(['start', 'simulat.exe'], shell=True)        # Open the software using the start command
         except Exception as e:
             tkinter.messagebox.showinfo('ERROR chemin Simulateur',e)    # Displaying the error message for the user
-            os.chdir(os.getcwd())
+            os.chdir(CONSTANT_PATHFILE_FOLDER_PATH)
             os.remove('pathFile.txt')                                   # Delete the file that stores the paths because the path is wrong so we don't need to store it
 
             # End the program
@@ -61,7 +62,7 @@ class _PathsInit(object):
             subprocess.run(['start', 'rc5.exe'], shell=True)    # Open the software using the start command
         except Exception as e:
             tkinter.messagebox.showinfo('ERROR chemin RC',e)    # Displaying the error message for the user
-            os.chdir(os.getcwd())
+            os.chdir(CONSTANT_PATHFILE_FOLDER_PATH)
             os.remove('pathFile.txt')                           # Delete the file that stores the paths because the path is wrong so we don't need to store it
             
             # End the program
