@@ -12,6 +12,7 @@ from pynput.keyboard import Key
 from pynput.keyboard import KeyCode
 from pynput.keyboard import Controller as KeyboardController
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
+from Interaction.KeyTranslation import KeyTranslation
 
 #-----------------------------------------------------------------------------------------------------
 #
@@ -89,21 +90,30 @@ class ExecuteTest():
             wait_time = self.__find_wait_time(now_word_list, before_word_list)
             time.sleep(wait_time)
 
-        key = KeyCode().from_char(char=now_word_list[1])
+        key_char = now_word_list[1]
 
-        self.keyboard.press(key)
-        time.sleep(1)
-        self.keyboard.release(key)
+        if key_char != "None":
+            key = KeyTranslation(key_char).get_key()
+
+            self.keyboard.press(key)
+            time.sleep(1)
+            self.keyboard.release(key)
 
     def __scroll_input(self, now_word_list, before_word_list):
         """
-        fuck
+        
         """
         if before_word_list != []:
             wait_time = self.__find_wait_time(now_word_list, before_word_list)
             time.sleep(wait_time)
 
-        print(now_word_list)
+        x = now_word_list[1]
+        y = now_word_list[2]
+        dx = now_word_list[3]
+        dy = now_word_list[3]
+
+        self.mouse.position = (x, y)
+        self.mouse.scroll(dx, dy)
 
     def __find_wait_time(self, now_word_list, before_word_list):
         """

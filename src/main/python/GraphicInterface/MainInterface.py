@@ -108,7 +108,7 @@ class MainInterface(tk.Tk):
         ################ Minimisation de la fenêre de l'interface principal
         self.wm_state('iconic')
 
-        Interaction().execute_test("ecrit")
+        Interaction().execute_test("scroll3")
 
         self.wm_state('normal')
 
@@ -116,7 +116,6 @@ class MainInterface(tk.Tk):
     def __screenshot(self):
         self.wm_state('iconic')
         Interaction().screenshot()
-        time.sleep(2)
         self.wm_state('normal') ######### remise à la normale
 
     #

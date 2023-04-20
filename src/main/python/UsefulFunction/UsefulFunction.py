@@ -28,3 +28,10 @@ def do_nothing():
     Cette fonction ne fait rien
     """
     pass
+
+def starts_with(chr, prefix):
+        """
+        Renvoie True si la chaîne de caractères 'string' commence par la chaîne de caractères 'prefix',
+        sinon renvoie False.
+        """
+        return chr[:len(prefix)] == prefix
