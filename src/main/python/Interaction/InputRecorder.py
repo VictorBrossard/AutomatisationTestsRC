@@ -68,7 +68,7 @@ class InputRecorder:
         
         self.__write_in_file(f"Key;{key_name}")
 
-        if key_name == 'a': self.__stop_record()
+        if key_name == 'tab': self.__stop_record()
 
     def __on_scroll(self, x, y, dx, dy):
         self.__write_in_file(f"Scroll;{x};{y};{dx};{dy}")

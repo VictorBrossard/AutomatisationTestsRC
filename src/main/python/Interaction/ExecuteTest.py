@@ -28,7 +28,7 @@ class ExecuteTest():
     def read_test_file(self, file_name):
         """
         """
-        file_path = CONSTANT_TESTS_FOLDER_PATH + "\\" + file_name + ".txt"
+        file_path = CONSTANT_TESTS_FOLDER_PATH + "\\" + file_name
 
         try:
             test_file = open(file_path, "r")

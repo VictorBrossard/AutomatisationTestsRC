@@ -25,7 +25,7 @@ class Interaction:
         rc_window_foreground()
 
         #
-        ExecuteTest().read_test_file("close_rc")
+        ExecuteTest().read_test_file("close_rc.txt")
 
     #
     def screenshot(self):
