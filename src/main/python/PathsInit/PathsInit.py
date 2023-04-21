@@ -12,17 +12,29 @@ from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 from FilesManagement.InitFolders import CONSTANT_PATHFILE_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
-# Class that uses software paths to open them
-class _PathsInit(object):
 
-    # Constructor
+class _PathsInit(object):
+    """ `#`
+    :class:`PathsInit` uses software paths to open them
+    """
+
     def __init__(self):
+        """ `-`
+        `Type:` Constructor
+        """
+
         # Initializes object variables
         self.simu_path = ""
         self.rc_path = ""
         
-    # Function that asks the user for the path to access the simulator
-    def _simu_init(self):
+
+    def _simu_init(self) -> str:
+        """ `#`
+        `Type:` Fonction
+        `Description:` asks the user for the path to access the simulator
+        `Return:` Simulator path
+        """
+
         # Opening the pop-up that asks the user for the path
         simu_pop_up = UserEntryPopUp("Chemin Simulateur", "Entrez le chemin pour accéder au simulateur : ")
         simu_pop_up.mainloop()
@@ -30,8 +42,14 @@ class _PathsInit(object):
         # Returns the path given by the user
         return simu_pop_up.get_user_entry()
     
-    # Function that asks the user for the path to access RC
-    def _rc_init(self):
+    
+    def _rc_init(self) -> str:
+        """ `#`
+        `Type:` Function
+        `Description:` asks the user for the path to access RC
+        `Return:` RC path
+        """
+
         # Opening the pop-up that asks the user for the path
         rc_pop_up = UserEntryPopUp("Chemin RC", "Entrez le chemin pour accéder à RC : ")
         rc_pop_up.mainloop()
@@ -39,8 +57,13 @@ class _PathsInit(object):
         # Returns the path given by the user
         return rc_pop_up.get_user_entry()
     
-    # Function that opens the simulator
+
     def _start_simu(self):
+        """ `#`
+        `Type:` Procedure
+        `Description:` open the simulator
+        """
+
         try:
             # Opening the software 
             os.chdir(self.simu_path)                                    # Change the current working directory by giving the path
@@ -53,9 +76,13 @@ class _PathsInit(object):
             # End the program
             sys.exit()
             
-
-    # Function that opens RC
+    
     def _start_rc(self):
+        """ `#`
+        `Type:` Procedure
+        `Description:` open RC
+        """
+
         try:
             # Opening the software
             os.chdir(self.rc_path)                              # Change the current working directory by giving the path
@@ -68,10 +95,22 @@ class _PathsInit(object):
             # End the program
             sys.exit()
 
-    # Function that returns the variable simu_path
-    def get_simu_path(self):
+    
+    def get_simu_path(self) -> str:
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable simu_path
+        `Return:` simu_path
+        """
+
         return self.simu_path
     
-    # Function that returns the variable rc_path
-    def get_rc_path(self):
+
+    def get_rc_path(self) -> str:
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable rc_path
+        `Return:` rc_path
+        """
+
         return self.rc_path

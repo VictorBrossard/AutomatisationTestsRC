@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : GUI pop-up to request path
+# Description   : Useful function that is not part of an object
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
@@ -9,29 +9,43 @@ import ctypes
 import sys
 
 #-----------------------------------------------------------------------------------------------------
-# Function that returns a pop up to warn that the interface cannot be closed in this way
+
 def cant_close():
+    """ `+`
+    `Type:` Procedure
+    `Description:` returns a pop up to warn that the interface cannot be closed in this way
+    """
+
     tkinter.messagebox.showinfo('Fermeture de la fenêtre impossible','Appuyer sur EXIT pour quitter')
 
-#
+
 def run_as_admin():
-    ######Demande une autorisation d'administrateur et redémarre le script.
+    """ `+`
+    `Type:` Procedure
+    `Description:` ask for administrator permission if we don't have it and restart the script
+    """
+
     if ctypes.windll.shell32.IsUserAnAdmin():
         return
     else:
-        ######## Redémarre le script avec des droits d'administrateur
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
         sys.exit(0)
 
+
 def do_nothing():
-    """
-    Cette fonction ne fait rien
+    """ `+`
+    `Type:` Procedure
+    `Description:` do nothing
     """
     pass
 
-def starts_with(chr, prefix):
-        """
-        Renvoie True si la chaîne de caractères 'string' commence par la chaîne de caractères 'prefix',
-        sinon renvoie False.
-        """
-        return chr[:len(prefix)] == prefix
+
+def starts_with(chr: str, prefix: str) -> bool:
+    """ `+`
+    `Type:` Function
+    `Description:` returns True if the string 'chr' begins with the string 'prefix', otherwise returns False.
+    :param:`chr:` string to check if it starts with the prefix
+    :param:`prefix:` string
+    """
+
+    return chr[:len(prefix)] == prefix

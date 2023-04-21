@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : 
+# Description   : Settings graphical interface
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution

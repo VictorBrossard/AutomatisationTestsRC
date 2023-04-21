@@ -16,11 +16,17 @@ from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
 from UsefulFunction.UsefulFunction import do_nothing
 
 #-----------------------------------------------------------------------------------------------------
-# Class that manages the main interface
+
 class MainInterface(tk.Tk):
-    
-    # Constructor
+    """ `+`
+    :class:`MainInterface` manages the main interface of the project
+    """
+
     def __init__(self):
+        """ `-`
+        `Type:` Constructor
+        """
+
         # Parent constructor
         super().__init__()
 
@@ -36,10 +42,9 @@ class MainInterface(tk.Tk):
         self.geometry(str(height) + "x" + str(width) + "+" + str(x) + "+" + str(y)) # Set window size and position | str() = any type to string
         self.resizable(width=0, height=0)                                           # Prevents any modification of window size
         self.protocol("WM_DELETE_WINDOW", cant_close)                               # Prevents the window from being closed by the red cross
-        self.wm_attributes("-topmost", True)
+        self.wm_attributes("-topmost", True)                                        # Prioritize the window
 
-        #
-        self.input_file_name = tk.StringVar(self)
+        # List of test names stored in the test folder
         self.test_list = os.listdir(CONSTANT_TESTS_FOLDER_PATH)
 
         # Configuring the placement of interface objects
@@ -50,18 +55,22 @@ class MainInterface(tk.Tk):
         # Adds interface objects to the interface
         self.__implementation()
 
-    # Function that adds interface objects to the interface
+
     def __implementation(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` adds interface objects to the interface
+        """
 
         # Padding
         padding = {'padx': 5, 'pady': 5}
 
         # Button
-        exit_button = ttk.Button(self, text='Exit', command=self.__close_softwares)   # Creation of the button
+        exit_button = ttk.Button(self, text='Exit', command=self.__close_softwares) # Creation of the button
         exit_button.grid(column=2, row=3, **padding)                                # Object position
 
-        destroy_button = ttk.Button(self, text='Destroy', command=self.__close_interface) # Creation of the button
-        destroy_button.grid(column=2, row=4, **padding)                                 # Object position
+        destroy_button = ttk.Button(self, text='Destroy', command=self.__close_interface)
+        destroy_button.grid(column=2, row=4, **padding)
 
         start_button = ttk.Button(self, text='Start', command=self.__start_test)
         start_button.grid(column=1, row=1, **padding)
@@ -72,8 +81,8 @@ class MainInterface(tk.Tk):
         record_button = ttk.Button(self, text='Record Tests', command=self.__record_tests)
         record_button.grid(column=2, row=1, **padding)
 
-        record_button = ttk.Button(self, text='Settings', command=self.__settings)
-        record_button.grid(column=0, row=3, **padding)
+        settings_button = ttk.Button(self, text='Settings', command=self.__settings)
+        settings_button.grid(column=0, row=3, **padding)
 
         # Combobox
         self.display_test_list = ttk.Combobox(self, values=self.test_list, state="readonly")
@@ -81,51 +90,76 @@ class MainInterface(tk.Tk):
         self.display_test_list.bind("<<ComboboxSelected>>", do_nothing)
         self.display_test_list.grid(column=1, row=0, **padding)
 
-    # Function that closes software and the interface
+    
     def __close_softwares(self):
-        # Close software
+        """ `-`
+        `Type:` Procedure
+        `Description:` close software and the interface
+        """
+
+        # Close softwares
         try:
-            self.wm_state('iconic')
+            self.wm_state('iconic') # Minimization of the main interface window
             Interaction().close_rc()
         except Exception:
             pass
 
         try:
-            subprocess.run(['taskkill', '/f', '/im', 'simulat.exe'], shell=True)
+            subprocess.run(['taskkill', '/f', '/im', 'simulat.exe'], shell=True) # Shell command to close the simulator
         except Exception:
             pass
 
-        # Close interface
-        self.destroy()
+        self.destroy() # Closing the interface
 
-    #
+    
     def __close_interface(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` close only the interface
+        """
+
         self.destroy()
 
-    # 
+
     def __start_test(self):
-        ################ Minimisation de la fenêre de l'interface principal
-        self.wm_state('iconic')
+        """ `-`
+        `Type:` Procedure
+        `Description:` start test select
+        """
 
+        self.wm_state('iconic') # Minimization of the main interface window
         Interaction().execute_test(self.display_test_list.get())
+        self.wm_state('normal') # Reset the interface to normal
 
-        self.wm_state('normal')
-
-    #
+    
     def __screenshot(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` take a screenshot
+        """
+
         self.wm_state('iconic')
         Interaction().screenshot()
-        self.wm_state('normal') ######### remise à la normale
+        self.wm_state('normal')
 
-    #
+    
     def __record_tests(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` start test recording
+        """
+
         self.destroy()
-        
         Interaction().write_test()
-        
-        self.__init__()
+        self.__init__() # Opening the interface
+
 
     def __settings(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` open the settings interface
+        """
+
         self.destroy()
-        
+        Interaction().settings()
         self.__init__()

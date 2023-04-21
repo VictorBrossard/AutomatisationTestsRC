@@ -13,15 +13,26 @@ from Interaction.ExecuteTest import ExecuteTest
 from Interaction.KeyTranslation import KeyTranslation
 
 #-----------------------------------------------------------------------------------------------------
-# Main function that executes all useful parts of the code
+
 def __main():
+    """ `-`
+    `Type:` Procedure
+    `Description:` main function that executes all useful parts of the code
+    """
+
     run_as_admin()
     InitFolders()
     PathsFile()
     test = MainInterface()
     test.mainloop()
 
+
 def __test():
+    """ `-`
+    `Type:` Procedure
+    `Description:` procedure to test things
+    """
+
     #InputRecorder("c'est juste un test", CONSTANT_TESTS_FOLDER_PATH).start_record()
     print(KeyTranslation("alt"))
 

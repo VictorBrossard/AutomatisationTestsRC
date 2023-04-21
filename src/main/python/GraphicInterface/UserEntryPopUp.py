@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : GUI pop-up to request path
+# Description   : GUI pop-up to request something to the user
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
@@ -10,11 +10,19 @@ from tkinter import ttk
 from UsefulFunction.UsefulFunction import cant_close
 
 #-----------------------------------------------------------------------------------------------------
-# Class that handles software path pop-ups
-class UserEntryPopUp(tk.Tk):
 
-    # Constructor
-    def __init__(self, name, desc):
+class UserEntryPopUp(tk.Tk):
+    """ `+`
+    :class:`UserEntryPopUp` handles user interaction through a pop-up
+    """
+
+    def __init__(self, name: str, desc: str):
+        """ `-`
+        `Type:` Constructor
+        :param:`name:` pop-up name
+        :param:`desc:` explanation of what is required of the user
+        """
+
         # Parent constructor
         super().__init__()
 
@@ -31,7 +39,7 @@ class UserEntryPopUp(tk.Tk):
         self.resizable(width=0, height=0)                                               # Prevents any modification of window size
         self.protocol("WM_DELETE_WINDOW", cant_close)                                   # Prevents the window from being closed by the red cross
 
-        # Variable that stores the path given by the user
+        # Variable that stores the value given by the user
         self.user_entry = tk.StringVar()
 
         # Configuring the placement of interface objects
@@ -42,8 +50,13 @@ class UserEntryPopUp(tk.Tk):
         # Adds interface objects to the interface
         self.__implementation(desc)
 
-    # Function that adds interface objects to the interface
-    def __implementation(self, desc):
+
+    def __implementation(self, desc: str):
+        """ `-`
+        `Type:` Procedure
+        `Description:` adds interface objects to the interface
+        :param:`desc:` explanation of what is required of the user
+        """
 
         # Padding
         padding = {'padx': 5, 'pady': 5}
@@ -58,13 +71,24 @@ class UserEntryPopUp(tk.Tk):
         text_entry.focus_set()                                      # Set focus to text input
 
         # Button
-        ok_button = ttk.Button(self, text='OK', command=self.__close_pop_up)  # Creation of the button
-        ok_button.grid(column=1, row=2, **padding)                          # Object position
+        ok_button = ttk.Button(self, text='OK', command=self.__close_pop_up)    # Creation of the button
+        ok_button.grid(column=1, row=2, **padding)                              # Object position
 
-    # Function that closes the interface
+
     def __close_pop_up(self):
-        self.destroy()
+        """ `-`
+        `Type:` Porcedure
+        `Description:` close the interface
+        """
 
-    # Function that returns the variable path
+        self.destroy() # Closing the interface
+
+    
     def get_user_entry(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable user_entry
+        `Return:` user_entry
+        """
+
         return self.user_entry.get()

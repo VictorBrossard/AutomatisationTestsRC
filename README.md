@@ -14,3 +14,14 @@ Entreprise : Europlacer
 
 ## Description
 //TO DO
+
+## Convention du projet
+### Visibilité des méthodes
+Si une méthode ou une classe commence par "__" alors c'est une méthode "privé".
+
+Si une méthode ou une classe commence par "_" alors c'est une méthode "protected".
+
+Dans les commentaires des méthodes, le premier caractère signifie : 
+- "+" = Public
+- "-" = Private
+- "#" = Protected

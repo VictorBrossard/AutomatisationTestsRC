@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : 
+# Description   : Object that transforms the keys given in string into Key or Keycode
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
@@ -10,19 +10,35 @@ from UsefulFunction.UsefulFunction import starts_with
 #-----------------------------------------------------------------------------------------------------
 
 class KeyTranslation(object):
+    """ `+`
+    :class:`KeyTranslation` transforms the keys given in string into Key or Keycode
+    """
 
-    def __init__(self, chr):
+    def __init__(self, chr: str):
+        """ `-`
+        `Type:` Constructor
         """
-        Constructor
-        """
+
         self.key = self.__find_correct_key(chr)
 
 
-    def get_key(self):
+    def get_key(self) -> (Key | KeyCode):
+        """ `+`
+        `Type:` Function
+        `Description:` Getter that returns the variable key 
+        `Return:` Key or KeyCode
+        """
+
         return self.key
     
 
-    def __find_correct_key(self, chr):
+    def __find_correct_key(self, chr: str) -> (Key | KeyCode):
+        """ `-`
+        `Type:` Function
+        `Description:` looks for the translation of in Key or KeyCode of the key in string
+        :param:`chr:` key in string
+        `Return:` Key or KeyCode
+        """
 
         key_map = {
             "backspace": Key.backspace,
@@ -73,9 +89,12 @@ class KeyTranslation(object):
         return KeyCode(char=chr)
 
         
-    def __alt(self, chr):
-        """
-        Map a string to a corresponding Key object.
+    def __alt(self, chr: str) -> Key:
+        """ `-`
+        `Type:` Function
+        `Description:` looks for the translation of in Key or KeyCode of the key in string starting with alt
+        :param:`chr:` key in string
+        `Return:` Key
         """
         
         keys = {
@@ -89,9 +108,12 @@ class KeyTranslation(object):
             return keys[chr] 
         
     
-    def __cmd(self, chr):
-        """
-        Map a string to a corresponding Key object.
+    def __cmd(self, chr: str) -> Key:
+        """ `-`
+        `Type:` Function
+        `Description:` looks for the translation of in Key or KeyCode of the key in string starting with cmd
+        :param:`chr:` key in string
+        `Return:` Key
         """
         
         keys = {
@@ -104,9 +126,12 @@ class KeyTranslation(object):
             return keys[chr] 
         
 
-    def __ctrl(self, chr):
-        """
-        Map a string to a corresponding Key object.
+    def __ctrl(self, chr: str) -> Key:
+        """ `-`
+        `Type:` Function
+        `Description:` looks for the translation of in Key or KeyCode of the key in string starting with ctrl
+        :param:`chr:` key in string
+        `Return:` Key
         """
         
         keys = {
@@ -119,10 +144,14 @@ class KeyTranslation(object):
             return keys[chr] 
         
 
-    def __f(self, chr):
+    def __f(self, chr: str) -> Key:
+        """ `-`
+        `Type:` Function
+        `Description:` looks for the translation of in Key or KeyCode of the key in string starting with f
+        :param:`chr:` key in string
+        `Return:` Key
         """
-        Map a string to a corresponding Key object.
-        """
+
         keys = {
             "f1": Key.f1,
             "f2": Key.f2,
@@ -142,9 +171,12 @@ class KeyTranslation(object):
             return keys[chr]
         
 
-    def __page(self, chr):
-        """
-        Map a string to a corresponding Key object.
+    def __page(self, chr: str) -> Key:
+        """ `-`
+        `Type:` Function
+        `Description:` looks for the translation of in Key or KeyCode of the key in string starting with page
+        :param:`chr:` key in string
+        `Return:` Key
         """
         
         keys = {
@@ -156,9 +188,12 @@ class KeyTranslation(object):
             return keys[chr] 
         
         
-    def __shift(self, chr):
-        """
-        Map a string to a corresponding Key object.
+    def __shift(self, chr: str) -> Key:
+        """ `-`
+        `Type:` Function
+        `Description:` looks for the translation of in Key or KeyCode of the key in string starting with shift
+        :param:`chr:` key in string
+        `Return:` Key
         """
 
         keys = {

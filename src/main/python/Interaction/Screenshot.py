@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : 
+# Description   : Object that takes a screenshot
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
@@ -12,43 +12,65 @@ from PIL import ImageGrab
 
 #-----------------------------------------------------------------------------------------------------
 #
-class Screenshot:
+class Screenshot(object):
+    """ `+`
+    :class:`Screenshot` takes a screenshot
+    """
 
-    # Constructor
     def __init__(self):
+        """ `-`
+        `Type:` Constructor
+        """
+
         self.__take_screenshot()
 
-    #
+    
     def __take_screenshot(self):
-        #
-        time.sleep(1)
+        """ `-`
+        `Type:` Procedure
+        `Description:` take the picture
+        """
+        
+        time.sleep(1)               # waiting time otherwise the photo taking is too fast
+        screen = ImageGrab.grab()   # take the picture
 
-        ###### PREND LA PHOTO
-        screen = ImageGrab.grab()
-
-        #
+        # saving the picture
         file_name = self.__create_screenshot_path()
         screen_name = self.__find_name(file_name) + ".png"
-        os.chdir(CONSTANT_SCREENSHOTS_FOLDER_PATH + "\\" + file_name)
+        os.chdir(CONSTANT_SCREENSHOTS_FOLDER_PATH + "\\" + file_name) # Change the current working directory by giving the path
         screen.save(screen_name)
 
-    ###### VA CHERCHER LE DOSSIER POUR STOCKER LE FICHIER S'IL EST PAS CREE ALORS ON LE FAIT SINON ON RENVOIE JUSTE LA DATE D AUJOURD HUI CAR ON STOCK SELON LA DATE
-    def __create_screenshot_path(self):
-        #
-        today_date = str(datetime.date.today())
+    
+    def __create_screenshot_path(self) -> str:
+        """ `-`
+        `Type:` Fonction
+        `Description:` look for the folder to store the file if it is not created then we do it otherwise 
+                we just return today's date because we store according to the date
+        `Return:` the folder name
+        """
 
-        #
+        today_date = str(datetime.date.today()) # turn today's date into a string
+
+        # check that the folder does not exist to create it
         if not os.path.exists(CONSTANT_SCREENSHOTS_FOLDER_PATH + "\\" + today_date):
-            #
-            os.chdir(CONSTANT_SCREENSHOTS_FOLDER_PATH)
-            os.makedirs(today_date)
+            os.chdir(CONSTANT_SCREENSHOTS_FOLDER_PATH)  # Change the current working directory by giving the path
+            os.makedirs(today_date)                     # create the folder
             return today_date
         else:
             return today_date
 
-    ####### RAJOUTE UN NUMERO DERRIERE LA DATE D AUJOURD HUI POUR STOCKER LES IMAGES. ON DETERMINE LE NUMERO EN COMPTANT LE NOMBRE DE FICHIER DANS LE DOSSIER
-    def __find_name(self, file_name):
-        os.chdir(CONSTANT_SCREENSHOTS_FOLDER_PATH)
+
+    def __find_name(self, file_name: str) -> str:
+        """ `-`
+        `Type:` Procedure
+        `Description:` add a number to the file name to avoid duplicates
+        :param:`file_name:` beginning of the file name
+        `Return:` name of the file
+        """
+
+        os.chdir(CONSTANT_SCREENSHOTS_FOLDER_PATH) # Change the current working directory by giving the path
+
+        # find the file number
         file_list = os.listdir(file_name)
         nb_files = len(file_list) + 1
         name = file_name + "(" + str(nb_files) + ")"

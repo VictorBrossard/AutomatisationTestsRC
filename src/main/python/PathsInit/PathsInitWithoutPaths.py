@@ -6,11 +6,19 @@
 from PathsInit.PathsInit import _PathsInit
 
 #-----------------------------------------------------------------------------------------------------
-# Child class of Init which does not know the paths of the software so we will ask the user for them
+
 class PathsInitWithoutPaths(_PathsInit):
+    """ `+`
+    :class:`PathsInitWithoutPaths` is a child class of PathsInit which doesn't know the paths of the software 
+            so we will ask the user for them
+    """
 
     # Constructor
     def __init__(self):
+        """ `-`
+        `Type:` Constructor
+        """
+
         # Parent constuctor
         _PathsInit.__init__(self)
 
