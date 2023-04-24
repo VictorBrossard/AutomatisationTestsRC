@@ -39,7 +39,7 @@ class OpenSoftwares(object):
             os.chdir(line_settings_file.get_simu_path())                                # Change the current working directory by giving the path
             subprocess.run(['start', line_settings_file.get_simu_exe()], shell=True)    # Open the software using the start command
         except Exception as e:
-            tkinter.messagebox.showinfo('Simulator Path ERROR',e)                       # Displaying the error message for the user
+            tkinter.messagebox.showinfo('Simulator Path ERROR', e)                       # Displaying the error message for the user
             settings = SettingsInterface()
             settings.mainloop()
             self._start_simu()

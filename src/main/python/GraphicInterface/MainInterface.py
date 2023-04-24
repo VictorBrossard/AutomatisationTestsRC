@@ -4,6 +4,7 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 import tkinter as tk
+import tkinter.messagebox
 import subprocess
 import ctypes
 import os
@@ -103,16 +104,16 @@ class MainInterface(tk.Tk):
         # Close softwares
         try:
             if is_soft_open(line_settings_file.get_rc_exe()):
-                self.wm_state('iconic') # Minimization of the main interface window
+                self.wm_state('iconic')                         # Minimization of the main interface window
                 Interaction().close_rc()
-        except Exception:
-            pass
+        except Exception as e:
+            tkinter.messagebox.showinfo('RC Closing ERROR', e)  # Displaying the error message for the user
 
         try:
             if is_soft_open(line_settings_file.get_simu_exe()):
-                subprocess.run(['taskkill', '/f', '/im', line_settings_file.get_simu_exe()], shell=True) # Shell command to close the simulator
-        except Exception:
-            pass
+                subprocess.run(['taskkill', '/f', '/im', line_settings_file.get_simu_exe()], shell=True)    # Shell command to close the simulator
+        except Exception as e:
+            tkinter.messagebox.showinfo('Simulator Closing ERROR', e)                                       # Displaying the error message for the user
 
         self.destroy() # Closing the interface
 
@@ -132,9 +133,11 @@ class MainInterface(tk.Tk):
         `Description:` start test select
         """
 
+        #self.destroy()
         self.wm_state('iconic') # Minimization of the main interface window
         Interaction().execute_test(self.display_test_list.get())
         self.wm_state('normal') # Reset the interface to normal
+        #self.__init__()
 
     
     def __screenshot(self):
