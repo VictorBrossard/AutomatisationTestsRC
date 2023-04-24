@@ -105,8 +105,8 @@ class SettingsInterface(tk.Tk):
 
         # Label
         # Title
-        settings_title_label = ttk.Label(self, text="General Settings") # Creation of the label
-        settings_title_label.grid(column= _CONSTANT_TITLE_COLUMN, row= _CONSTANT_SETTINGS_TITLE_LINE, **padding)         # Object position
+        settings_title_label = ttk.Label(self, text="General Settings")                                             # Creation of the label
+        settings_title_label.grid(column= _CONSTANT_TITLE_COLUMN, row= _CONSTANT_SETTINGS_TITLE_LINE, **padding)    # Object position
 
         test_title_label = ttk.Label(self, text="Test Settings")              
         test_title_label.grid(column= _CONSTANT_TITLE_COLUMN, row= _CONSTANT_TEST_TITLE_LINE, **padding)
@@ -135,7 +135,7 @@ class SettingsInterface(tk.Tk):
 
         # Entry 
         simu_exe_entry = ttk.Entry(self, textvariable=self.simu_exe)                                    # Creation of the entry
-        simu_exe_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_SIMU_EXE_LINE, **padding)  # Object position
+        simu_exe_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_SIMU_EXE_LINE, **padding)    # Object position
 
         rc_exe_entry = ttk.Entry(self, textvariable=self.rc_exe)  
         rc_exe_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_RC_EXE_LINE, **padding)

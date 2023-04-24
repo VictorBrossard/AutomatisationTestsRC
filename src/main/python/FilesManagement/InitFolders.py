@@ -9,16 +9,16 @@ import os
 # Initialization of constants
 CONSTANT_INIT_PATH = "C:\Program Files"
 
-CONSTANT_MAIN_FOLDER_PATH = "C:\Program Files\AutomatisationRC"
+CONSTANT_MAIN_FOLDER_PATH = CONSTANT_INIT_PATH + "\AutomatisationRC"
 
-CONSTANT_FILES_FOLDER_PATH = "C:\Program Files\AutomatisationRC\Files"
+CONSTANT_FILES_FOLDER_PATH = CONSTANT_MAIN_FOLDER_PATH + "\Files"
 
-CONSTANT_SCREENSHOTS_FOLDER_PATH = "C:\Program Files\AutomatisationRC\Files\screenshots"
-CONSTANT_TESTS_FOLDER_PATH = "C:\Program Files\AutomatisationRC\Files\\tests"               # \\ because \ does not work on its own when there is a t or an n
-CONSTANT_SETTINGS_FOLDER_PATH = "C:\Program Files\AutomatisationRC\Files\\settings"
+CONSTANT_SCREENSHOTS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\screenshots"
+CONSTANT_TESTS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\tests"               # \\ because \ does not work on its own when there is a t or an n
+CONSTANT_SETTINGS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\settings"
 
-CONSTANT_NAMES_FOLDER_PATH = "C:\Program Files\AutomatisationRC\Files\\settings\\names"
-CONSTANT_PATHFILE_FOLDER_PATH = "C:\Program Files\AutomatisationRC\Files\settings\pathFile"
+CONSTANT_NAME_SETTINGS_FILE = 'settings.txt'
+
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -39,9 +39,6 @@ class InitFolders(object):
         self.__create_folder("screenshots", CONSTANT_FILES_FOLDER_PATH)
         self.__create_folder("tests", CONSTANT_FILES_FOLDER_PATH)
         self.__create_folder("settings", CONSTANT_FILES_FOLDER_PATH)
-
-        self.__create_folder("filesNames", CONSTANT_SETTINGS_FOLDER_PATH)
-        self.__create_folder("pathFile", CONSTANT_SETTINGS_FOLDER_PATH)
 
      
     def __create_folder(self, name_folder: str, path: str):

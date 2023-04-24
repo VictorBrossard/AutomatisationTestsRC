@@ -4,7 +4,7 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 from GraphicInterface.MainInterface import MainInterface
-from FilesManagement.PathsFile import PathsFile
+from FilesManagement.InitSettingsFile import InitSettingsFile
 from FilesManagement.InitFolders import InitFolders
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
 from Interaction.InputRecorder import InputRecorder
@@ -22,7 +22,7 @@ def __main():
 
     run_as_admin()
     InitFolders()
-    PathsFile()
+    InitSettingsFile()
     test = MainInterface()
     test.mainloop()
 

@@ -9,7 +9,8 @@ import tkinter.messagebox
 import sys
 
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
-from FilesManagement.InitFolders import CONSTANT_PATHFILE_FOLDER_PATH
+from FilesManagement.InitFolders import CONSTANT_SETTINGS_FOLDER_PATH
+from FilesManagement.InitFolders import CONSTANT_NAME_SETTINGS_FILE
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -69,9 +70,9 @@ class _PathsInit(object):
             os.chdir(self.simu_path)                                    # Change the current working directory by giving the path
             subprocess.run(['start', 'simulat.exe'], shell=True)        # Open the software using the start command
         except Exception as e:
-            tkinter.messagebox.showinfo('Simulator Path ERROR',e)    # Displaying the error message for the user
-            os.chdir(CONSTANT_PATHFILE_FOLDER_PATH)
-            os.remove('pathFile.txt')                                   # Delete the file that stores the paths because the path is wrong so we don't need to store it
+            tkinter.messagebox.showinfo('Simulator Path ERROR',e)       # Displaying the error message for the user
+            os.chdir(CONSTANT_SETTINGS_FOLDER_PATH)
+            os.remove(CONSTANT_NAME_SETTINGS_FILE)                      # Delete the file that stores the paths because the path is wrong so we don't need to store it
 
             # End the program
             sys.exit()
@@ -88,9 +89,9 @@ class _PathsInit(object):
             os.chdir(self.rc_path)                              # Change the current working directory by giving the path
             subprocess.run(['start', 'rc5.exe'], shell=True)    # Open the software using the start command
         except Exception as e:
-            tkinter.messagebox.showinfo('RC Path ERROR',e)    # Displaying the error message for the user
-            os.chdir(CONSTANT_PATHFILE_FOLDER_PATH)
-            os.remove('pathFile.txt')                           # Delete the file that stores the paths because the path is wrong so we don't need to store it
+            tkinter.messagebox.showinfo('RC Path ERROR',e)      # Displaying the error message for the user
+            os.chdir(CONSTANT_SETTINGS_FOLDER_PATH)
+            os.remove(CONSTANT_NAME_SETTINGS_FILE)              # Delete the file that stores the paths because the path is wrong so we don't need to store it
             
             # End the program
             sys.exit()
