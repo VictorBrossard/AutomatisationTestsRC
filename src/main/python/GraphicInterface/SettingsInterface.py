@@ -4,13 +4,11 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 import tkinter as tk
-import subprocess
 import ctypes
-import time
-import os
 
 from tkinter import ttk
 from UsefulFunction.UsefulFunction import cant_close
+from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants
@@ -65,20 +63,16 @@ class SettingsInterface(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", cant_close)                               # Prevents the window from being closed by the red cross
         self.wm_attributes("-topmost", True)                                        # Prioritize the window
 
-        # Variable that stores the value given by the user
-        self.simu_exe = tk.StringVar()
+        # Variable that stores the default values
+        self.line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
 
-        self.simu_path = tk.StringVar()
-
-        self.rc_exe = tk.StringVar()
-
-        self.rc_path = tk.StringVar()
-
-        self.rc_window_name = tk.StringVar()
-
-        self.folder_path = tk.StringVar()
-
-        self.test_stop_key = tk.StringVar()
+        self.simu_exe = tk.StringVar(value= self.line_settings_file.get_simu_exe())
+        self.rc_exe = tk.StringVar(value= self.line_settings_file.get_rc_exe())
+        self.simu_path = tk.StringVar(value= self.line_settings_file.get_simu_path())
+        self.rc_path = tk.StringVar(value= self.line_settings_file.get_rc_path())
+        self.rc_window_name = tk.StringVar(value= self.line_settings_file.get_rc_window_name())
+        self.folder_path = tk.StringVar(value= self.line_settings_file.get_folder_path())
+        self.test_stop_key = tk.StringVar(value= self.line_settings_file.get_test_stop_key())
 
 
         # Configuring the placement of interface objects
@@ -147,19 +141,24 @@ class SettingsInterface(tk.Tk):
         rc_path_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_RC_PATH_LINE, **padding)
 
         folder_path_entry = ttk.Entry(self, textvariable=self.folder_path)  
-        folder_path_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_FOLDER_PATH_LINE, **padding) 
+        folder_path_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_FOLDER_PATH_LINE, **padding)
+        folder_path_entry.config(state="disabled")     
 
         rc_window_name_entry = ttk.Entry(self, textvariable=self.rc_window_name)  
         rc_window_name_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_RC_WINDOW_NAME_LINE, **padding) 
 
         test_stop_key_entry = ttk.Entry(self, textvariable=self.test_stop_key)  
-        test_stop_key_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_STOP_KEY_LINE, **padding)                
+        test_stop_key_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_STOP_KEY_LINE, **padding)  
+        test_stop_key_entry.config(state="disabled")              
         
 
     def __close_interface(self):
         """ `-`
         `Type:` Procedure
-        `Description:` close only the interface
+        `Description:` close only the interface and change the value of the settings file
         """
+
+        # Save possible new values
+        self.line_settings_file.manage_file(self.simu_exe.get(), self.rc_exe.get(), self.simu_path.get(), self.rc_path.get(), self.folder_path.get(), self.rc_window_name.get(), self.test_stop_key.get())
 
         self.destroy()

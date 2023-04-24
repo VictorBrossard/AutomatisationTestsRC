@@ -10,6 +10,7 @@ import os
 
 from tkinter import ttk
 from Interaction.Interaction import Interaction
+from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
 from UsefulFunction.UsefulFunction import cant_close
 from UsefulFunction.UsefulFunction import do_nothing
@@ -97,17 +98,19 @@ class MainInterface(tk.Tk):
         `Description:` close software and the interface
         """
 
+        line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
+
         # Close softwares
         try:
-            if is_soft_open("rc5.exe"):
+            if is_soft_open(line_settings_file.get_rc_exe()):
                 self.wm_state('iconic') # Minimization of the main interface window
                 Interaction().close_rc()
         except Exception:
             pass
 
         try:
-            if is_soft_open("Simulat.exe"):
-                subprocess.run(['taskkill', '/f', '/im', 'Simulat.exe'], shell=True) # Shell command to close the simulator
+            if is_soft_open(line_settings_file.get_simu_exe()):
+                subprocess.run(['taskkill', '/f', '/im', line_settings_file.get_simu_exe()], shell=True) # Shell command to close the simulator
         except Exception:
             pass
 
@@ -140,9 +143,9 @@ class MainInterface(tk.Tk):
         `Description:` take a screenshot
         """
 
-        self.wm_state('iconic')
+        self.destroy()
         Interaction().screenshot()
-        self.wm_state('normal')
+        self.__init__()
 
     
     def __record_tests(self):

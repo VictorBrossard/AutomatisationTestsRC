@@ -6,11 +6,10 @@
 from GraphicInterface.MainInterface import MainInterface
 from FilesManagement.InitSettingsFile import InitSettingsFile
 from FilesManagement.InitFolders import InitFolders
-from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
-from Interaction.InputRecorder import InputRecorder
+from OpenSoftwares.OpenSoftwares import OpenSoftwares
 from UsefulFunction.UsefulFunction import run_as_admin
-from Interaction.ExecuteTest import ExecuteTest
-from Interaction.KeyTranslation import KeyTranslation
+
+from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -23,6 +22,7 @@ def __main():
     run_as_admin()
     InitFolders()
     InitSettingsFile()
+    OpenSoftwares().open_soft()
     test = MainInterface()
     test.mainloop()
 
@@ -32,9 +32,16 @@ def __test():
     `Type:` Procedure
     `Description:` procedure to test things
     """
+    test = ManipulationSettingsFile()
+    print(test.get_simu_exe())
+    print(test.get_rc_exe())
+    print(test.get_simu_path())
+    print(test.get_rc_path())
+    print(test.get_folder_path())
+    print(test.get_rc_window_name())
+    print(test.get_test_stop_key())
 
-    #InputRecorder("c'est juste un test", CONSTANT_TESTS_FOLDER_PATH).start_record()
-    print(KeyTranslation("alt"))
+    
 
 # Execution of the main function
 __main()

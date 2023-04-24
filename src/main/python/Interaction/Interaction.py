@@ -4,15 +4,17 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 import win32gui
+import tkinter.messagebox
 
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 from GraphicInterface.SettingsInterface import SettingsInterface
 from Interaction.Screenshot import Screenshot
 from Interaction.InputRecorder import InputRecorder
 from Interaction.ExecuteTest import ExecuteTest
+from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 
 #-----------------------------------------------------------------------------------------------------
-#
+
 class Interaction(object):
     """ `+`
     :class:`Interaction` does the interactions instead of the user
@@ -23,7 +25,7 @@ class Interaction(object):
         `Type:` Constructor
         """
 
-        pass
+        self.line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
 
     
     def close_rc(self):
@@ -32,7 +34,7 @@ class Interaction(object):
         `Description:` performs the action of closing RC
         """
 
-        rc_window_foreground()
+        rc_window_foreground(self.line_settings_file.get_rc_window_name())
         ExecuteTest().read_test_file("close_rc.txt")
 
     
@@ -42,7 +44,7 @@ class Interaction(object):
         `Description:` take a screenshot
         """
 
-        rc_window_foreground()
+        rc_window_foreground(self.line_settings_file.get_rc_window_name())
         Screenshot()
 
 
@@ -69,7 +71,7 @@ class Interaction(object):
         :param:`file_name:` name of file to execute
         """
 
-        rc_window_foreground()
+        rc_window_foreground(self.line_settings_file.get_rc_window_name())
         ExecuteTest().read_test_file(file_name)
 
 
@@ -84,21 +86,21 @@ class Interaction(object):
 
 #-----------------------------------------------------------------------------------------------------
 
-def rc_window_foreground():
+def rc_window_foreground(window_name: str):
     """ `+`
     `Type:` Procedure
     `Description:` puts the RC window in the foreground to be sure that we are handling the right software
+    :param:`window_name:` RC window name
     """
 
     # window to search
-    hwnd = win32gui.FindWindow(None, 'Menu Général')
+    hwnd = win32gui.FindWindow(None, window_name)
 
-    #### PROBLEME
-    #### SI LE NOM EST PAS TROUVE ON REDEMANDE LE NOM OR VU QU ON LE STOCK PAS CA FAIT UNE BOUCLE
     try :
-        win32gui.SetForegroundWindow(hwnd)
-    except Exception:
-        uepu = UserEntryPopUp("ERROR WINDOW NAME", "Donnez le nom de la fenêtre de RC : ")
-        uepu.mainloop()
-        hwnd = uepu.get_user_entry()
-        win32gui.SetForegroundWindow(hwnd)
+        win32gui.SetForegroundWindow(hwnd) # Bringing RC to the fore
+    except Exception as e:
+        tkinter.messagebox.showinfo('RC Window Name ERROR', e)  # Displaying the error message for the user
+        settings = SettingsInterface()
+        settings.mainloop()
+        rc_window_foreground(ManipulationSettingsFile().get_rc_window_name())
+        
