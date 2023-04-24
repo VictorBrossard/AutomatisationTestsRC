@@ -6,6 +6,7 @@
 import os
 import time
 import subprocess
+import tkinter.messagebox
 
 from pynput import keyboard
 from pynput import mouse
@@ -28,10 +29,17 @@ class InputRecorder(object):
 
         self.running = False # lets you know if you are recording or not
         self.name_file = name + ".txt"
+        self.was_file_created = False
 
+        # Check if the file exists
+        if os.path.exists(CONSTANT_TESTS_FOLDER_PATH + '\\' + self.name_file):
+            tkinter.messagebox.showinfo('ERROR file name','The file already exists')    # Displaying the error message for the user
+            return
+        
         # Create the file
-        os.chdir(CONSTANT_TESTS_FOLDER_PATH) # Change the current working directory by giving the path
+        os.chdir(CONSTANT_TESTS_FOLDER_PATH)
         subprocess.run(['type', 'nul', '>', self.name_file], shell=True)
+        self.was_file_created = True
 
         # Open the file to write to
         self.file_path = CONSTANT_TESTS_FOLDER_PATH + "\\" + self.name_file
@@ -97,14 +105,14 @@ class InputRecorder(object):
         :param:`key:` keyboard key pressed
         """
 
+        try:
+            key_name = key.char
+        except AttributeError:
+            key_name = key.name
+
         if key_name == 'tab': # key that stops recording
             self.__stop_recording() 
         else:
-            try:
-                key_name = key.char
-            except AttributeError:
-                key_name = key.name
-        
             self.__write_in_file(f"Key;{key_name}")
 
 
@@ -132,3 +140,11 @@ class InputRecorder(object):
         self.file.write(f"{message};{now}\n")
         self.file.flush() # force writing the entire contents of the file's buffer to the hard disk
 
+
+    def get_was_file_created(self):
+        """ `+`
+        `Type:` Function
+        `Description:` Getter that returns the variable file_was_created 
+        `Return:` file_was_created
+        """
+        return self.was_file_created

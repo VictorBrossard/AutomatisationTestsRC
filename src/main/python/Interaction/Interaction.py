@@ -55,7 +55,10 @@ class Interaction(object):
         pop_up = UserEntryPopUp("Record Tests", "Entrez le nom du test : ")
         pop_up.mainloop()
 
-        InputRecorder(pop_up.get_user_entry()).start_recording()
+        recorder = InputRecorder(pop_up.get_user_entry())
+
+        if recorder.get_was_file_created():
+            recorder.start_recording()
 
 
     def execute_test(self, file_name: str):
