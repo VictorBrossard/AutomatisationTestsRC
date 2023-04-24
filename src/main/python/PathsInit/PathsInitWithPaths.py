@@ -4,6 +4,7 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
 from PathsInit.PathsInit import _PathsInit
+from UsefulFunction.UsefulFunction import is_soft_open
 
 #-----------------------------------------------------------------------------------------------------   
 
@@ -24,6 +25,9 @@ class PathsInitWithPaths(_PathsInit):
         self.simu_path = simu_way
         self.rc_path = rc_way
         
-        # Open software
-        self._start_simu()
-        self._start_rc()
+        # Open software if closed
+        if not is_soft_open("Simulat.exe"):
+            self._start_simu()
+            
+        if not is_soft_open("rc5.exe"):
+            self._start_rc()

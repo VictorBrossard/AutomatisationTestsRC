@@ -145,6 +145,6 @@ class InputRecorder(object):
         """ `+`
         `Type:` Function
         `Description:` Getter that returns the variable file_was_created 
-        `Return:` file_was_created
+        `Return:` True or False
         """
         return self.was_file_created

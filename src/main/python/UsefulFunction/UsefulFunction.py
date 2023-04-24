@@ -7,6 +7,7 @@ import tkinter
 import tkinter.messagebox
 import ctypes
 import sys
+import subprocess
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -49,3 +50,25 @@ def starts_with(chr: str, prefix: str) -> bool:
     """
 
     return chr[:len(prefix)] == prefix
+
+
+def is_soft_open(soft_name: str) -> bool:
+    """ `+`
+    `Type:` Function
+    `Description:` check that the given software is open
+    :param:`soft_name:` name of the software to open (in .exe)
+    `Return:` True or False
+    """
+
+    # Exécuter la commande tasklist pour obtenir la liste des processus en cours
+    process_list = subprocess.check_output('tasklist', shell=True).decode('cp1252').split('\n')
+
+    is_open = False
+
+    # Vérifier si le logiciel "notepad.exe" est dans la liste des processus
+    for process in process_list:
+        if soft_name in process:
+            is_open = True
+            break
+    
+    return is_open

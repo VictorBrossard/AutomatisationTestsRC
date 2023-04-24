@@ -11,9 +11,10 @@ import os
 
 from tkinter import ttk
 from Interaction.Interaction import Interaction
-from UsefulFunction.UsefulFunction import cant_close
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
+from UsefulFunction.UsefulFunction import cant_close
 from UsefulFunction.UsefulFunction import do_nothing
+from UsefulFunction.UsefulFunction import is_soft_open
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -99,13 +100,15 @@ class MainInterface(tk.Tk):
 
         # Close softwares
         try:
-            self.wm_state('iconic') # Minimization of the main interface window
-            Interaction().close_rc()
+            if is_soft_open("rc5.exe"):
+                self.wm_state('iconic') # Minimization of the main interface window
+                Interaction().close_rc()
         except Exception:
             pass
 
         try:
-            subprocess.run(['taskkill', '/f', '/im', 'simulat.exe'], shell=True) # Shell command to close the simulator
+            if is_soft_open("Simulat.exe"):
+                subprocess.run(['taskkill', '/f', '/im', 'Simulat.exe'], shell=True) # Shell command to close the simulator
         except Exception:
             pass
 
