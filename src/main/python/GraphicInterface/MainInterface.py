@@ -6,7 +6,6 @@
 import tkinter as tk
 import subprocess
 import ctypes
-import time
 import os
 
 from tkinter import ttk

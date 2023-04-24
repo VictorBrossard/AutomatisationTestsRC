@@ -36,7 +36,7 @@ class _PathsInit(object):
         """
 
         # Opening the pop-up that asks the user for the path
-        simu_pop_up = UserEntryPopUp("Chemin Simulateur", "Entrez le chemin pour accéder au simulateur : ")
+        simu_pop_up = UserEntryPopUp("Simulator Path", "Enter the path to access the simulator : ")
         simu_pop_up.mainloop()
 
         # Returns the path given by the user
@@ -51,7 +51,7 @@ class _PathsInit(object):
         """
 
         # Opening the pop-up that asks the user for the path
-        rc_pop_up = UserEntryPopUp("Chemin RC", "Entrez le chemin pour accéder à RC : ")
+        rc_pop_up = UserEntryPopUp("RC Path", "Enter the path to access RC : ")
         rc_pop_up.mainloop()
 
         # Returns the path given by the user
@@ -69,7 +69,7 @@ class _PathsInit(object):
             os.chdir(self.simu_path)                                    # Change the current working directory by giving the path
             subprocess.run(['start', 'simulat.exe'], shell=True)        # Open the software using the start command
         except Exception as e:
-            tkinter.messagebox.showinfo('ERROR chemin Simulateur',e)    # Displaying the error message for the user
+            tkinter.messagebox.showinfo('Simulator Path ERROR',e)    # Displaying the error message for the user
             os.chdir(CONSTANT_PATHFILE_FOLDER_PATH)
             os.remove('pathFile.txt')                                   # Delete the file that stores the paths because the path is wrong so we don't need to store it
 
@@ -88,7 +88,7 @@ class _PathsInit(object):
             os.chdir(self.rc_path)                              # Change the current working directory by giving the path
             subprocess.run(['start', 'rc5.exe'], shell=True)    # Open the software using the start command
         except Exception as e:
-            tkinter.messagebox.showinfo('ERROR chemin RC',e)    # Displaying the error message for the user
+            tkinter.messagebox.showinfo('RC Path ERROR',e)    # Displaying the error message for the user
             os.chdir(CONSTANT_PATHFILE_FOLDER_PATH)
             os.remove('pathFile.txt')                           # Delete the file that stores the paths because the path is wrong so we don't need to store it
             

@@ -6,6 +6,7 @@
 import win32gui
 
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
+from GraphicInterface.SettingsInterface import SettingsInterface
 from Interaction.Screenshot import Screenshot
 from Interaction.InputRecorder import InputRecorder
 from Interaction.ExecuteTest import ExecuteTest
@@ -78,7 +79,8 @@ class Interaction(object):
         `Description:` launches the settings interface
         """
 
-        pass
+        settings_interface = SettingsInterface()
+        settings_interface.mainloop()
 
 #-----------------------------------------------------------------------------------------------------
 
