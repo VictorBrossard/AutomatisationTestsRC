@@ -10,6 +10,7 @@ import tkinter.messagebox
 from GraphicInterface.SettingsInterface import SettingsInterface
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from UsefulFunction.UsefulFunction import is_soft_open
+from Interaction.Interaction import rc_window_foreground
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -78,3 +79,5 @@ class OpenSoftwares(object):
             
         if not is_soft_open(line_settings_file.get_rc_exe()):
             self.__start_rc()
+        else: 
+            rc_window_foreground(ManipulationSettingsFile().get_rc_window_name())
