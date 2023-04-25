@@ -8,6 +8,7 @@ import tkinter.messagebox
 import ctypes
 import sys
 import subprocess
+import pyautogui
 
 #-----------------------------------------------------------------------------------------------------
 

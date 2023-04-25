@@ -7,16 +7,19 @@ import os
 import time
 import subprocess
 import tkinter.messagebox
+import pyautogui
 
 from pynput import keyboard
 from pynput import mouse
 from pynput.mouse import Button
 from pynput.keyboard import Key
 from pynput.keyboard import KeyCode
+from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
-#
+
 class InputRecorder(object):
     """ `+`
     :class:`InputRecorder` saves all actions that the user does in a file
@@ -30,6 +33,8 @@ class InputRecorder(object):
         self.running = False # lets you know if you are recording or not
         self.name_file = name + ".txt"
         self.was_file_created = False
+
+        self.screen_width, self.screen_height = pyautogui.size() # useful screen size so that all tests are feasible on any type of screen
 
         # Check if the file exists
         if os.path.exists(CONSTANT_TESTS_FOLDER_PATH + '\\' + self.name_file):
@@ -46,7 +51,7 @@ class InputRecorder(object):
         self.file = open(self.file_path, "w")
         
         # Initialization of objects that let you know what the user is doing
-        self.mouse_listener = mouse.Listener(on_click=self.__on_mouse_click, on_scroll=self.__on_scroll)
+        self.mouse_listener = mouse.Listener(on_move=self.__on_move, on_click=self.__on_mouse_click, on_scroll=self.__on_scroll)
         self.keyboard_listener = keyboard.Listener(on_press=self.__on_keyboard_press)
 
 
@@ -87,15 +92,17 @@ class InputRecorder(object):
         """
 
         button_name = button.name
+        norm_x = x / self.screen_width
+        norm_y = y / self.screen_height
 
         # Checking if it is pressed and not maintained
         if pressed:
-            self.__write_in_file(f"Click;{button_name};{x};{y}")
-
-        if button == mouse.Button.middle:
-            self.__write_in_file(f"Click;middle;{x};{y}")
-
-        ##################action = "Click" if pressed else "Release"
+            if button == mouse.Button.middle:
+                self.__write_in_file(f"Click;middle;{norm_x};{norm_y}")
+            else:
+                self.__write_in_file(f"Click;{button_name};{norm_x};{norm_y}")
+        else:
+            self.__write_in_file(f"Release;{button_name};{norm_x};{norm_y}")
         
 
     def __on_keyboard_press(self, key: (Key | KeyCode | None)):
@@ -110,7 +117,7 @@ class InputRecorder(object):
         except AttributeError:
             key_name = key.name
 
-        if key_name == 'tab': # key that stops recording
+        if key_name == ManipulationSettingsFile().get_test_stop_key(): # key that stops recording
             self.__stop_recording() 
         else:
             self.__write_in_file(f"Key;{key_name}")
@@ -126,7 +133,24 @@ class InputRecorder(object):
         :param:`dy:` dy-coordinate
         """
 
-        self.__write_in_file(f"Scroll;{x};{y};{dx};{dy}")
+        norm_x = x / self.screen_width
+        norm_y = y / self.screen_height
+
+        self.__write_in_file(f"Scroll;{norm_x};{norm_y};{dx};{dy}")
+
+
+    def __on_move(self, x: int, y: int):
+        """ `-`
+        `Type:` Procedure
+        `Description:` Move record
+        :param:`x:` x-coordinate
+        :param:`y:` y-coordinate
+        """
+
+        norm_x = x / self.screen_width
+        norm_y = y / self.screen_height
+
+        self.__write_in_file(f"Move;{norm_x};{norm_y}")
         
 
     def __write_in_file(self, message: str):

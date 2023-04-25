@@ -47,7 +47,10 @@ class MainInterface(tk.Tk):
         self.wm_attributes("-topmost", True)                                        # Prioritize the window
 
         # List of test names stored in the test folder
-        self.test_list = os.listdir(CONSTANT_TESTS_FOLDER_PATH)
+        if len(os.listdir(CONSTANT_TESTS_FOLDER_PATH)) > 0:
+            self.test_list = os.listdir(CONSTANT_TESTS_FOLDER_PATH)
+        else:
+            self.test_list = [""]
 
         # Configuring the placement of interface objects
         self.columnconfigure(0, weight=1)
@@ -89,7 +92,7 @@ class MainInterface(tk.Tk):
         # Combobox
         self.display_test_list = ttk.Combobox(self, values=self.test_list, state="readonly")
         self.display_test_list.current(0)
-        self.display_test_list.bind("<<ComboboxSelected>>", do_nothing)
+        #self.display_test_list.bind("<<ComboboxSelected>>", do_nothing)
         self.display_test_list.grid(column=1, row=0, **padding)
 
     
@@ -133,11 +136,12 @@ class MainInterface(tk.Tk):
         `Description:` start test select
         """
 
-        #self.destroy()
-        self.wm_state('iconic') # Minimization of the main interface window
-        Interaction().execute_test(self.display_test_list.get())
-        self.wm_state('normal') # Reset the interface to normal
-        #self.__init__()
+        chosen_test = self.display_test_list.get()
+
+        if chosen_test != "":
+            self.destroy()
+            Interaction().execute_test(chosen_test)
+            self.__init__()
 
     
     def __screenshot(self):
