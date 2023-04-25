@@ -7,12 +7,15 @@ import tkinter.messagebox
 import time
 import pyautogui
 
+from pynput import keyboard
 from pynput.mouse import Button
 from pynput.mouse import Controller as MouseController
 from pynput.keyboard import Key
+from pynput.keyboard import KeyCode
 from pynput.keyboard import Controller as KeyboardController
 from Interaction.KeyTranslation import KeyTranslation
 from Interaction.Screenshot import Screenshot
+from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
 
@@ -29,10 +32,12 @@ class ExecuteTest(object):
         """
 
         self.screen_width, self.screen_height = pyautogui.size() # useful screen size so that all tests are feasible on any type of screen
+        self.does_want_stop = False
 
         # Initializing controls
         self.mouse = MouseController()
         self.keyboard = KeyboardController()
+        self.keyboard_listener = keyboard.Listener(on_press=self.__stop_execution)
 
     def read_test_file(self, file_name: str):
         """ `+`
@@ -45,6 +50,7 @@ class ExecuteTest(object):
 
         try:
             test_file = open(file_path, "r")
+            self.keyboard_listener.start()
 
             # Read the first line by itself because there are no prior instructions to know the waiting time
             first_line = test_file.readline()
@@ -57,9 +63,15 @@ class ExecuteTest(object):
 
             # We do the same for all the lines of the file
             for line in test_file:
+                if self.does_want_stop:
+                    return
+                
                 now_word_list = line.split(";")
                 self.__find_action(now_word_list, before_word_list)
                 before_word_list = now_word_list
+
+            self.keyboard_listener.stop()
+            test_file.close()
         except Exception as e:
             tkinter.messagebox.showinfo('ERROR File',e)
 
@@ -250,3 +262,19 @@ class ExecuteTest(object):
                     time = word_list[5]
 
         return float(time)
+    
+
+    def __stop_execution(self,key: (Key | KeyCode | None)):
+        """ `-`
+        `Type:` Procedure
+        `Description:` stop the execution of the test if the key set in parameter is pressed
+        :param:`key:` key detected by the listener
+        """
+
+        try:
+            key_name = key.char
+        except AttributeError:
+            key_name = key.name
+
+        if key_name == ManipulationSettingsFile().get_test_stop_key(): # key that stops recording
+            self.does_want_stop = True

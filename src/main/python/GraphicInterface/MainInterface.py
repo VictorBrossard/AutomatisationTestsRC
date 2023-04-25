@@ -14,7 +14,6 @@ from Interaction.Interaction import Interaction
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
 from UsefulFunction.UsefulFunction import cant_close
-from UsefulFunction.UsefulFunction import do_nothing
 from UsefulFunction.UsefulFunction import is_soft_open
 
 #-----------------------------------------------------------------------------------------------------
@@ -92,7 +91,6 @@ class MainInterface(tk.Tk):
         # Combobox
         self.display_test_list = ttk.Combobox(self, values=self.test_list, state="readonly")
         self.display_test_list.current(0)
-        #self.display_test_list.bind("<<ComboboxSelected>>", do_nothing)
         self.display_test_list.grid(column=1, row=0, **padding)
 
     
