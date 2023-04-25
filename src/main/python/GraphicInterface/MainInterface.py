@@ -39,7 +39,7 @@ class MainInterface(tk.Tk):
         y = int((user.GetSystemMetrics(1) / 2) - (width / 2))   # user32.GetSystemMetrics() = screen size (0 = height and 1 = width)
 
         # Interface initialization
-        self.title('Interface Principale')
+        self.title('Main Interface')
         self.geometry(str(height) + "x" + str(width) + "+" + str(x) + "+" + str(y)) # Set window size and position | str() = any type to string
         self.resizable(width=0, height=0)                                           # Prevents any modification of window size
         self.protocol("WM_DELETE_WINDOW", cant_close)                               # Prevents the window from being closed by the red cross
@@ -140,6 +140,7 @@ class MainInterface(tk.Tk):
             self.destroy()
             Interaction().execute_test(chosen_test)
             self.__init__()
+            self.mainloop()
 
     
     def __screenshot(self):
@@ -151,6 +152,7 @@ class MainInterface(tk.Tk):
         self.destroy()
         Interaction().screenshot()
         self.__init__()
+        self.mainloop()
 
     
     def __record_tests(self):
@@ -162,6 +164,7 @@ class MainInterface(tk.Tk):
         self.destroy()
         Interaction().write_test()
         self.__init__() # Opening the interface
+        self.mainloop()
 
 
     def __settings(self):
@@ -173,3 +176,4 @@ class MainInterface(tk.Tk):
         self.destroy()
         Interaction().settings()
         self.__init__()
+        self.mainloop()

@@ -9,6 +9,10 @@ import ctypes
 from tkinter import ttk
 from UsefulFunction.UsefulFunction import cant_close
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+from pynput import keyboard
+from pynput.keyboard import Key
+from pynput.keyboard import KeyCode
+from GraphicInterface.ChangeKeyInterface import ChangeKeyInterface
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants
@@ -49,15 +53,17 @@ class SettingsInterface(tk.Tk):
         # Parent constructor
         super().__init__()
 
+        self.is_listening = False
+
         # Window size and position
-        height = 500
-        width = 350
+        height = 600
+        width = 400
         user = ctypes.windll.user32                             # User information
         x = int((user.GetSystemMetrics(0) / 2) - (height / 2))  # int() = any type to int
         y = int((user.GetSystemMetrics(1) / 2) - (width / 2))   # user32.GetSystemMetrics() = screen size (0 = height and 1 = width)
 
         # Interface initialization
-        self.title('Interface Principale')
+        self.title('Settings Interface')
         self.geometry(str(height) + "x" + str(width) + "+" + str(x) + "+" + str(y)) # Set window size and position | str() = any type to string
         self.resizable(width=0, height=0)                                           # Prevents any modification of window size
         self.protocol("WM_DELETE_WINDOW", cant_close)                               # Prevents the window from being closed by the red cross
@@ -96,6 +102,9 @@ class SettingsInterface(tk.Tk):
         # Button
         exit_button = ttk.Button(self, text='Exit', command=self.__close_interface)                 # Creation of the button
         exit_button.grid(column= _CONSTANT_BUTTON_COLUMN, row= _CONSTANT_BUTTON_LINE, **padding)    # Object position
+
+        stop_key_button = ttk.Button(self, text='Change Key', command=self.__change_test_stop_key)
+        stop_key_button.grid(column= _CONSTANT_BUTTON_COLUMN, row= _CONSTANT_STOP_KEY_LINE, **padding)   
 
         # Label
         # Title
@@ -162,3 +171,17 @@ class SettingsInterface(tk.Tk):
         self.line_settings_file.manage_file(self.simu_exe.get(), self.rc_exe.get(), self.simu_path.get(), self.rc_path.get(), self.folder_path.get(), self.rc_window_name.get(), self.test_stop_key.get())
 
         self.destroy()
+
+    
+    def __change_test_stop_key(self):
+        """ `-`
+        `Type:`
+        `Description:`
+        """
+
+        self.destroy()
+        ck_inter = ChangeKeyInterface()
+        ck_inter.mainloop()
+        self.__init__()
+        self.__implementation()
+        self.mainloop()        
