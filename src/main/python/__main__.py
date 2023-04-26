@@ -10,6 +10,7 @@ from OpenSoftwares.OpenSoftwares import OpenSoftwares
 from UsefulFunction.UsefulFunction import run_as_admin
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+from UsefulFunction.UsefulFunction import str_list_to_int_list
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -32,15 +33,10 @@ def __test():
     `Type:` Procedure
     `Description:` procedure to test things
     """
-    test = ManipulationSettingsFile()
-    print(test.get_simu_exe())
-    print(test.get_rc_exe())
-    print(test.get_simu_path())
-    print(test.get_rc_path())
-    print(test.get_folder_path())
-    print(test.get_rc_window_name())
-    print(test.get_test_stop_key())
-
+    
+    old_list = ['1','2','3.5','mp','']
+    new_list = str_list_to_int_list(old_list)
+    print(new_list)
     
 
 # Execution of the main function

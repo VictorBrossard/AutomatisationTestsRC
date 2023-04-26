@@ -11,10 +11,15 @@ import os
 
 from tkinter import ttk
 from tkinter import filedialog
-from Interaction.Interaction import Interaction
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 
+from Interaction.Interaction import Interaction
+
+from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
+from GraphicInterface.LoopTestInterface import LoopTestInterface
+
+from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
+
 from UsefulFunction.UsefulFunction import cant_close
 from UsefulFunction.UsefulFunction import is_soft_open
 
@@ -47,12 +52,6 @@ class MainInterface(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", cant_close)                               # Prevents the window from being closed by the red cross
         self.wm_attributes("-topmost", True)                                        # Prioritize the window
 
-        # List of test names stored in the test folder
-        if len(os.listdir(CONSTANT_TESTS_FOLDER_PATH)) > 0:
-            self.test_list = os.listdir(CONSTANT_TESTS_FOLDER_PATH)
-        else:
-            self.test_list = [""]
-
         # Configuring the placement of interface objects
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -73,13 +72,13 @@ class MainInterface(tk.Tk):
 
         # Button
         exit_button = ttk.Button(self, text='Exit', command=self.__close_softwares) # Creation of the button
-        exit_button.grid(column=2, row=3, **padding)                                # Object position
+        exit_button.grid(column=2, row=2, **padding)                                # Object position
 
         destroy_button = ttk.Button(self, text='Destroy', command=self.__close_interface)
-        destroy_button.grid(column=2, row=4, **padding)
+        destroy_button.grid(column=2, row=3, **padding)
 
-        start_button = ttk.Button(self, text='Start', command=self.__start_test)
-        start_button.grid(column=1, row=1, **padding)
+        start_test_button = ttk.Button(self, text='Start Test', command=self.__start_test)
+        start_test_button.grid(column=1, row=0, **padding)
 
         screenshot_button = ttk.Button(self, text='Screenshot', command=self.__screenshot)
         screenshot_button.grid(column=2, row=0, **padding)
@@ -88,15 +87,7 @@ class MainInterface(tk.Tk):
         record_button.grid(column=2, row=1, **padding)
 
         settings_button = ttk.Button(self, text='Settings', command=self.__settings)
-        settings_button.grid(column=0, row=3, **padding)
-
-        multiple_test_button = ttk.Button(self, text='Multiple Test', command=self.__multiple_test)
-        multiple_test_button.grid(column=1, row=2, **padding)
-
-        # Combobox
-        self.display_test_list = ttk.Combobox(self, values=self.test_list, state="readonly")
-        self.display_test_list.current(0)
-        self.display_test_list.grid(column=1, row=0, **padding)
+        settings_button.grid(column=0, row=2, **padding)
 
     
     def __close_softwares(self):
@@ -131,21 +122,6 @@ class MainInterface(tk.Tk):
         """
 
         self.destroy()
-
-
-    def __start_test(self):
-        """ `-`
-        `Type:` Procedure
-        `Description:` start test select
-        """
-
-        chosen_test = self.display_test_list.get()
-
-        if chosen_test != "":
-            self.destroy()
-            Interaction().execute_test(chosen_test)
-            self.__init__()
-            self.mainloop()
 
     
     def __screenshot(self):
@@ -184,20 +160,33 @@ class MainInterface(tk.Tk):
         self.mainloop()
 
 
-    def __multiple_test(self):
+    def __start_test(self):
         """ `-`
         `Type:` Procedure
         `Description:` run one or more tests in a row
         """
 
         # Selection of files by the user
-        file_paths = filedialog.askopenfilenames(initialdir="C:\Program Files\AutomatisationRC\Files\\tests", title="Select files")
+        file_paths = filedialog.askopenfilenames(initialdir= CONSTANT_TESTS_FOLDER_PATH, title="Select files")
 
         # checking if it is empty or not
         if file_paths:
             file_paths_list = list(file_paths)
             
             self.destroy()
-            Interaction().multiple_test(file_paths_list)
+            simple_question = SimpleQuestionInterface("Question", "Do you want to test several times in a row?")
+            simple_question.mainloop()
+
+            if simple_question.get_is_yes():
+                loop = LoopTestInterface("Loop", file_paths_list)
+                loop.mainloop()
+
+                new_list = loop.get_new_test_list()
+
+                if new_list != []:
+                    Interaction().multiple_test(new_list)
+            else:
+                Interaction().multiple_test(file_paths_list)
+
             self.__init__()
             self.mainloop()

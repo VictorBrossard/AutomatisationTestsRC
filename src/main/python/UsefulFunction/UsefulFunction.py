@@ -17,7 +17,7 @@ def cant_close():
     `Description:` returns a pop up to warn that the interface cannot be closed in this way
     """
 
-    tkinter.messagebox.showinfo('Fermeture de la fenêtre impossible','Appuyer sur EXIT pour quitter')
+    tkinter.messagebox.showinfo("Window cannot be closed","Can't close the window this way")
 
 
 def run_as_admin():
@@ -72,3 +72,20 @@ def is_soft_open(soft_name: str) -> bool:
             break
     
     return is_open
+
+
+def str_list_to_int_list(str_list: list) -> list:
+    """
+    """
+
+    int_list = []
+
+    for string in str_list:
+        try:
+            new_int = int(string)
+        except Exception:
+            new_int = 1
+
+        int_list.append(new_int)
+
+    return int_list

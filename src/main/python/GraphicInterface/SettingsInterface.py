@@ -180,5 +180,5 @@ class SettingsInterface(tk.Tk):
         ck_inter = ChangeKeyInterface()
         ck_inter.mainloop()
         self.__init__()
-        self.__implementation()
+        #self.__implementation()
         self.mainloop()        
