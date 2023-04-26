@@ -92,15 +92,18 @@ class Interaction(object):
     def multiple_test(self, file_paths_list: list):
         """ `+`
         `Type:` Procedure
-        `Description:` 
+        `Description:` execute all the test files in the parameter list
+        :param:`file_paths_list:` list of file paths to run
         """
         
         rc_window_foreground(self.line_settings_file.get_rc_window_name())
 
         for file in file_paths_list:
+            # We separate the name of the file and its path to be able to handle it better later
             file_path_without_name = os.path.dirname(file)
             file_name = os.path.basename(file)
 
+            # checking if the file is in the right folder otherwise it is not a test
             if os.path.abspath(file_path_without_name) == os.path.abspath(CONSTANT_TESTS_FOLDER_PATH):
                 ExecuteTest().read_test_file(file_name)
                 time.sleep(2)

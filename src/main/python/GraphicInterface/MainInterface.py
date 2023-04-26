@@ -187,10 +187,13 @@ class MainInterface(tk.Tk):
     def __multiple_test(self):
         """ `-`
         `Type:` Procedure
-        `Description:`
+        `Description:` run one or more tests in a row
         """
 
-        file_paths = filedialog.askopenfilenames(initialdir="C:/MonDossier", title="Sélectionner des fichiers")
+        # Selection of files by the user
+        file_paths = filedialog.askopenfilenames(initialdir="C:\Program Files\AutomatisationRC\Files\\tests", title="Select files")
+
+        # checking if it is empty or not
         if file_paths:
             file_paths_list = list(file_paths)
             

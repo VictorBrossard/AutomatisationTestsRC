@@ -9,9 +9,6 @@ import ctypes
 from tkinter import ttk
 from UsefulFunction.UsefulFunction import cant_close
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from pynput import keyboard
-from pynput.keyboard import Key
-from pynput.keyboard import KeyCode
 from GraphicInterface.ChangeKeyInterface import ChangeKeyInterface
 
 #-----------------------------------------------------------------------------------------------------
