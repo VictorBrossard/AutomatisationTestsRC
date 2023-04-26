@@ -10,8 +10,10 @@ import ctypes
 import os
 
 from tkinter import ttk
+from tkinter import filedialog
 from Interaction.Interaction import Interaction
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
 from UsefulFunction.UsefulFunction import cant_close
 from UsefulFunction.UsefulFunction import is_soft_open
@@ -87,6 +89,9 @@ class MainInterface(tk.Tk):
 
         settings_button = ttk.Button(self, text='Settings', command=self.__settings)
         settings_button.grid(column=0, row=3, **padding)
+
+        multiple_test_button = ttk.Button(self, text='Multiple Test', command=self.__multiple_test)
+        multiple_test_button.grid(column=1, row=2, **padding)
 
         # Combobox
         self.display_test_list = ttk.Combobox(self, values=self.test_list, state="readonly")
@@ -177,3 +182,19 @@ class MainInterface(tk.Tk):
         Interaction().settings()
         self.__init__()
         self.mainloop()
+
+
+    def __multiple_test(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:`
+        """
+
+        file_paths = filedialog.askopenfilenames(initialdir="C:/MonDossier", title="Sélectionner des fichiers")
+        if file_paths:
+            file_paths_list = list(file_paths)
+            
+            self.destroy()
+            Interaction().multiple_test(file_paths_list)
+            self.__init__()
+            self.mainloop()

@@ -5,13 +5,18 @@
 # Import of files useful for code execution
 import win32gui
 import tkinter.messagebox
+import os
+import time
 
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 from GraphicInterface.SettingsInterface import SettingsInterface
+
 from Interaction.Screenshot import Screenshot
 from Interaction.InputRecorder import InputRecorder
 from Interaction.ExecuteTest import ExecuteTest
+
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -78,11 +83,27 @@ class Interaction(object):
     def settings(self):
         """ `+`
         `Type:` Procedure
-        `Description:` launches the settings interface
+        `Description:` launch the settings interface
         """
 
-        settings_interface = SettingsInterface()
-        settings_interface.mainloop()
+        SettingsInterface().mainloop()
+
+
+    def multiple_test(self, file_paths_list: list):
+        """ `+`
+        `Type:` Procedure
+        `Description:` 
+        """
+        
+        rc_window_foreground(self.line_settings_file.get_rc_window_name())
+
+        for file in file_paths_list:
+            file_path_without_name = os.path.dirname(file)
+            file_name = os.path.basename(file)
+
+            if os.path.abspath(file_path_without_name) == os.path.abspath(CONSTANT_TESTS_FOLDER_PATH):
+                ExecuteTest().read_test_file(file_name)
+                time.sleep(2)
 
 #-----------------------------------------------------------------------------------------------------
 
