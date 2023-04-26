@@ -171,16 +171,20 @@ class MainInterface(tk.Tk):
 
         # checking if it is empty or not
         if file_paths:
-            file_paths_list = list(file_paths)
-            
+            file_paths_list = list(file_paths) # turns the tuple into a list
             self.destroy()
+
+            # asks the user if he wants to loop on some tests
             simple_question = SimpleQuestionInterface("Question", "Do you want to test several times in a row?")
             simple_question.mainloop()
 
+            # checks the user's response
             if simple_question.get_is_yes():
+                # management of the number of times a test is performed
                 loop = LoopTestInterface("Loop", file_paths_list)
                 loop.mainloop()
 
+                # new test list that has n times the test in the list, where n is the number entered as parameter by the user
                 new_list = loop.get_new_test_list()
 
                 if new_list != []:

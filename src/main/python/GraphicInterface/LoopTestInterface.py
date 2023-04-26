@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : 
+# Description   : Graphical interface that allows you to manage the number of loops made on the same test
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
@@ -16,20 +16,21 @@ from UsefulFunction.UsefulFunction import str_list_to_int_list
 
 class LoopTestInterface(tk.Tk):
     """ `+`
-    :class:`LoopTestInterface`
+    :class:`LoopTestInterface` allows you to manage the number of loops made on the same test
     """
 
     def __init__(self, name: str, test_list: list):
         """ `-`
         `Type:` Constructor
         :param:`name:` window name
-        :param:`question:` question we want to ask the user
+        :param:`test_list:` list that contains the tests to be performed
         """
 
         # Parent constructor
         super().__init__()
 
-        self.old_test_list = test_list
+        # list to handle
+        self.old_test_list = test_list 
         self.new_test_list = []
 
         # Window size and position
@@ -52,14 +53,14 @@ class LoopTestInterface(tk.Tk):
         """ `-`
         `Type:` Procedure
         `Description:` adds interface objects to the interface
-        :param:`test_list:` 
+        :param:`test_list:` list that contains the tests to be performed
         """  
 
         # Start Button
-        start_button = ttk.Button(self, text="Start", command=lambda: self.__start(test_frame))    
+        start_button = ttk.Button(self, text="Start", command=lambda: self.__create_new_test_list(test_frame))    
         start_button.pack(side=tk.TOP, padx=10)
 
-        start_button = ttk.Button(self, text="Exit", command=self.__exit)    
+        start_button = ttk.Button(self, text="Exit", command=self.__close_interface)    
         start_button.pack(side=tk.TOP, padx=10)
 
         # Canvas
@@ -75,6 +76,7 @@ class LoopTestInterface(tk.Tk):
             # We separate the name of the file and its path to be able to handle it better later
             test_name = os.path.basename(test)
 
+            # for each test in the list we display them on our interface
             test_name_label = ttk.Label(test_frame, text=test_name)
             test_name_label.grid(column=0, row=i, pady=10)
 
@@ -91,26 +93,37 @@ class LoopTestInterface(tk.Tk):
         canvas.bind('<MouseWheel>', lambda e: canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
         
 
-    def __start(self, frame):
-        """
+    def __create_new_test_list(self, frame):
+        """ `-`
+        `Type:` Procedure
+        `Description:` creates the new test list then destroys the interface
+        :param:`frame:` interface panel where all entries are placed
         """
 
+        # recovery of all values in the entries
         entry_values = []
         for child in frame.winfo_children():
             if isinstance(child, tk.Entry):
                 entry_values.append(child.get())
         
+        # transformation into integer list
         entry_values = str_list_to_int_list(entry_values)
 
-        for i, val in enumerate(entry_values):
-            if val > 0:
-                for j in range(0, val):
+        # new test list that has n times the test in the list, where n is the number entered as parameter by the user
+        for i, n in enumerate(entry_values):
+            if n > 0:
+                for j in range(0, n):
                     self.new_test_list.append(self.old_test_list[i])
 
         self.destroy()
 
 
-    def __exit(self):
+    def __close_interface(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` close only the interface
+        """
+
         self.destroy()
 
 

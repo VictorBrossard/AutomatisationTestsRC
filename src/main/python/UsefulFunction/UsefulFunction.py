@@ -75,17 +75,22 @@ def is_soft_open(soft_name: str) -> bool:
 
 
 def str_list_to_int_list(str_list: list) -> list:
-    """
+    """ `+`
+    `Type:` Function
+    `Description:` transforms a list of strings into a list of integers. Useful to know the number of loops to do on a test
+    :param:`str_list:` list of strings to transform
+    `Return:` int list
     """
 
     int_list = []
 
+    # string list walkthrough
     for string in str_list:
         try:
             new_int = int(string)
         except Exception:
-            new_int = 1
+            new_int = 1 # if there is an error in the user's input, will play the test at least once
 
-        int_list.append(new_int)
+        int_list.append(new_int) # adds to the list
 
     return int_list
