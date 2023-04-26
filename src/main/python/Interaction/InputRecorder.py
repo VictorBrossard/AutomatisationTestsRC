@@ -33,6 +33,7 @@ class InputRecorder(object):
         self.running = False # lets you know if you are recording or not
         self.name_file = name + ".txt"
         self.was_file_created = False
+        self.current_combination = []
 
         self.screen_width, self.screen_height = pyautogui.size() # useful screen size so that all tests are feasible on any type of screen
 
@@ -52,7 +53,7 @@ class InputRecorder(object):
         
         # Initialization of objects that let you know what the user is doing
         self.mouse_listener = mouse.Listener(on_move=self.__on_move, on_click=self.__on_mouse_click, on_scroll=self.__on_scroll)
-        self.keyboard_listener = keyboard.Listener(on_press=self.__on_keyboard_press)
+        self.keyboard_listener = keyboard.Listener(on_press=self.__on_keyboard_press, on_release=self.__on_keyboard_release)
 
 
     def start_recording(self):
@@ -117,10 +118,43 @@ class InputRecorder(object):
         except AttributeError:
             key_name = key.name
 
+        try:
+            if self.current_combination == [] and key_name in self.key_combinations:
+                self.current_combination.append(key_name)
+                print(self.current_combination)
+                return 
+        except KeyError:
+            pass
+
+        if self.current_combination != []:
+            try:
+                print(key_name)
+                print(self.key_combinations[self.current_combination[0]][key_name])
+                combination = self.key_combinations[self.current_combination[0]][key_name]
+                self.current_combination.append(key)
+                print(self.current_combination)
+            except KeyError:
+                pass
+
+        
+    def __on_keyboard_release(self, key: (Key | KeyCode | None)):
+        """ `-`
+        `Type:` Procedure
+        `Description:` recording of the key release
+        :param:`key:` keyboard key released
+        """
+
+        try:
+            key_name = key.char
+        except AttributeError:
+            key_name = key.name
+
         if key_name == ManipulationSettingsFile().get_test_stop_key(): # key that stops recording
             self.__stop_recording() 
         else:
             self.__write_in_file(f"Key;{key_name}")
+
+        self.current_combination = []
 
 
     def __on_scroll(self, x: int, y: int, dx: int, dy: int):
@@ -150,7 +184,7 @@ class InputRecorder(object):
         norm_x = x / self.screen_width
         norm_y = y / self.screen_height
 
-        self.__write_in_file(f"Move;{norm_x};{norm_y}")
+        #self.__write_in_file(f"Move;{norm_x};{norm_y}")
         
 
     def __write_in_file(self, message: str):
@@ -172,3 +206,88 @@ class InputRecorder(object):
         `Return:` True or False
         """
         return self.was_file_created
+    
+
+    key_combinations = {
+        'ctrl_l': {
+            'a': 'ctrl+a',
+            'c': 'ctrl+c',
+            'v': 'ctrl+v',
+            'x': 'ctrl+x',
+            'z': 'ctrl+z',
+            'y': 'ctrl+y',
+            'n': 'ctrl+n',
+            'o': 'ctrl+o',
+            's': 'ctrl+s',
+            'f': 'ctrl+f',
+            't': 'ctrl+t',
+            'w': 'ctrl+w',
+            'p': 'ctrl+p',
+            'q': 'ctrl+q'
+        },
+        'ctrl_r': {
+            'a': 'ctrl+a',
+            'c': 'ctrl+c',
+            'v': 'ctrl+v',
+            'x': 'ctrl+x',
+            'z': 'ctrl+z',
+            'y': 'ctrl+y',
+            'n': 'ctrl+n',
+            'o': 'ctrl+o',
+            's': 'ctrl+s',
+            'f': 'ctrl+f',
+            't': 'ctrl+t',
+            'w': 'ctrl+w',
+            'p': 'ctrl+p',
+            'q': 'ctrl+q'
+        },
+        'alt_l': {
+            'f4': 'alt+f4',
+            'tab': 'alt+tab',
+            'space': 'alt+space',
+            'left': 'alt+left',
+            'right': 'alt+right',
+            'up': 'alt+up',
+            'down': 'alt+down',
+            'enter': 'alt+enter',
+            'f': 'alt+f',
+            'e': 'alt+e',
+            'd': 'alt+d',
+            'p': 'alt+p',
+            'q': 'alt+q',
+            'r': 'alt+r',
+            's': 'alt+s'
+        },
+        'alt_r': {
+            'f4': 'alt+f4',
+            'tab': 'alt+tab',
+            'space': 'alt+space',
+            'left': 'alt+left',
+            'right': 'alt+right',
+            'up': 'alt+up',
+            'down': 'alt+down',
+            'enter': 'alt+enter',
+            'f': 'alt+f',
+            'e': 'alt+e',
+            'd': 'alt+d',
+            'p': 'alt+p',
+            'q': 'alt+q',
+            'r': 'alt+r',
+            's': 'alt+s'
+        },
+        'cmd': {
+            'c': 'cmd+c',
+            'v': 'cmd+v',
+            'x': 'cmd+x',
+            'z': 'cmd+z',
+            'y': 'cmd+y',
+            'n': 'cmd+n',
+            'o': 'cmd+o',
+            's': 'cmd+s',
+            'f': 'cmd+f',
+            't': 'cmd+t',
+            'w': 'cmd+w',
+            'p': 'cmd+p',
+            'q': 'cmd+q'
+        }
+    }

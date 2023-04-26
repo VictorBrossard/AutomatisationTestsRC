@@ -5,6 +5,7 @@
 # Import of files useful for code execution
 from pynput.keyboard import Key
 from pynput.keyboard import KeyCode
+
 from UsefulFunction.UsefulFunction import starts_with
 
 #-----------------------------------------------------------------------------------------------------
@@ -203,4 +204,4 @@ class KeyTranslation(object):
         }
 
         if chr in keys:
-            return keys[chr] 
+            return keys[chr]
