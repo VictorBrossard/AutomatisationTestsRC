@@ -15,26 +15,16 @@ class KeyTranslation(object):
     :class:`KeyTranslation` transforms the keys given in string into Key or Keycode
     """
 
-    def __init__(self, chr: str):
+    def __init__(self):
         """ `-`
         `Type:` Constructor
         """
 
-        self.key = self.__find_correct_key(chr)
-
-
-    def get_key(self) -> (Key | KeyCode):
-        """ `+`
-        `Type:` Function
-        `Description:` Getter that returns the variable key 
-        `Return:` Key or KeyCode
-        """
-
-        return self.key
+        pass
     
 
-    def __find_correct_key(self, chr: str) -> (Key | KeyCode):
-        """ `-`
+    def find_correct_key(self, chr: str) -> (Key | KeyCode):
+        """ `+`
         `Type:` Function
         `Description:` looks for the translation of in Key or KeyCode of the key in string
         :param:`chr:` key in string
@@ -205,3 +195,35 @@ class KeyTranslation(object):
 
         if chr in keys:
             return keys[chr]
+        
+
+    def find_combination(self, chr: str) -> KeyCode:
+        """ `+`
+        `Type:` Function
+        `Description:` find the correct letter for the key combination with ctrl at the beginning
+        :param:`chr:` key in string
+        `Return:` KeyCode
+        """
+
+        # use of a dictionary because the values returned by pynput, for key combinations like ctrl+... , are in the form x..
+        key_map = {
+            "x01'": 'a',
+            "x03'": 'c',
+            "x16'": 'v',
+            "x18'": 'x',
+            "x1a'": 'z',
+            "x19'": 'y',
+            "x0e'": 'n',
+            "x0f'": 'o',
+            "x13'": 's',
+            "x06'": 'f',
+            "x14'": 't',
+            "x17'": 'w',
+            "x10'": 'p',
+            "x11'": 'q'
+        }
+    
+        if chr in key_map:
+            return key_map[chr]
+        else:
+            return chr

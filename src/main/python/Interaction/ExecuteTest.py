@@ -3,7 +3,6 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
-import tkinter.messagebox
 import time
 import pyautogui
 
@@ -11,13 +10,17 @@ from pynput import keyboard
 from pynput.mouse import Button
 from pynput.mouse import Controller as MouseController
 from pynput.keyboard import Key
+from pynput.keyboard import HotKey
 from pynput.keyboard import KeyCode
 from pynput.keyboard import Controller as KeyboardController
+
 from Interaction.KeyTranslation import KeyTranslation
 from Interaction.Screenshot import Screenshot
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 
+from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
+
+from UsefulFunction.UsefulFunction import starts_with
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -162,14 +165,26 @@ class ExecuteTest(object):
         key_char = now_word_list[1]
 
         if key_char != "None":
-            key = KeyTranslation(key_char).get_key() # translate string to Key or KeyCode
+            # the key combinations all start with < so we check if our action is a combination or not
+            if starts_with(key_char, "<"):
+                hotkeys = HotKey.parse(key_char)
 
-            if key == Key.print_screen:
-                Screenshot()
+                for k in hotkeys:
+                    self.keyboard.press(k)
+
+                time.sleep(0.1)
+
+                for k in reversed(hotkeys):
+                    self.keyboard.release(k)
             else:
-                self.keyboard.press(key)
-                time.sleep(1)
-                self.keyboard.release(key)
+                key = KeyTranslation().find_correct_key(key_char) # translate string to Key or KeyCode
+
+                if key == Key.print_screen:
+                    Screenshot()
+                else:
+                    self.keyboard.press(key)
+                    time.sleep(0.5)
+                    self.keyboard.release(key)
 
 
     def __scroll_input(self, now_word_list: list, before_word_list: list):

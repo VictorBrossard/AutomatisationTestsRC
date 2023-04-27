@@ -11,6 +11,7 @@ from UsefulFunction.UsefulFunction import run_as_admin
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from UsefulFunction.UsefulFunction import str_list_to_int_list
+from Interaction.Interaction import Interaction
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -34,9 +35,7 @@ def __test():
     `Description:` procedure to test things
     """
     
-    old_list = ['1','2','3.5','mp','']
-    new_list = str_list_to_int_list(old_list)
-    print(new_list)
+    Interaction().write_test()
     
 
 # Execution of the main function

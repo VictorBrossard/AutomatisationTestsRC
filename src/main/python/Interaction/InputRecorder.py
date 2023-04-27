@@ -14,8 +14,13 @@ from pynput import mouse
 from pynput.mouse import Button
 from pynput.keyboard import Key
 from pynput.keyboard import KeyCode
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+from pynput.keyboard import HotKey
 
+from UsefulFunction.UsefulFunction import starts_with
+
+from Interaction.KeyTranslation import KeyTranslation
+
+from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
@@ -33,7 +38,10 @@ class InputRecorder(object):
         self.running = False # lets you know if you are recording or not
         self.name_file = name + ".txt"
         self.was_file_created = False
-        self.current_combination = []
+
+        self.cant_use_key = ["ctrl", "ctrl_l", "ctrl_r", "alt", "alt_r", "alt_l", "cmd", "cmd_l", "cmd_r"]
+        self.current_hotkey = []
+        self.translate = KeyTranslation()
 
         self.screen_width, self.screen_height = pyautogui.size() # useful screen size so that all tests are feasible on any type of screen
 
@@ -60,14 +68,16 @@ class InputRecorder(object):
         """ `+`
         `Type:` Procedure
         `Description:` starts recording user actions
-        """
+        """ 
         
         self.running = True
-        self.mouse_listener.start()
+        self.mouse_listener.start() 
         self.keyboard_listener.start()
 
         while self.running:
-            pass # Loop that prevents the code from stopping until you stop
+            # Loop that prevents the code from stopping until you stop
+            time.sleep(0.001)
+
         
 
     def __stop_recording(self):
@@ -104,13 +114,13 @@ class InputRecorder(object):
                 self.__write_in_file(f"Click;{button_name};{norm_x};{norm_y}")
         else:
             self.__write_in_file(f"Release;{button_name};{norm_x};{norm_y}")
-        
 
-    def __on_keyboard_press(self, key: (Key | KeyCode | None)):
+            
+    def __on_keyboard_press(self, key):
         """ `-`
         `Type:` Procedure
-        `Description:` recording of the key pressed
-        :param:`key:` keyboard key pressed
+        `Description:` recording of the key press
+        :param:`key:` keyboard key
         """
 
         try:
@@ -118,30 +128,26 @@ class InputRecorder(object):
         except AttributeError:
             key_name = key.name
 
-        try:
-            if self.current_combination == [] and key_name in self.key_combinations:
-                self.current_combination.append(key_name)
-                print(self.current_combination)
-                return 
-        except KeyError:
-            pass
+        # if we keep pressing alt or ctrl or cmd, we are in a key combination
+        # so we first register one of these keys in our list of current keys then we register the other keys
+        # otherwise we do nothing here
+        if key_name in self.cant_use_key and self.current_hotkey == []:
+            self.current_hotkey.append(key_name)
 
-        if self.current_combination != []:
-            try:
-                print(key_name)
-                print(self.key_combinations[self.current_combination[0]][key_name])
-                combination = self.key_combinations[self.current_combination[0]][key_name]
-                self.current_combination.append(key)
-                print(self.current_combination)
-            except KeyError:
-                pass
+        if key_name not in self.cant_use_key and self.current_hotkey != [] and key_name not in self.current_hotkey:
+            if self.current_hotkey[0] == 'ctrl' or self.current_hotkey[0] == 'ctrl_l' or self.current_hotkey[0] == 'ctrl_r':
+                # case where the key combination returns a key in the form '\x..' because of pynput which has problems when you do ctrl+...
+                # so we save the key as a string to better handle it after
+                self.current_hotkey.append(str(key))
+            else:
+                self.current_hotkey.append(key_name)
 
-        
-    def __on_keyboard_release(self, key: (Key | KeyCode | None)):
+
+    def __on_keyboard_release(self, key):
         """ `-`
         `Type:` Procedure
         `Description:` recording of the key release
-        :param:`key:` keyboard key released
+        :param:`key:` keyboard key  
         """
 
         try:
@@ -149,12 +155,17 @@ class InputRecorder(object):
         except AttributeError:
             key_name = key.name
 
-        if key_name == ManipulationSettingsFile().get_test_stop_key(): # key that stops recording
-            self.__stop_recording() 
+        if self.current_hotkey != []:
+            # case we are in a key combination
+            self.__write_hotkey()
         else:
-            self.__write_in_file(f"Key;{key_name}")
-
-        self.current_combination = []
+            if key_name not in self.cant_use_key and key_name != None:          # we prevent to simply write the ctrl, alt or cmd keys because they are just used to make keyboard shortcuts
+                if key_name == ManipulationSettingsFile().get_test_stop_key():  # key that stops recording
+                    self.__stop_recording() 
+                else:
+                    self.__write_in_file(f"Key;{key_name}")
+        
+        self.current_hotkey = []
 
 
     def __on_scroll(self, x: int, y: int, dx: int, dy: int):
@@ -163,7 +174,7 @@ class InputRecorder(object):
         `Description:` scroll record
         :param:`x:` x-coordinate
         :param:`y:` y-coordinate
-        :param:`dx:` dx-coordinate
+        :param:`dx:` dx-coordinate  
         :param:`dy:` dy-coordinate
         """
 
@@ -208,86 +219,58 @@ class InputRecorder(object):
         return self.was_file_created
     
 
-    key_combinations = {
-        'ctrl_l': {
-            'a': 'ctrl+a',
-            'c': 'ctrl+c',
-            'v': 'ctrl+v',
-            'x': 'ctrl+x',
-            'z': 'ctrl+z',
-            'y': 'ctrl+y',
-            'n': 'ctrl+n',
-            'o': 'ctrl+o',
-            's': 'ctrl+s',
-            'f': 'ctrl+f',
-            't': 'ctrl+t',
-            'w': 'ctrl+w',
-            'p': 'ctrl+p',
-            'q': 'ctrl+q'
-        },
-        'ctrl_r': {
-            'a': 'ctrl+a',
-            'c': 'ctrl+c',
-            'v': 'ctrl+v',
-            'x': 'ctrl+x',
-            'z': 'ctrl+z',
-            'y': 'ctrl+y',
-            'n': 'ctrl+n',
-            'o': 'ctrl+o',
-            's': 'ctrl+s',
-            'f': 'ctrl+f',
-            't': 'ctrl+t',
-            'w': 'ctrl+w',
-            'p': 'ctrl+p',
-            'q': 'ctrl+q'
-        },
-        'alt_l': {
-            'f4': 'alt+f4',
-            'tab': 'alt+tab',
-            'space': 'alt+space',
-            'left': 'alt+left',
-            'right': 'alt+right',
-            'up': 'alt+up',
-            'down': 'alt+down',
-            'enter': 'alt+enter',
-            'f': 'alt+f',
-            'e': 'alt+e',
-            'd': 'alt+d',
-            'p': 'alt+p',
-            'q': 'alt+q',
-            'r': 'alt+r',
-            's': 'alt+s'
-        },
-        'alt_r': {
-            'f4': 'alt+f4',
-            'tab': 'alt+tab',
-            'space': 'alt+space',
-            'left': 'alt+left',
-            'right': 'alt+right',
-            'up': 'alt+up',
-            'down': 'alt+down',
-            'enter': 'alt+enter',
-            'f': 'alt+f',
-            'e': 'alt+e',
-            'd': 'alt+d',
-            'p': 'alt+p',
-            'q': 'alt+q',
-            'r': 'alt+r',
-            's': 'alt+s'
-        },
-        'cmd': {
-            'c': 'cmd+c',
-            'v': 'cmd+v',
-            'x': 'cmd+x',
-            'z': 'cmd+z',
-            'y': 'cmd+y',
-            'n': 'cmd+n',
-            'o': 'cmd+o',
-            's': 'cmd+s',
-            'f': 'cmd+f',
-            't': 'cmd+t',
-            'w': 'cmd+w',
-            'p': 'cmd+p',
-            'q': 'cmd+q'
-        }
-    }
+    def __write_hotkey(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` write the action to the file in case we are in a key combination
+        """
+
+        str_list = []
+
+        # traversal of all the keys present in the combination
+        for k in self.current_hotkey:
+            if k in self.cant_use_key:
+                str_list.append(k)
+            else:
+                if self.current_hotkey[0] == 'ctrl' or self.current_hotkey[0] == 'ctrl_l' or self.current_hotkey[0] == 'ctrl_r':
+                    # the value to save is normally of the form '\x..' but since we put it in string, it is now of the form "'\x..'"
+                    # so we remove the first two characters to avoid any problems later
+                    # this only happens for ctrl+... type shortcuts
+                    str_list.append(k[2:]) 
+                else:
+                    str_list.append(k)
+
+        # check in case we just press ctrl or cmd or alt
+        if len(str_list) > 1:
+            action = self.__translate_hotkey(str_list) # put the combination in the form <alt>+... which is accepted by pynput
+            self.__write_in_file(f"Key;{action}")
+    
+
+    def __translate_hotkey(self, combinations_list: list) -> str:
+        """ `-`
+        `Type:` Function
+        `Description:` transforms a list of key combinations into a string respecting the form <ctrl>+<alt>+'c'
+        :param:`combinations_list:` string key list
+        `Return:` string respecting the form <ctrl>+<alt>+'c'
+        """
+
+        final_str = ''
+        action_len = len(combinations_list)
+
+        # go through the list of keys
+        for i in range(0, action_len):
+            if combinations_list[i] in self.cant_use_key: # when the key is ctrl, alt or cmd
+                if i == action_len-1: # last item in the list
+                    final_str += f'<{combinations_list[i]}>'
+                else:
+                    final_str += f'<{combinations_list[i]}>+'
+            else:
+                # will look for the translation of the key combination if we start with ctrl then the form will be x.. otherwise the form will be the normal key
+                key_char = self.translate.find_combination(combinations_list[i])
+
+                if i == action_len-1: # last item in the list
+                    final_str += f'{key_char}'
+                else:
+                    final_str += f'{key_char}+'
+
+        return final_str
