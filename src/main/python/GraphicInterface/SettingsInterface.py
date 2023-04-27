@@ -172,13 +172,12 @@ class SettingsInterface(tk.Tk):
     
     def __change_test_stop_key(self):
         """ `-`
-        `Type:`
-        `Description:`
+        `Type:` Procedure
+        `Description:` turns on the interface that changes the test stop button
         """
 
         self.destroy()
         ck_inter = ChangeKeyInterface()
         ck_inter.mainloop()
         self.__init__()
-        #self.__implementation()
         self.mainloop()        

@@ -12,11 +12,6 @@ import pyautogui
 from pynput import keyboard
 from pynput import mouse
 from pynput.mouse import Button
-from pynput.keyboard import Key
-from pynput.keyboard import KeyCode
-from pynput.keyboard import HotKey
-
-from UsefulFunction.UsefulFunction import starts_with
 
 from Interaction.KeyTranslation import KeyTranslation
 

@@ -4,6 +4,7 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 import tkinter as tk
+import tkinter.messagebox
 import ctypes
 
 from UsefulFunction.UsefulFunction import cant_close
@@ -60,9 +61,14 @@ class ChangeKeyInterface(tk.Tk):
         except AttributeError:
             key_name = key.name
 
-        # Change settings file with new key
-        self.settings_f.manage_file(self.settings_f.get_simu_exe(), self.settings_f.get_rc_exe(), self.settings_f.get_simu_path(), 
+        # key that cannot be used
+        cant_use_this_key = ["ctrl", "ctrl_l", "ctrl_r", "alt", "alt_r", "alt_l", "cmd", "cmd_l", "cmd_r"]
+    
+        if key_name not in cant_use_this_key:
+            # Change settings file with new key
+            self.settings_f.manage_file(self.settings_f.get_simu_exe(), self.settings_f.get_rc_exe(), self.settings_f.get_simu_path(), 
                                     self.settings_f.get_rc_path(), self.settings_f.get_folder_path(), self.settings_f.get_rc_window_name(), key_name)
-        
-        self.listener.stop()
-        self.destroy()
+            self.listener.stop()
+            self.destroy()
+        else:
+            tkinter.messagebox.showinfo("Cannot choose this key","You cannot choose this key because it is useful for keyboard shortcuts")
