@@ -154,11 +154,15 @@ class InputRecorder(object):
             # case we are in a key combination
             self.__write_hotkey()
         else:
-            if key_name not in self.cant_use_key and key_name != None:          # we prevent to simply write the ctrl, alt or cmd keys because they are just used to make keyboard shortcuts
+            if key_name not in self.cant_use_key:                               # we prevent to simply write the ctrl, alt or cmd keys because they are just used to make keyboard shortcuts
                 if key_name == ManipulationSettingsFile().get_test_stop_key():  # key that stops recording
                     self.__stop_recording() 
                 else:
-                    self.__write_in_file(f"Key;{key_name}")
+                    if key_name == None: # numpad key when in num_lock
+                        new_key_name = KeyTranslation().find_numpad(str(key))
+                        self.__write_in_file(f"Key;{new_key_name}")
+                    else:
+                        self.__write_in_file(f"Key;{key_name}")
         
         self.current_hotkey = []
 

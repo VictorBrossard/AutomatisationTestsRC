@@ -179,7 +179,7 @@ class KeyTranslation(object):
             return keys[chr] 
         
         
-    def __shift(self, chr: str) -> Key:
+    def __shift(self, chr: str) -> Key: 
         """ `-`
         `Type:` Function
         `Description:` looks for the translation of in Key or KeyCode of the key in string starting with shift
@@ -202,10 +202,10 @@ class KeyTranslation(object):
         `Type:` Function
         `Description:` find the correct letter for the key combination with ctrl at the beginning
         :param:`chr:` key in string
-        `Return:` KeyCode
+        `Return:` the correct string
         """
 
-        # use of a dictionary because the values returned by pynput, for key combinations like ctrl+... , are in the form x..
+        # use of a dictionary because the values returned by pynput, for key combinations like ctrl+... ,.0123456789. are in the form x..
         key_map = {
             "x01'": 'a',
             "x03'": 'c',
@@ -227,3 +227,29 @@ class KeyTranslation(object):
             return key_map[chr]
         else:
             return chr
+        
+
+    def find_numpad(self, chr: str) -> str:
+        """ `+`
+        `Type:` Function
+        `Description:` find the correct translation for numpad keys when in num_lock
+        :param:`chr:` key in string
+        `Return:` the correct string
+        """
+
+        key_map = {
+            "<96>": '0',
+            "<97>": '1',
+            "<98>": '2',
+            "<99>": '3',
+            "<100>": '4',
+            "<101>": '5',
+            "<102>": '6',
+            "<103>": '7',
+            "<104>": '8',
+            "<105>": '9',
+            "<110>": '.'
+        }
+    
+        if chr in key_map:
+            return key_map[chr]

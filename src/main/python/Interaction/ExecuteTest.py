@@ -198,9 +198,8 @@ class ExecuteTest(object):
 
         # waiting time before doing the instructions so as not to go too fast
         if before_word_list != []:
-            #if before_word_list[0] != "Scroll":
-                wait_time = self.__find_wait_time(now_word_list, before_word_list)
-                time.sleep(wait_time)
+            wait_time = self.__find_wait_time(now_word_list, before_word_list)
+            time.sleep(wait_time)
 
         nx = now_word_list[1]
         ny = now_word_list[2]
@@ -210,7 +209,7 @@ class ExecuteTest(object):
         # x, y depending on screen size
         x = float(nx) * self.screen_width
         y = float(ny) * self.screen_height
-
+        
         self.mouse.position = (x, y)
         self.mouse.scroll(int(dx), int(dy))
 
