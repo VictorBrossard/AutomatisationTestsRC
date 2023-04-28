@@ -69,17 +69,6 @@ class Interaction(object):
             recorder.start_recording()
 
 
-    def execute_test(self, file_name: str):
-        """ `+`
-        `Type:` Procedure
-        `Description:` run the test file file_name
-        :param:`file_name:` name of file to execute
-        """
-
-        rc_window_foreground(self.line_settings_file.get_rc_window_name())
-        ExecuteTest().read_test_file(file_name)
-
-
     def settings(self):
         """ `+`
         `Type:` Procedure
@@ -89,7 +78,7 @@ class Interaction(object):
         SettingsInterface().mainloop()
 
 
-    def multiple_test(self, file_paths_list: list):
+    def execute_test(self, file_paths_list: list):
         """ `+`
         `Type:` Procedure
         `Description:` execute all the test files in the parameter list

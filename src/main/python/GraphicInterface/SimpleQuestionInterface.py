@@ -40,6 +40,7 @@ class SimpleQuestionInterface(tk.Tk):
         self.geometry(str(height) + "x" + str(width) + "+" + str(x) + "+" + str(y))     # Set window size and position | str() = type to string
         self.resizable(width=0, height=0)                                               # Prevents any modification of window size
         self.protocol("WM_DELETE_WINDOW", cant_close)                                   # Prevents the window from being closed by the red cross
+        self.wm_attributes("-topmost", True)                                            # Prioritize the window
 
         self.__implementation(question)
 

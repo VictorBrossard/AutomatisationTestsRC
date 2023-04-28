@@ -48,6 +48,7 @@ class ChangeKeyInterface(tk.Tk):
         # Listener
         self.listener = keyboard.Listener(on_press=self.__on_press)
         self.listener.start()
+        
 
     def __on_press(self, key: (Key | KeyCode | None)):
         """ `-`

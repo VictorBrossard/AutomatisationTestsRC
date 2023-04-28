@@ -25,3 +25,10 @@ Dans les commentaires des méthodes, le premier caractère signifie :
 - "+" = Public
 - "-" = Private
 - "#" = Protected
+
+### Choses à savoir
+Les combinaisons de touches supérieures à trois touches en même temps ne sont pas disponible.
+
+Le scroll dans l'interface loop ne fonctionne toujours pas.
+
+Le bouton shift reste écris dans le fichier même s'il est pas utile. 

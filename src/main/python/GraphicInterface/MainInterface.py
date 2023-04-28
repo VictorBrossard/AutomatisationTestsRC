@@ -7,7 +7,6 @@ import tkinter as tk
 import tkinter.messagebox
 import subprocess
 import ctypes
-import os
 
 from tkinter import ttk
 from tkinter import filedialog
@@ -96,23 +95,27 @@ class MainInterface(tk.Tk):
         `Description:` close software and the interface
         """
 
-        line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
+        self.destroy()
+        simple_question = SimpleQuestionInterface("Close softwares", "Are you on the home page of RC to be able to close it without any problem?")
+        simple_question.mainloop()
 
-        # Close softwares
-        try:
-            if is_soft_open(line_settings_file.get_rc_exe()):
-                self.wm_state('iconic')                         # Minimization of the main interface window
-                Interaction().close_rc()
-        except Exception as e:
-            tkinter.messagebox.showinfo('RC Closing ERROR', e)  # Displaying the error message for the user
+        if simple_question.get_is_yes():
+            line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
 
-        try:
-            if is_soft_open(line_settings_file.get_simu_exe()):
-                subprocess.run(['taskkill', '/f', '/im', line_settings_file.get_simu_exe()], shell=True)    # Shell command to close the simulator
-        except Exception as e:
-            tkinter.messagebox.showinfo('Simulator Closing ERROR', e)                                       # Displaying the error message for the user
+            # Close softwares
+            try:
+                if is_soft_open(line_settings_file.get_rc_exe()):
+                    Interaction().close_rc()
+            except Exception as e:
+                tkinter.messagebox.showinfo('RC Closing ERROR', e)  # Displaying the error message for the user
 
-        self.destroy() # Closing the interface
+            try:
+                if is_soft_open(line_settings_file.get_simu_exe()):
+                    subprocess.run(['taskkill', '/f', '/im', line_settings_file.get_simu_exe()], shell=True)    # Shell command to close the simulator
+            except Exception as e:
+                tkinter.messagebox.showinfo('Simulator Closing ERROR', e)                                       # Displaying the error message for the user
+        else:
+            self.__init__()
 
     
     def __close_interface(self):
@@ -188,9 +191,9 @@ class MainInterface(tk.Tk):
                 new_list = loop.get_new_test_list()
 
                 if new_list != []:
-                    Interaction().multiple_test(new_list)
+                    Interaction().execute_test(new_list)
             else:
-                Interaction().multiple_test(file_paths_list)
+                Interaction().execute_test(file_paths_list)
 
             self.__init__()
             self.mainloop()
