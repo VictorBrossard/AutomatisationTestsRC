@@ -32,6 +32,7 @@ class LoopTestInterface(tk.Tk):
         # list to handle
         self.old_test_list = test_list 
         self.new_test_list = []
+        self.entry_var_list = []
 
         # Window size and position
         height = 500
@@ -57,7 +58,7 @@ class LoopTestInterface(tk.Tk):
         """  
 
         # Start Button
-        start_button = ttk.Button(self, text="Start", command=lambda: self.__create_new_test_list(test_frame))    
+        start_button = ttk.Button(self, text="Start", command=self.__create_new_test_list)    
         start_button.pack(side=tk.TOP, padx=10)
 
         start_button = ttk.Button(self, text="Exit", command=self.__close_interface)    
@@ -78,13 +79,14 @@ class LoopTestInterface(tk.Tk):
 
             # for each test in the list we display them on our interface
             test_name_label = ttk.Label(test_frame, text=test_name)
-            test_name_label.grid(column=0, row=i, pady=10)
+            test_name_label.grid(column=0, row=i, padx=10, pady=10)
 
-            var_entry = tk.StringVar(value="1")
+            self.entry_var_list.append(tk.StringVar(value="1"))
 
-            test_entry = ttk.Entry(test_frame, textvariable=var_entry)
+            test_entry = ttk.Entry(test_frame, textvariable=self.entry_var_list[i], justify='center')
             test_entry.config(validate='key', validatecommand=(test_entry.register(self.__validate_int), '%P'))
-            test_entry.grid(column=1, row=i, pady=10)
+            test_entry.grid(column=1, row=i, padx=10, pady=10)
+
 
         # Scrollbar
         scrollbar_y = tk.Scrollbar(self, orient=tk.VERTICAL, command=canvas.yview)
@@ -96,7 +98,7 @@ class LoopTestInterface(tk.Tk):
         canvas.bind('<MouseWheel>', lambda e: canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
         
 
-    def __create_new_test_list(self, frame):
+    def __create_new_test_list(self):
         """ `-`
         `Type:` Procedure
         `Description:` creates the new test list then destroys the interface
@@ -105,9 +107,8 @@ class LoopTestInterface(tk.Tk):
 
         # recovery of all values in the entries
         entry_values = []
-        for child in frame.winfo_children():
-            if isinstance(child, tk.Entry):
-                entry_values.append(child.get())
+        for child in self.entry_var_list:
+            entry_values.append(child.get())
         
         # transformation into integer list
         entry_values = str_list_to_int_list(entry_values)
