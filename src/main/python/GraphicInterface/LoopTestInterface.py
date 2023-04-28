@@ -57,20 +57,22 @@ class LoopTestInterface(tk.Tk):
         :param:`test_list:` list that contains the tests to be performed
         """  
 
-        # Start Button
-        start_button = ttk.Button(self, text="Start", command=self.__create_new_test_list)    
-        start_button.pack(side=tk.TOP, padx=10)
+        # Frame
+        button_frame = ttk.Frame(self)
+        button_frame.pack(side=tk.TOP)
 
-        start_button = ttk.Button(self, text="Exit", command=self.__close_interface)    
-        start_button.pack(side=tk.TOP, padx=10)
+        # Start Button
+        start_button = ttk.Button(button_frame, text="Start", command=self.__create_new_test_list)
+        start_button.pack(side=tk.TOP, padx=10, pady=5)
+
+        exit_button = ttk.Button(button_frame, text="Exit", command=self.__close_interface)
+        exit_button.pack(side=tk.TOP, padx=10, pady=5)    
 
         # Canvas
         canvas = tk.Canvas(self)
-        canvas.pack(side=tk.LEFT, fill=tk.Y)
 
         # Frame
-        test_frame = ttk.Frame(self)
-        canvas.create_window(0, 0, window=test_frame, anchor='nw')
+        test_frame = ttk.Frame(canvas)
 
         # Label and Entry
         for i, test in enumerate(test_list):
@@ -79,13 +81,13 @@ class LoopTestInterface(tk.Tk):
 
             # for each test in the list we display them on our interface
             test_name_label = ttk.Label(test_frame, text=test_name)
-            test_name_label.grid(column=0, row=i, padx=10, pady=10)
+            test_name_label.grid(column=0, row=i, padx=10, pady=5)
 
             self.entry_var_list.append(tk.StringVar(value="1"))
 
             test_entry = ttk.Entry(test_frame, textvariable=self.entry_var_list[i], justify='center')
             test_entry.config(validate='key', validatecommand=(test_entry.register(self.__validate_int), '%P'))
-            test_entry.grid(column=1, row=i, padx=10, pady=10)
+            test_entry.grid(column=1, row=i, padx=10, pady=5)
 
 
         # Scrollbar
@@ -93,10 +95,13 @@ class LoopTestInterface(tk.Tk):
         scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
         canvas.config(yscrollcommand=scrollbar_y.set)
 
+        canvas.create_window(0, 0, window=test_frame, anchor='nw')
+        canvas.pack(side=tk.TOP)
+
         # Configurer le canvas pour agir sur la barre de défilement
         canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
         canvas.bind('<MouseWheel>', lambda e: canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
-        
+
 
     def __create_new_test_list(self):
         """ `-`
