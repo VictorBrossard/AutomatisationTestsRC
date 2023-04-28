@@ -80,7 +80,10 @@ class LoopTestInterface(tk.Tk):
             test_name_label = ttk.Label(test_frame, text=test_name)
             test_name_label.grid(column=0, row=i, pady=10)
 
-            test_entry = ttk.Entry(test_frame, textvariable=tk.StringVar(value="1"))
+            var_entry = tk.StringVar(value="1")
+
+            test_entry = ttk.Entry(test_frame, textvariable=var_entry)
+            test_entry.config(validate='key', validatecommand=(test_entry.register(self.__validate_int), '%P'))
             test_entry.grid(column=1, row=i, pady=10)
 
         # Scrollbar
@@ -135,3 +138,20 @@ class LoopTestInterface(tk.Tk):
         """
 
         return self.new_test_list
+    
+
+    def __validate_int(self, value: str) -> bool:
+        """ `-`
+        `Type:` Function
+        `Description:` checks if the input value is an int
+        :param:`value:` string to check
+        `Return:` bool
+        """
+
+        if value == "":
+            return True
+        try:
+            int(value)
+            return True
+        except ValueError:
+            return False

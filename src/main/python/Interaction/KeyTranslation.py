@@ -205,7 +205,7 @@ class KeyTranslation(object):
         `Return:` the correct string
         """
 
-        # use of a dictionary because the values returned by pynput, for key combinations like ctrl+... ,.0123456789. are in the form x..
+        # use of a dictionary because the values returned by pynput, for key combinations like ctrl+... , are in the form x..
         key_map = {
             "x01'": 'a',
             "x03'": 'c',
