@@ -42,6 +42,7 @@ class ExecuteTest(object):
         self.keyboard = KeyboardController()
         self.keyboard_listener = keyboard.Listener(on_press=self.__stop_execution)
 
+
     def read_test_file(self, file_name: str):
         """ `+`
         `Type:` Procedure
@@ -197,7 +198,7 @@ class ExecuteTest(object):
 
         # waiting time before doing the instructions so as not to go too fast
         if before_word_list != []:
-            if before_word_list[0] != "Scroll":
+            #if before_word_list[0] != "Scroll":
                 wait_time = self.__find_wait_time(now_word_list, before_word_list)
                 time.sleep(wait_time)
 
@@ -211,7 +212,7 @@ class ExecuteTest(object):
         y = float(ny) * self.screen_height
 
         self.mouse.position = (x, y)
-        self.mouse.scroll(dx, dy)
+        self.mouse.scroll(int(dx), int(dy))
 
 
     def __move_input(self, now_word_list: list, before_word_list: list):

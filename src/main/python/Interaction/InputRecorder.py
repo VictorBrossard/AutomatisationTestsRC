@@ -71,7 +71,7 @@ class InputRecorder(object):
 
         while self.running:
             # Loop that prevents the code from stopping until you stop
-            time.sleep(0.001)
+            time.sleep(1)
 
         
 
@@ -190,7 +190,7 @@ class InputRecorder(object):
         norm_x = x / self.screen_width
         norm_y = y / self.screen_height
 
-        #self.__write_in_file(f"Move;{norm_x};{norm_y}")
+        self.__write_in_file(f"Move;{norm_x};{norm_y}")
         
 
     def __write_in_file(self, message: str):
