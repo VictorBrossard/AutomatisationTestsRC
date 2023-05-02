@@ -8,10 +8,14 @@ import tkinter.messagebox
 import ctypes
 
 from UsefulFunction.UsefulFunction import cant_close
+
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+
 from pynput import keyboard
 from pynput.keyboard import Key
 from pynput.keyboard import KeyCode
+
+from Interaction.InputRecorder import CONSTANT_CANT_USE_THESE_KEYS
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -61,11 +65,8 @@ class ChangeKeyInterface(tk.Tk):
             key_name = key.char
         except AttributeError:
             key_name = key.name
-
-        # key that cannot be used
-        cant_use_this_key = ["ctrl", "ctrl_l", "ctrl_r", "alt", "alt_r", "alt_l", "cmd", "cmd_l", "cmd_r"]
     
-        if key_name not in cant_use_this_key:
+        if key_name not in CONSTANT_CANT_USE_THESE_KEYS:
             # Change settings file with new key
             self.settings_f.manage_file(self.settings_f.get_simu_exe(), self.settings_f.get_rc_exe(), self.settings_f.get_simu_path(), 
                                     self.settings_f.get_rc_path(), self.settings_f.get_folder_path(), self.settings_f.get_rc_window_name(), key_name)

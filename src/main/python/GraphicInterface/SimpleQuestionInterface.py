@@ -28,17 +28,8 @@ class SimpleQuestionInterface(tk.Tk):
 
         self.is_yes = False # variable that lets you know the user's answer
 
-        # Window size and position
-        height = 300
-        width = 100
-        user32 = ctypes.windll.user32                               # User information
-        x = int((user32.GetSystemMetrics(0) / 2) - (height / 2))    # int() = any type to int
-        y = int((user32.GetSystemMetrics(1) / 2) - (width / 2))     # user32.GetSystemMetrics() = screen size (0 = height and 1 = width)
-
         # Interface initialization
         self.title(name)
-        self.geometry(str(height) + "x" + str(width) + "+" + str(x) + "+" + str(y))     # Set window size and position | str() = type to string
-        self.resizable(width=0, height=0)                                               # Prevents any modification of window size
         self.protocol("WM_DELETE_WINDOW", cant_close)                                   # Prevents the window from being closed by the red cross
         self.wm_attributes("-topmost", True)                                            # Prioritize the window
 
@@ -66,6 +57,28 @@ class SimpleQuestionInterface(tk.Tk):
 
         no_button = ttk.Button(button_frame, text="No", command=lambda: self.__answer("no"))    
         no_button.pack(side=tk.LEFT, padx=10)
+
+        self.__init_size(question)
+
+    
+    def __init_size(self, question: str):
+        """ `-`
+        `Type:` Procedure
+        `Description:` manages the size of the interface according to the size of the question
+        :param:`question:` string that is displayed on the interface
+        """
+
+        string_length = len(question)
+
+        # Window size and position
+        height = string_length * 5 + 200
+        width = 100
+        user32 = ctypes.windll.user32                               # User information
+        x = int((user32.GetSystemMetrics(0) / 2) - (height / 2))    # int() = any type to int
+        y = int((user32.GetSystemMetrics(1) / 2) - (width / 2))     # user32.GetSystemMetrics() = screen size (0 = height and 1 = width)
+
+        self.geometry(str(height) + "x" + str(width) + "+" + str(x) + "+" + str(y))     # Set window size and position | str() = type to string
+        self.resizable(width=0, height=0)                                               # Prevents any modification of window size
 
 
     def __answer(self, answer: str):

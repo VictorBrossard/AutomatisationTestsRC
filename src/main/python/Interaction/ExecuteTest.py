@@ -77,7 +77,6 @@ class ExecuteTest(object):
             self.keyboard_listener.stop()
             test_file.close()
         except Exception as e:
-            #tkinter.messagebox.showinfo(f'ERROR in {file_name}',e)
             print(f'ERROR in {file_name} : {e}')
 
 

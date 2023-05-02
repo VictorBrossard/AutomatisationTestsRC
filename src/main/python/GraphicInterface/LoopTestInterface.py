@@ -95,6 +95,10 @@ class LoopTestInterface(tk.Tk):
         scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
         canvas.config(yscrollcommand=scrollbar_y.set)
 
+        scrollbar_x = tk.Scrollbar(self, orient=tk.HORIZONTAL, command=canvas.xview)
+        scrollbar_x.pack(side=tk.TOP, fill=tk.X)
+        canvas.config(xscrollcommand=scrollbar_x.set)
+
         canvas.create_window(0, 0, window=test_frame, anchor='nw')
         canvas.pack(side=tk.TOP)
 
