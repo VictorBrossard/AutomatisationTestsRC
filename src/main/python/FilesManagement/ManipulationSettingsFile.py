@@ -6,8 +6,8 @@
 import subprocess
 import os
 
-from FilesManagement.InitFolders import CONSTANT_SETTINGS_FOLDER_PATH  # path where we store the settings file
-from FilesManagement.InitFolders import CONSTANT_NAME_SETTINGS_FILE
+from FilesManagement.InitSoftFolders import CONSTANT_SETTINGS_FOLDER_PATH  # path where we store the settings file
+from FilesManagement.InitSoftFolders import CONSTANT_NAME_SETTINGS_FILE
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -21,14 +21,10 @@ class ManipulationSettingsFile(object):
         `Type:` Constructor
         """
 
-        # Read all lines from file
-        self.simu_exe = self.__read_line(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, 0)
-        self.rc_exe = self.__read_line(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, 1)
-        self.simu_path = self.__read_line(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, 2)
-        self.rc_path = self.__read_line(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, 3)
-        self.folder_path = self.__read_line(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, 4)
-        self.rc_window_name = self.__read_line(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, 5)
-        self.test_stop_key = self.__read_line(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, 6)
+        with open(f"{CONSTANT_SETTINGS_FOLDER_PATH}\\{CONSTANT_NAME_SETTINGS_FILE}", 'r') as f:
+            lines = f.readlines()
+
+        self.nb_lines = len(lines)
 
 
     def __read_line(self, path: str, file_name: str, nb_line: int) -> str:
@@ -50,107 +46,47 @@ class ManipulationSettingsFile(object):
         return line
     
 
-    def manage_file(self, simu_exe: str, rc_exe: str, simu_path: str, rc_path: str, folder_path: str, rc_window_name: str, test_stop_key: str):
+    def manage_file(self, settings_list: list):
         """ `+`
-        `Type:` Procedure
+        `Type:` Procedure 
         `Description:` create the parameter file if it does not exist otherwise we modify it
-        :param:`simu_exe:` simulator .exe name
-        :param:`rc_exe:` RC .exe name
-        :param:`simu_path:` path where the .exe of the simulator is located
-        :param:`rc_path:` path where the .exe of the RC is located
-        :param:`folder_path:` path of the folders where we store our files
-        :param:`rc_window_name:` RC window name
-        :param:`test_stop_key:`key that allows the stop of the recording and the execution of the tests
+        :param:`settings_list:` list of all parameters
         """
 
-        if not os.path.exists(CONSTANT_SETTINGS_FOLDER_PATH + '\\' + CONSTANT_NAME_SETTINGS_FILE):
+        if not os.path.exists(f"{CONSTANT_SETTINGS_FOLDER_PATH}\\{CONSTANT_NAME_SETTINGS_FILE}"):
             # Creation of the file 
             os.chdir(CONSTANT_SETTINGS_FOLDER_PATH) # Change the current working directory by giving the path
             subprocess.run(['type', 'nul', '>', CONSTANT_NAME_SETTINGS_FILE], shell=True)
         else:
             os.chdir(CONSTANT_SETTINGS_FOLDER_PATH)
-            os.remove(CONSTANT_NAME_SETTINGS_FILE)  # Delete the file 
+            os.remove(CONSTANT_NAME_SETTINGS_FILE) # Delete the file 
             subprocess.run(['type', 'nul', '>', CONSTANT_NAME_SETTINGS_FILE], shell=True)
 
         # Save the paths in the file we have created
         os.chdir(CONSTANT_SETTINGS_FOLDER_PATH)
-        file_path = open(CONSTANT_NAME_SETTINGS_FILE, 'w')      # Opening the file in write mode ('w')
-        file_path.write(f"{simu_exe} \n")                       # Simulator software name
-        file_path.write(f"{rc_exe} \n")                         # RC software name
-        file_path.write(f"{simu_path} \n")                      # Simulator Path
-        file_path.write(f"{rc_path} \n")                        # RC Path
-        file_path.write(f"{folder_path} \n")                    # Init Folder Path
-        file_path.write(f"{rc_window_name} \n")                 # RC window name
-        file_path.write(f"{test_stop_key} \n")                  # Key to end test recording
+        file_path = open(CONSTANT_NAME_SETTINGS_FILE, 'w') # Opening the file in write mode ('w')
+
+        for setting in settings_list:
+            file_path.write(f"{setting}\n")
+
         file_path.close()
 
 
-    def get_simu_exe(self) -> str:
+    def get_line(self, nb_line: int) -> str:
         """ `+`
         `Type:` Function
-        `Description:` getter that returns the variable simu_exe
-        `Return:` simu_exe
+        `Description:` getter that returns the variable on the line nb_line
+        `Return:` item in line nb_line
         """
 
-        return self.simu_exe
+        return self.__read_line(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, nb_line)
     
     
-    def get_rc_exe(self) -> str:
+    def get_nb_line(self) -> int:
         """ `+`
         `Type:` Function
-        `Description:` getter that returns the variable rc_exe
-        `Return:` rc_exe
+        `Description:` getter that returns the variable nb_lines
+        `Return:` nb_lines
         """
 
-        return self.rc_exe
-    
-
-    def get_simu_path(self) -> str:
-        """ `+`
-        `Type:` Function
-        `Description:` getter that returns the variable simu_path
-        `Return:` simu_path
-        """
-
-        return self.simu_path
-
-
-    def get_rc_path(self) -> str:
-        """ `+`
-        `Type:` Function
-        `Description:` getter that returns the variable rc_path
-        `Return:` rc_path
-        """
-
-        return self.rc_path
-    
-
-    def get_folder_path(self) -> str:
-        """ `+`
-        `Type:` Function
-        `Description:` getter that returns the variable folder_path
-        `Return:` folder_path
-        """
-
-        return self.folder_path
-    
-
-    def get_rc_window_name(self) -> str:
-        """ `+`
-        `Type:` Function
-        `Description:` getter that returns the variable rc_window_name
-        `Return:` rc_window_name
-        """
-
-        return self.rc_window_name
-    
-
-    def get_test_stop_key(self) -> str:
-        """ `+`
-        `Type:` Function
-        `Description:` getter that returns the variable test_stop_key
-        `Return:` test_stop_key
-        """
-
-        return self.test_stop_key
-    
+        return self.nb_lines

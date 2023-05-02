@@ -7,7 +7,7 @@ import time
 import os
 import datetime
 
-from FilesManagement.InitFolders import CONSTANT_SCREENSHOTS_FOLDER_PATH
+from FilesManagement.InitSoftFolders import CONSTANT_SCREENSHOTS_FOLDER_PATH
 from PIL import ImageGrab
 
 #-----------------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ class Screenshot(object):
 
     def __find_name(self, file_name: str) -> str:
         """ `-`
-        `Type:` Procedure
+        `Type:` Function
         `Description:` add a number to the file name to avoid duplicates
         :param:`file_name:` beginning of the file name
         `Return:` name of the file

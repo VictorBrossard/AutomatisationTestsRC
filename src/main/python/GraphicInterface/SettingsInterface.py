@@ -68,14 +68,10 @@ class SettingsInterface(tk.Tk):
 
         # Variable that stores the default values
         self.line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
+        self.var_list = []
 
-        self.simu_exe = tk.StringVar(value= self.line_settings_file.get_simu_exe())
-        self.rc_exe = tk.StringVar(value= self.line_settings_file.get_rc_exe())
-        self.simu_path = tk.StringVar(value= self.line_settings_file.get_simu_path())
-        self.rc_path = tk.StringVar(value= self.line_settings_file.get_rc_path())
-        self.rc_window_name = tk.StringVar(value= self.line_settings_file.get_rc_window_name())
-        self.folder_path = tk.StringVar(value= self.line_settings_file.get_folder_path())
-        self.test_stop_key = tk.StringVar(value= self.line_settings_file.get_test_stop_key())
+        for i in range(0, self.line_settings_file.get_nb_line()):
+            self.var_list.append(tk.StringVar(value= self.line_settings_file.get_line(i)))
 
 
         # Configuring the placement of interface objects
@@ -134,26 +130,26 @@ class SettingsInterface(tk.Tk):
         stop_key_label.grid(column= _CONSTANT_LABEL_COLUMN, row= _CONSTANT_STOP_KEY_LINE, **padding)         
 
         # Entry 
-        simu_exe_entry = ttk.Entry(self, textvariable=self.simu_exe)                                    # Creation of the entry
+        simu_exe_entry = ttk.Entry(self, textvariable=self.var_list[0])                                    # Creation of the entry
         simu_exe_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_SIMU_EXE_LINE, **padding)    # Object position
 
-        rc_exe_entry = ttk.Entry(self, textvariable=self.rc_exe)  
+        rc_exe_entry = ttk.Entry(self, textvariable=self.var_list[1])  
         rc_exe_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_RC_EXE_LINE, **padding)
 
-        simu_path_entry = ttk.Entry(self, textvariable=self.simu_path)  
+        simu_path_entry = ttk.Entry(self, textvariable=self.var_list[2])  
         simu_path_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_SIMU_PATH_LINE, **padding)
 
-        rc_path_entry = ttk.Entry(self, textvariable=self.rc_path)  
+        rc_path_entry = ttk.Entry(self, textvariable=self.var_list[3])  
         rc_path_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_RC_PATH_LINE, **padding)
 
-        folder_path_entry = ttk.Entry(self, textvariable=self.folder_path)  
+        folder_path_entry = ttk.Entry(self, textvariable=self.var_list[4])  
         folder_path_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_FOLDER_PATH_LINE, **padding)
         folder_path_entry.config(state="disabled")     
 
-        rc_window_name_entry = ttk.Entry(self, textvariable=self.rc_window_name)  
+        rc_window_name_entry = ttk.Entry(self, textvariable=self.var_list[5])  
         rc_window_name_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_RC_WINDOW_NAME_LINE, **padding) 
 
-        test_stop_key_entry = ttk.Entry(self, textvariable=self.test_stop_key)  
+        test_stop_key_entry = ttk.Entry(self, textvariable=self.var_list[6])  
         test_stop_key_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_STOP_KEY_LINE, **padding)  
         test_stop_key_entry.config(state="disabled")              
         
@@ -164,8 +160,10 @@ class SettingsInterface(tk.Tk):
         `Description:` close only the interface and change the value of the settings file
         """
 
+
+
         # Save possible new values
-        self.line_settings_file.manage_file(self.simu_exe.get(), self.rc_exe.get(), self.simu_path.get(), self.rc_path.get(), self.folder_path.get(), self.rc_window_name.get(), self.test_stop_key.get())
+        #self.line_settings_file.manage_file(new_list)
 
         self.destroy()
 

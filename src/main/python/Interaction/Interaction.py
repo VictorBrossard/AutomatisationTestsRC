@@ -16,7 +16,7 @@ from Interaction.InputRecorder import InputRecorder
 from Interaction.ExecuteTest import ExecuteTest
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.InitSoftFolders import CONSTANT_TESTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -31,6 +31,7 @@ class Interaction(object):
         """
 
         self.line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
+        self.rc_window_name = self.line_settings_file.get_line(5)
 
     
     def close_rc(self):
@@ -39,7 +40,7 @@ class Interaction(object):
         `Description:` performs the action of closing RC
         """
 
-        rc_window_foreground(self.line_settings_file.get_rc_window_name())
+        rc_window_foreground(self.rc_window_name)
         ExecuteTest().read_test_file("close_rc.txt")
 
     
@@ -49,7 +50,7 @@ class Interaction(object):
         `Description:` take a screenshot
         """
 
-        rc_window_foreground(self.line_settings_file.get_rc_window_name())
+        rc_window_foreground(self.rc_window_name)
         Screenshot()
 
 
@@ -85,7 +86,7 @@ class Interaction(object):
         :param:`file_paths_list:` list of file paths to run
         """
         
-        rc_window_foreground(self.line_settings_file.get_rc_window_name())
+        rc_window_foreground(self.rc_window_name)
 
         for file in file_paths_list:
             # We separate the name of the file and its path to be able to handle it better later
@@ -115,5 +116,5 @@ def rc_window_foreground(window_name: str):
         tkinter.messagebox.showinfo('RC Window Name ERROR', e)  # Displaying the error message for the user
         settings = SettingsInterface()
         settings.mainloop()
-        rc_window_foreground(ManipulationSettingsFile().get_rc_window_name())
+        rc_window_foreground(ManipulationSettingsFile().get_line(4))
         

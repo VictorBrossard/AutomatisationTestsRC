@@ -16,11 +16,11 @@ from pynput.mouse import Button
 from Interaction.KeyTranslation import KeyTranslation
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.InitSoftFolders import CONSTANT_TESTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants
-CONSTANT_CANT_USE_THESE_KEYS = ["ctrl", "ctrl_l", "ctrl_r", "alt", "alt_r", "alt_l", "cmd", "cmd_l", "cmd_r"]
+CONSTANT_KEYBOARD_SHORTCUTS = ["ctrl", "ctrl_l", "ctrl_r", "alt", "alt_r", "alt_l", "cmd", "cmd_l", "cmd_r"]
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -129,10 +129,10 @@ class InputRecorder(object):
         # if we keep pressing alt or ctrl or cmd, we are in a key combination
         # so we first register one of these keys in our list of current keys then we register the other keys
         # otherwise we do nothing here
-        if key_name in CONSTANT_CANT_USE_THESE_KEYS and self.current_hotkey == []:
+        if key_name in CONSTANT_KEYBOARD_SHORTCUTS and self.current_hotkey == []:
             self.current_hotkey.append(key_name)
 
-        if key_name not in CONSTANT_CANT_USE_THESE_KEYS and self.current_hotkey != [] and key_name not in self.current_hotkey:
+        if self.current_hotkey != [] and key_name not in self.current_hotkey and key_name not in CONSTANT_KEYBOARD_SHORTCUTS:
             if self.current_hotkey[0] == 'ctrl' or self.current_hotkey[0] == 'ctrl_l' or self.current_hotkey[0] == 'ctrl_r':
                 # case where the key combination returns a key in the form '\x..' because of pynput which has problems when you do ctrl+...
                 # so we save the key as a string to better handle it after
@@ -157,7 +157,7 @@ class InputRecorder(object):
             # case we are in a key combination
             self.__write_hotkey()
         else:
-            if key_name not in CONSTANT_CANT_USE_THESE_KEYS:                    # we prevent to simply write the ctrl, alt or cmd keys because they are just used to make keyboard shortcuts
+            if key_name not in CONSTANT_KEYBOARD_SHORTCUTS:                    # we prevent to simply write the ctrl, alt or cmd keys because they are just used to make keyboard shortcuts
                 if key_name == ManipulationSettingsFile().get_test_stop_key():  # key that stops recording
                     self.__stop_recording() 
                 else:
@@ -231,7 +231,7 @@ class InputRecorder(object):
 
         # traversal of all the keys present in the combination
         for k in self.current_hotkey:
-            if k in CONSTANT_CANT_USE_THESE_KEYS:
+            if k in CONSTANT_KEYBOARD_SHORTCUTS:
                 str_list.append(k)
             else:
                 if self.current_hotkey[0] == 'ctrl' or self.current_hotkey[0] == 'ctrl_l' or self.current_hotkey[0] == 'ctrl_r':
@@ -261,7 +261,7 @@ class InputRecorder(object):
 
         # go through the list of keys
         for i in range(0, action_len):
-            if combinations_list[i] in CONSTANT_CANT_USE_THESE_KEYS: # when the key is ctrl, alt or cmd
+            if combinations_list[i] in CONSTANT_KEYBOARD_SHORTCUTS: # when the key is ctrl, alt or cmd
                 if i == action_len-1: # last item in the list
                     final_str += f'<{combinations_list[i]}>'
                 else:

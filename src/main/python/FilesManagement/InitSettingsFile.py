@@ -7,11 +7,10 @@
 import subprocess
 import os
 
-from OpenSoftwares.OpenSoftwares import OpenSoftwares
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
-from FilesManagement.InitFolders import CONSTANT_SETTINGS_FOLDER_PATH  # path where we store the settings file
-from FilesManagement.InitFolders import CONSTANT_NAME_SETTINGS_FILE
-from FilesManagement.InitFolders import CONSTANT_INIT_PATH
+from FilesManagement.InitSoftFolders import CONSTANT_SETTINGS_FOLDER_PATH  # path where we store the settings file
+from FilesManagement.InitSoftFolders import CONSTANT_NAME_SETTINGS_FILE
+from FilesManagement.InitSoftFolders import CONSTANT_INIT_PATH
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants
@@ -51,14 +50,22 @@ class InitSettingsFile(object):
         rc_pop_up = UserEntryPopUp("RC Path", "Enter the path to access RC : ")
         rc_pop_up.mainloop()
 
+        settings_list = ["Simulat.exe\n",                                   # Simulator software name
+                         "rc5.exe\n",                                       # RC software name
+                         f"{simu_pop_up.get_user_entry()}\n",               # Simulator Path
+                         f"{rc_pop_up.get_user_entry()}\n",                 # RC Path
+                         f"{CONSTANT_INIT_PATH}\n",                         # Init Folder Path
+                         "Menu général\n",                                  # RC window name
+                         "tab\n",                                           # Key to end test recording
+                         "C:\\EUROPLACER\\ep\\epi\\RCARRETPROPRE.txt\n",    # file that asks you to make a report when you kill RC
+                         "C:\\EUROPLACER\\ep\\tmp\n"                        # file where there are traces of RC
+                         ]                        
+
         # Save the values in the file we have created
         os.chdir(CONSTANT_SETTINGS_FOLDER_PATH)
-        file_path = open(CONSTANT_NAME_SETTINGS_FILE, 'w')      # Opening the file in write mode ('w')
-        file_path.write("Simulat.exe \n")                       # Simulator software name
-        file_path.write("rc5.exe \n")                           # RC software name
-        file_path.write(simu_pop_up.get_user_entry() + "\n")    # Simulator Path
-        file_path.write(rc_pop_up.get_user_entry() + "\n")      # RC Path
-        file_path.write(CONSTANT_INIT_PATH + "\n")              # Init Folder Path
-        file_path.write("Menu général \n")                      # RC window name
-        file_path.write("tab \n")                               # Key to end test recording
+        file_path = open(CONSTANT_NAME_SETTINGS_FILE, 'w')              # Opening the file in write mode ('w')
+
+        for setting in settings_list:
+            file_path.write(setting)
+
         file_path.close()

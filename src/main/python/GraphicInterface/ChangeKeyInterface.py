@@ -15,7 +15,7 @@ from pynput import keyboard
 from pynput.keyboard import Key
 from pynput.keyboard import KeyCode
 
-from Interaction.InputRecorder import CONSTANT_CANT_USE_THESE_KEYS
+from Interaction.InputRecorder import CONSTANT_KEYBOARD_SHORTCUTS
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ class ChangeKeyInterface(tk.Tk):
         except AttributeError:
             key_name = key.name
     
-        if key_name not in CONSTANT_CANT_USE_THESE_KEYS:
+        if key_name not in CONSTANT_KEYBOARD_SHORTCUTS:
             # Change settings file with new key
             self.settings_f.manage_file(self.settings_f.get_simu_exe(), self.settings_f.get_rc_exe(), self.settings_f.get_simu_path(), 
                                     self.settings_f.get_rc_path(), self.settings_f.get_folder_path(), self.settings_f.get_rc_window_name(), key_name)

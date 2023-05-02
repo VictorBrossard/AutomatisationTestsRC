@@ -17,10 +17,12 @@ from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 from GraphicInterface.LoopTestInterface import LoopTestInterface
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.InitFolders import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.InitSoftFolders import CONSTANT_TESTS_FOLDER_PATH
 
 from UsefulFunction.UsefulFunction import cant_close
 from UsefulFunction.UsefulFunction import is_soft_open
+
+from RCTest.ManagesSoftwares.ManageSoftwares import ManageSoftwares
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -95,27 +97,8 @@ class MainInterface(tk.Tk):
         `Description:` close software and the interface
         """
 
+        ManageSoftwares().close_soft()
         self.destroy()
-        simple_question = SimpleQuestionInterface("Close softwares", "Are you on the home page of RC to be able to close it without any problem?")
-        simple_question.mainloop()
-
-        if simple_question.get_is_yes():
-            line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
-
-            # Close softwares
-            try:
-                if is_soft_open(line_settings_file.get_rc_exe()):
-                    Interaction().close_rc()
-            except Exception as e:
-                tkinter.messagebox.showinfo('RC Closing ERROR', e)  # Displaying the error message for the user
-
-            try:
-                if is_soft_open(line_settings_file.get_simu_exe()):
-                    subprocess.run(['taskkill', '/f', '/im', line_settings_file.get_simu_exe()], shell=True)    # Shell command to close the simulator
-            except Exception as e:
-                tkinter.messagebox.showinfo('Simulator Closing ERROR', e)                                       # Displaying the error message for the user
-        else:
-            self.__init__()
 
     
     def __close_interface(self):

@@ -5,13 +5,11 @@
 # Import of files useful for code execution
 from GraphicInterface.MainInterface import MainInterface
 from FilesManagement.InitSettingsFile import InitSettingsFile
-from FilesManagement.InitFolders import InitFolders
-from OpenSoftwares.OpenSoftwares import OpenSoftwares
+from FilesManagement.InitSoftFolders import InitSoftFolders
 from UsefulFunction.UsefulFunction import run_as_admin
+from RCTest.Precondition import Precondition
 
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from UsefulFunction.UsefulFunction import str_list_to_int_list
-from Interaction.Interaction import Interaction
+from FilesManagement.InitTestReportFolder import InitTestReportFolder
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -22,9 +20,9 @@ def __main():
     """
 
     run_as_admin()
-    InitFolders()
+    InitSoftFolders()
     InitSettingsFile()
-    OpenSoftwares().open_soft()
+    Precondition().start_precondition()
     test = MainInterface()
     test.mainloop()
 
@@ -35,7 +33,7 @@ def __test():
     `Description:` procedure to test things
     """
     
-    Interaction().write_test()
+    InitTestReportFolder("test_1")
     
 
 # Execution of the main function
