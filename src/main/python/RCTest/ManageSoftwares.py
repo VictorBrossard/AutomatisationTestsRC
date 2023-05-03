@@ -104,9 +104,11 @@ class ManageSoftwares(object):
                 os.remove(file_to_delete)
         except Exception as e:
             tkinter.messagebox.showinfo('RC Closing ERROR', e)                  # Displaying the error message for the user
+            return
 
         try:
             if is_soft_open(simu_exe):
                 subprocess.run(['taskkill', '/f', '/im', simu_exe], shell=True) # Shell command to close the simulator
         except Exception as e:
             tkinter.messagebox.showinfo('Simulator Closing ERROR', e)           # Displaying the error message for the user
+            return

@@ -29,32 +29,33 @@ class InputRecorder(object):
     :class:`InputRecorder` saves all actions that the user does in a file
     """
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, path: str):
         """ `-`
         `Type:` Constructor
+        :param:`name:` name of the file to be saved
+        :param:`path:` path where we save it
         """
 
         self.running = False # lets you know if you are recording or not
-        self.name_file = name + ".txt"
+        self.name_file = f"{name}.txt"
         self.was_file_created = False
+        self.file_path = f"{path}\\{self.name_file}"
 
         self.current_hotkey = []
         self.translate = KeyTranslation()
 
         self.screen_width, self.screen_height = pyautogui.size() # useful screen size so that all tests are feasible on any type of screen
-
-        # Check if the file exists
-        if os.path.exists(CONSTANT_TESTS_FOLDER_PATH + '\\' + self.name_file):
-            tkinter.messagebox.showinfo('ERROR file name','The file already exists')    # Displaying the error message for the user
-            return
         
         # Create the file
-        os.chdir(CONSTANT_TESTS_FOLDER_PATH)
-        subprocess.run(['type', 'nul', '>', self.name_file], shell=True)
-        self.was_file_created = True
+        try:
+            os.chdir(path)
+            subprocess.run(['type', 'nul', '>', self.name_file], shell=True)
+            self.was_file_created = True
+        except Exception as e:
+            tkinter.messagebox.showinfo('File Creation ERROR', e) # Displaying the error message for the user
+            return
 
         # Open the file to write to
-        self.file_path = CONSTANT_TESTS_FOLDER_PATH + "\\" + self.name_file
         self.file = open(self.file_path, "w")
         
         # Initialization of objects that let you know what the user is doing

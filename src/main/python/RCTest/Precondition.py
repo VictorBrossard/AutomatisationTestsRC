@@ -5,7 +5,7 @@
 # Import of files useful for code execution
 import os
 
-from RCTest.ManagesSoftwares.ManageSoftwares import ManageSoftwares
+from RCTest.ManageSoftwares import ManageSoftwares
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 

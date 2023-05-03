@@ -18,7 +18,7 @@ from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
 
 from UsefulFunction.UsefulFunction import cant_close
 
-from RCTest.ManagesSoftwares.ManageSoftwares import ManageSoftwares
+from RCTest.ManageSoftwares import ManageSoftwares
 
 #-----------------------------------------------------------------------------------------------------
 

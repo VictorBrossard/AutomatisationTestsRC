@@ -17,11 +17,11 @@ class UserEntryPopUp(tk.Tk):
     :class:`UserEntryPopUp` handles user interaction through a pop-up
     """
 
-    def __init__(self, name: str, desc: list):
+    def __init__(self, name: str, label_list: list):
         """ `-`
         `Type:` Constructor
         :param:`name:` pop-up name
-        :param:`desc:` explanation of what is required of the user
+        :param:`label_list:` explanations of what is required of the user
         """
 
         # Parent constructor
@@ -34,7 +34,7 @@ class UserEntryPopUp(tk.Tk):
 
         # Variables that stores the value given by the user
         self.user_entries = []
-        self.nb_entries = len(desc)
+        self.nb_entries = len(label_list)
 
         # Configuring the placement of interface objects
         self.columnconfigure(0, weight=1)
@@ -42,14 +42,14 @@ class UserEntryPopUp(tk.Tk):
         self.columnconfigure(2, weight=1)
 
         # Adds interface objects to the interface
-        self.__implementation(desc)
+        self.__implementation(label_list)
 
 
-    def __implementation(self, desc: list):
+    def __implementation(self, label_list: list):
         """ `-`
         `Type:` Procedure
         `Description:` adds interface objects to the interface
-        :param:`desc:` explanation of what is required of the user
+        :param:`label_list:` explanations of what is required of the user
         """
 
         # Canvas
@@ -61,7 +61,7 @@ class UserEntryPopUp(tk.Tk):
         # Label and Entry
         for i in range(0, self.nb_entries):
             # Label
-            text_label = ttk.Label(entry_frame, text=desc[i])   # Creation of the label
+            text_label = ttk.Label(entry_frame, text=label_list[i])   # Creation of the label
             text_label.pack(side=tk.TOP, pady=2)                # Object position
 
             # Variable that stores the value given by the user

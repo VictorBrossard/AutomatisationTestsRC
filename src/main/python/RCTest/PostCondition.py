@@ -3,7 +3,7 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
-from RCTest.ManagesSoftwares.ManageSoftwares import ManageSoftwares
+from RCTest.ManageSoftwares import ManageSoftwares
 
 #-----------------------------------------------------------------------------------------------------
 

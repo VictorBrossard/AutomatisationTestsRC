@@ -22,6 +22,8 @@ from FilesManagement.InitTestReportFolder import InitTestReportFolder
 from FilesManagement.InitFolder import InitFolder
 
 from RCTest.Precondition import Precondition
+from RCTest.PostCondition import PostCondition
+from RCTest.ManageSoftwares import ManageSoftwares
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -73,19 +75,31 @@ class Interaction(object):
 
         for entries in user_entry_list:
             if entries == "":
+                tkinter.messagebox.showinfo('Missing Information ERROR', "Vous n'avez pas remplis toutes les cases.")
                 return
-
-        Precondition().start_precondition()
+            
         test_folder_path = InitFolder().create_test_folder(user_entry_list[0])
+
+        if test_folder_path == "":
+            tkinter.messagebox.showinfo('Test Name ERROR', 'Ce nom de test existe déjà.')
+            return
+        
+        soft = ManageSoftwares()
+        soft.open_soft()
+        time.sleep(5)
 
         before_production = SimpleQuestionInterface("Avant production", "Avez-vous des choses à faire avant la production ?")
         before_production.mainloop()
 
-        """if before_production.get_is_yes():
-            precondition = InputRecorder("precondition")
+        if before_production.get_is_yes():
+            precondition = InputRecorder("precondition", test_folder_path)
 
-            if precondition.get_was_file_created():
-                precondition.start_recording()"""
+            """if precondition.get_was_file_created():
+                precondition.start_recording()
+            else:
+                return"""
+            
+        soft.close_soft()
 
 
     def settings(self):

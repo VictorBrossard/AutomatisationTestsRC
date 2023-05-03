@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : 
+# Description   : Class that allows you to create any type of file
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
@@ -20,13 +20,11 @@ CONSTANT_SETTINGS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\settings"
 CONSTANT_REPORTS_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\reports"
 CONSTANT_EXCUTABLE_TESTS_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\executable tests"
 
-CONSTANT_NAME_SETTINGS_FILE = 'settings.txt'
-
 #-----------------------------------------------------------------------------------------------------
 
 class InitFolder(object):
     """ `+`
-    :class:`InitTestFolder` 
+    :class:`InitFolder` allows you to create any type of file
     """
 
     def __init__(self):
@@ -37,7 +35,7 @@ class InitFolder(object):
         pass
 
 
-    def _create_folder(self, name_folder: str, path: str):
+    def _create_folder(self, name_folder: str, path: str) -> str:
         """ `#`
         `Type:` Function
         `Description:` create a folder with its name and path
@@ -57,7 +55,7 @@ class InitFolder(object):
             return ""
 
 
-    def create_test_folder(self, name: str):
+    def create_test_folder(self, name: str) -> str:
         """ `+`
         `Type:` Function
         `Description:` creates a folder to store all test information
