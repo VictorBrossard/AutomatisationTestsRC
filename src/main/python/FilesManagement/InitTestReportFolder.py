@@ -39,7 +39,7 @@ class InitTestReportFolder(InitFolder):
         `Return:` a new name
         """
 
-        now = datetime.datetime.now().strftime("%Hh%Mm%Ss")
+        now = datetime.datetime.now().strftime("%Y-%m-%d_%Hh%Mm%Ss")
         new_name = f"{test_name}_{now}"
         return new_name
     
@@ -62,3 +62,33 @@ class InitTestReportFolder(InitFolder):
         """
 
         return self.folder_path
+    
+
+    def get_screenshot_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable screenshot
+        `Return:` screenshot
+        """
+
+        return self.screenshot
+    
+
+    def get_traces_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable traces
+        `Return:` traces
+        """
+
+        return self.traces
+    
+
+    def get_database_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable database
+        `Return:` database
+        """
+
+        return self.database

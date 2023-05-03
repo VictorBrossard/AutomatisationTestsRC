@@ -43,6 +43,6 @@ class InitFile(object):
 
         if line_list != []:
             for line in line_list:
-                file_path.write(line)
+                file_path.write(f"{line}\n")
 
         file_path.close()

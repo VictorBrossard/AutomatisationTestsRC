@@ -16,6 +16,7 @@ from pynput.mouse import Button
 from Interaction.KeyTranslation import KeyTranslation
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.InitFile import InitFile
 from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
@@ -47,13 +48,8 @@ class InputRecorder(object):
         self.screen_width, self.screen_height = pyautogui.size() # useful screen size so that all tests are feasible on any type of screen
         
         # Create the file
-        try:
-            os.chdir(path)
-            subprocess.run(['type', 'nul', '>', self.name_file], shell=True)
-            self.was_file_created = True
-        except Exception as e:
-            tkinter.messagebox.showinfo('File Creation ERROR', e) # Displaying the error message for the user
-            return
+        InitFile().create_file(path, self.name_file, [])
+        self.was_file_created = True
 
         # Open the file to write to
         self.file = open(self.file_path, "w")
@@ -158,8 +154,8 @@ class InputRecorder(object):
             # case we are in a key combination
             self.__write_hotkey()
         else:
-            if key_name not in CONSTANT_KEYBOARD_SHORTCUTS:                    # we prevent to simply write the ctrl, alt or cmd keys because they are just used to make keyboard shortcuts
-                if key_name == ManipulationSettingsFile().get_test_stop_key():  # key that stops recording
+            if key_name not in CONSTANT_KEYBOARD_SHORTCUTS:             # we prevent to simply write the ctrl, alt or cmd keys because they are just used to make keyboard shortcuts
+                if key_name == ManipulationSettingsFile().get_line(6):  # key that stops recording
                     self.__stop_recording() 
                 else:
                     if key_name == None: # numpad key when in num_lock

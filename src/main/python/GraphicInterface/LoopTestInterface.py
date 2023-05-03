@@ -11,6 +11,7 @@ from tkinter import ttk
 
 from UsefulFunction.UsefulFunction import cant_close
 from UsefulFunction.UsefulFunction import str_list_to_int_list
+from UsefulFunction.UsefulFunction import validate_int
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -87,7 +88,7 @@ class LoopTestInterface(tk.Tk):
             self.entry_var_list.append(tk.StringVar(value="1"))
 
             test_entry = ttk.Entry(test_frame, textvariable=self.entry_var_list[i], justify='center')
-            test_entry.config(validate='key', validatecommand=(test_entry.register(self.__validate_int), '%P'))
+            test_entry.config(validate='key', validatecommand=(test_entry.register(validate_int), '%P'))
             test_entry.grid(column=1, row=i, padx=10, pady=5)
 
 
@@ -149,20 +150,3 @@ class LoopTestInterface(tk.Tk):
         """
 
         return self.new_test_list
-    
-
-    def __validate_int(self, value: str) -> bool:
-        """ `-`
-        `Type:` Function
-        `Description:` checks if the input value is an int
-        :param:`value:` string to check
-        `Return:` bool
-        """
-
-        if value == "":
-            return True
-        try:
-            int(value)
-            return True
-        except ValueError:
-            return False

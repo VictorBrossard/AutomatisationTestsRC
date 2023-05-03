@@ -4,11 +4,13 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
 import tkinter as tk
+import tkinter.messagebox
 import ctypes
 
 from tkinter import ttk
 
 from UsefulFunction.UsefulFunction import cant_close
+from UsefulFunction.UsefulFunction import validate_int
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -17,16 +19,22 @@ class UserEntryPopUp(tk.Tk):
     :class:`UserEntryPopUp` handles user interaction through a pop-up
     """
 
-    def __init__(self, name: str, label_list: list):
+    def __init__(self, name: str, label_list: list, int_entry_list: list):
         """ `-`
         `Type:` Constructor
         :param:`name:` pop-up name
         :param:`label_list:` explanations of what is required of the user
+        :param:`int_entry_list:` integer list that has a 1 at location i where i is the index of the input that will hold only integers  
         """
+
+        # Check precondition
+        if len(label_list) != len(int_entry_list) or not all(isinstance(x, int) for x in int_entry_list):
+            tkinter.messagebox.showinfo('Handling ERROR', 'Erreur de manipulation des UserEntryPopUp.')
+            return
 
         # Parent constructor
         super().__init__()
-
+            
         # Interface initialization
         self.title(name)
         self.protocol("WM_DELETE_WINDOW", cant_close)   # Prevents the window from being closed by the red cross
@@ -42,14 +50,15 @@ class UserEntryPopUp(tk.Tk):
         self.columnconfigure(2, weight=1)
 
         # Adds interface objects to the interface
-        self.__implementation(label_list)
+        self.__implementation(label_list, int_entry_list)
 
 
-    def __implementation(self, label_list: list):
+    def __implementation(self, label_list: list, int_entry_list: list):
         """ `-`
         `Type:` Procedure
         `Description:` adds interface objects to the interface
         :param:`label_list:` explanations of what is required of the user
+        :param:`int_entry_list:` integer list that has a 1 at location i where i is the index of the input that will hold only integers 
         """
 
         # Canvas
@@ -67,9 +76,13 @@ class UserEntryPopUp(tk.Tk):
             # Variable that stores the value given by the user
             self.user_entries.append(tk.StringVar())
 
-            # Entry 
-            text_entry = ttk.Entry(entry_frame, textvariable=self.user_entries[i])  # Creation of the entry
-            text_entry.pack(side=tk.TOP, pady=2)                                    # Object position
+            # Entry
+            if int_entry_list == []: 
+                self.__create_text_entry(entry_frame, self.user_entries[i])
+            elif int_entry_list[i] == 1:
+                self.__create_int_entry(entry_frame, self.user_entries[i])
+            else:
+                self.__create_text_entry(entry_frame, self.user_entries[i])
 
         # Button
         ok_button = ttk.Button(entry_frame, text='OK', command=self.__close_pop_up) # Creation of the button
@@ -106,6 +119,27 @@ class UserEntryPopUp(tk.Tk):
 
         self.geometry(str(height) + "x" + str(width) + "+" + str(x) + "+" + str(y))     # Set window size and position | str() = type to string
         self.resizable(width=0, height=0)                                               # Prevents any modification of window size
+
+
+    def __create_text_entry(self, frame: ttk.Frame, var: tk.StringVar):
+        """ `-`
+        `Type:` Procedure
+        `Description:`
+        """
+
+        text_entry = ttk.Entry(frame, textvariable=var, justify='center')   # Creation of the entry
+        text_entry.pack(side=tk.TOP, pady=2)                                # Object position
+
+
+    def __create_int_entry(self, frame: ttk.Frame, var: tk.StringVar):
+        """ `-`
+        `Type:` Procedure
+        `Description:`
+        """
+
+        int_entry = ttk.Entry(frame, textvariable=var, justify='center') # Creation of the entry
+        int_entry.config(validate='key', validatecommand=(int_entry.register(validate_int), '%P'))
+        int_entry.pack(side=tk.TOP, pady=2)  # Object position
 
 
     def __close_pop_up(self):

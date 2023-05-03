@@ -94,3 +94,20 @@ def str_list_to_int_list(str_list: list) -> list:
         int_list.append(new_int) # adds to the list
 
     return int_list
+
+
+def validate_int(value: str) -> bool:
+    """ `-`
+    `Type:` Function
+    `Description:` checks if the input value is an int
+    :param:`value:` string to check
+    `Return:` bool
+    """
+
+    if value == "":
+        return True
+    try:
+        int(value)
+        return True
+    except ValueError:
+        return False

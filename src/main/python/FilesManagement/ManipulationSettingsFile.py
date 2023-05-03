@@ -7,7 +7,7 @@ import subprocess
 import os
 
 from FilesManagement.InitFolder import CONSTANT_SETTINGS_FOLDER_PATH  # path where we store the settings file
-from FilesManagement.InitFolder import CONSTANT_NAME_SETTINGS_FILE
+from FilesManagement.InitSettingsFile import CONSTANT_NAME_SETTINGS_FILE
 
 #-----------------------------------------------------------------------------------------------------
 

@@ -31,6 +31,8 @@ class InitSoftFolders(InitFolder):
 
         self.reports = self._create_folder("reports", CONSTANT_TESTS_FOLDER_PATH)
         self.ex_tests = self._create_folder("executable tests", CONSTANT_TESTS_FOLDER_PATH)
+        self.test_pieces = self._create_folder("test pieces", CONSTANT_TESTS_FOLDER_PATH)
+        self.test_available = self._create_folder("test available", CONSTANT_TESTS_FOLDER_PATH)
 
     
     def get_main_folder_path(self):
@@ -101,3 +103,13 @@ class InitSoftFolders(InitFolder):
         """
 
         return self.ex_tests
+    
+
+    def get_test_pieces_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable ex_tests
+        `Return:` ex_tests
+        """
+
+        return self.test_pieces

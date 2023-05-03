@@ -5,6 +5,7 @@
 # Import of files useful for code execution
 import tkinter as tk
 import ctypes
+import time
 
 from tkinter import ttk
 from tkinter import filedialog
@@ -14,7 +15,7 @@ from Interaction.Interaction import Interaction
 from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 from GraphicInterface.LoopTestInterface import LoopTestInterface
 
-from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.InitFolder import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 
 from UsefulFunction.UsefulFunction import cant_close
 
@@ -78,10 +79,13 @@ class MainInterface(tk.Tk):
         screenshot_button.grid(column=2, row=0, **padding)
 
         create_button = ttk.Button(self, text='Create Test', command=self.__create_test)
-        create_button.grid(column=2, row=1, **padding)
+        create_button.grid(column=1, row=1, **padding)
 
         settings_button = ttk.Button(self, text='Settings', command=self.__settings)
         settings_button.grid(column=0, row=2, **padding)
+
+        pieces_button = ttk.Button(self, text='Test Pieces', command=self.__test_pieces)
+        pieces_button.grid(column=2, row=1, **padding)
 
     
     def __close_softwares(self):
@@ -137,7 +141,7 @@ class MainInterface(tk.Tk):
         """
 
         # Selection of files by the user
-        file_paths = filedialog.askopenfilenames(initialdir= CONSTANT_TESTS_FOLDER_PATH, title="Select files")
+        file_paths = filedialog.askopenfilenames(initialdir=CONSTANT_TEST_AVAILABLE_FOLDER_PATH, title="Select folders")
 
         # checking if it is empty or not
         if file_paths:
@@ -164,3 +168,15 @@ class MainInterface(tk.Tk):
 
             self.__init__()
             self.mainloop()
+
+
+    def __test_pieces(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` create a test piece
+        """
+
+        self.destroy()
+        Interaction().test_pieces()
+        self.__init__()
+        self.mainloop()

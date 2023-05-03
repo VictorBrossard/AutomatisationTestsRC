@@ -17,9 +17,12 @@ from Interaction.ExecuteTest import ExecuteTest
 from Interaction.InputRecorder import InputRecorder
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.InitSoftFolders import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.InitFolder import CONSTANT_TEST_PIECES_FOLDER_PATH
+from FilesManagement.InitFolder import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 from FilesManagement.InitTestReportFolder import InitTestReportFolder
 from FilesManagement.InitFolder import InitFolder
+from FilesManagement.InitFile import InitFile
 
 from RCTest.Precondition import Precondition
 from RCTest.PostCondition import PostCondition
@@ -68,7 +71,7 @@ class Interaction(object):
         """
 
         # pop-up asking for the name of the file we are going to create to save the test
-        pop_up = UserEntryPopUp("Create Tests", ["Entrez le nom du test :", "Nombre de cartes à produire :"])
+        pop_up = UserEntryPopUp("Create Tests", ["Entrez le nom du test :", "Nombre de cartes à produire :"], [0, 1])
         pop_up.mainloop()
 
         user_entry_list = pop_up.get_user_entries()
@@ -86,7 +89,10 @@ class Interaction(object):
         
         soft = ManageSoftwares()
         soft.open_soft()
-        time.sleep(5)
+
+        new_file = InitFile()
+        new_file.create_file(test_folder_path, f"{user_entry_list[0]}_settings.txt", user_entry_list)
+        time.sleep(6)
 
         before_production = SimpleQuestionInterface("Avant production", "Avez-vous des choses à faire avant la production ?")
         before_production.mainloop()
@@ -94,10 +100,12 @@ class Interaction(object):
         if before_production.get_is_yes():
             precondition = InputRecorder("precondition", test_folder_path)
 
-            """if precondition.get_was_file_created():
+            if precondition.get_was_file_created():
                 precondition.start_recording()
             else:
-                return"""
+                return
+            
+        new_file.create_file(CONSTANT_TEST_AVAILABLE_FOLDER_PATH, f"{user_entry_list[0]}.txt", [test_folder_path])
             
         soft.close_soft()
 
@@ -117,18 +125,53 @@ class Interaction(object):
         `Description:` execute all the test files in the parameter list
         :param:`file_paths_list:` list of file paths to run
         """
-        
-        rc_window_foreground(self.rc_window_name)
 
         for file in file_paths_list:
-            # We separate the name of the file and its path to be able to handle it better later
+            """# We separate the name of the file and its path to be able to handle it better later
             file_path_without_name = os.path.dirname(file)
             file_name = os.path.basename(file)
 
             # checking if the file is in the right folder otherwise it is not a test
             if os.path.abspath(file_path_without_name) == os.path.abspath(CONSTANT_TESTS_FOLDER_PATH):
                 ExecuteTest().read_test_file(file_name)
-                time.sleep(2)
+                time.sleep(2)"""
+            
+            Precondition().start_precondition()
+            p = InitTestReportFolder("test")
+            time.sleep(6)
+            PostCondition().start_postcondition(p.get_traces_folder_path())
+            time.sleep(1)
+
+
+    def test_pieces(self):
+        """ `+`
+        `Type:` Procedure
+        `Description:`
+        """
+
+        soft = ManageSoftwares()
+        soft.open_soft()
+
+        time.sleep(5)
+        pop_up = UserEntryPopUp("Create Test Pieces", ["Entrez le nom du test :"], [0])
+        pop_up.mainloop()
+
+        user_entry_list = pop_up.get_user_entries()
+
+        for entries in user_entry_list:
+            if entries == "":
+                tkinter.messagebox.showinfo('Missing Information ERROR', "Vous n'avez pas remplis toutes les cases.")
+                soft.close_soft()
+                return
+        
+        precondition = InputRecorder(user_entry_list[0], CONSTANT_TEST_PIECES_FOLDER_PATH)
+
+        if precondition.get_was_file_created():
+            precondition.start_recording()
+        else:
+            return
+
+        soft.close_soft()
 
 #-----------------------------------------------------------------------------------------------------
 

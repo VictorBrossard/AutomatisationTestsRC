@@ -4,11 +4,12 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 from GraphicInterface.MainInterface import MainInterface
+
 from FilesManagement.InitSettingsFile import InitSettingsFile
 from FilesManagement.InitSoftFolders import InitSoftFolders
-from UsefulFunction.UsefulFunction import run_as_admin
+from FilesManagement.TestFiles.TestPieces import TestPieces
 
-from GraphicInterface.UserEntryPopUp import UserEntryPopUp
+from UsefulFunction.UsefulFunction import run_as_admin
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -21,6 +22,7 @@ def __main():
     run_as_admin()
     InitSoftFolders()
     InitSettingsFile()
+    TestPieces()
     test = MainInterface()
     test.mainloop()
 
@@ -30,8 +32,6 @@ def __test():
     `Type:` Procedure
     `Description:` procedure to test things
     """
-    
-    UserEntryPopUp("test", ["liste", "name"]).mainloop()
     
 
 # Execution of the main function
