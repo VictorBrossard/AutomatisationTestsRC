@@ -108,8 +108,18 @@ class InitSoftFolders(InitFolder):
     def get_test_pieces_folder_path(self):
         """ `+`
         `Type:` Function
-        `Description:` getter that returns the variable ex_tests
-        `Return:` ex_tests
+        `Description:` getter that returns the variable test_pieces
+        `Return:` test_pieces
         """
 
         return self.test_pieces
+    
+
+    def get_test_available_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable test_available
+        `Return:` test_available
+        """
+
+        return self.test_available
