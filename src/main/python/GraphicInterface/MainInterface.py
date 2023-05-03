@@ -16,11 +16,9 @@ from Interaction.Interaction import Interaction
 from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 from GraphicInterface.LoopTestInterface import LoopTestInterface
 
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.InitSoftFolders import CONSTANT_TESTS_FOLDER_PATH
 
 from UsefulFunction.UsefulFunction import cant_close
-from UsefulFunction.UsefulFunction import is_soft_open
 
 from RCTest.ManagesSoftwares.ManageSoftwares import ManageSoftwares
 
@@ -75,17 +73,14 @@ class MainInterface(tk.Tk):
         exit_button = ttk.Button(self, text='Exit', command=self.__close_softwares) # Creation of the button
         exit_button.grid(column=2, row=2, **padding)                                # Object position
 
-        destroy_button = ttk.Button(self, text='Destroy', command=self.__close_interface)
-        destroy_button.grid(column=2, row=3, **padding)
-
         start_test_button = ttk.Button(self, text='Start Test', command=self.__start_test)
         start_test_button.grid(column=1, row=0, **padding)
 
         screenshot_button = ttk.Button(self, text='Screenshot', command=self.__screenshot)
         screenshot_button.grid(column=2, row=0, **padding)
 
-        record_button = ttk.Button(self, text='Record Tests', command=self.__record_tests)
-        record_button.grid(column=2, row=1, **padding)
+        create_button = ttk.Button(self, text='Create Test', command=self.__create_test)
+        create_button.grid(column=2, row=1, **padding)
 
         settings_button = ttk.Button(self, text='Settings', command=self.__settings)
         settings_button.grid(column=0, row=2, **padding)
@@ -101,15 +96,6 @@ class MainInterface(tk.Tk):
         self.destroy()
 
     
-    def __close_interface(self):
-        """ `-`
-        `Type:` Procedure
-        `Description:` close only the interface
-        """
-
-        self.destroy()
-
-    
     def __screenshot(self):
         """ `-`
         `Type:` Procedure
@@ -122,14 +108,14 @@ class MainInterface(tk.Tk):
         self.mainloop()
 
     
-    def __record_tests(self):
+    def __create_test(self):
         """ `-`
         `Type:` Procedure
         `Description:` start test recording
         """
 
         self.destroy()
-        Interaction().write_test()
+        Interaction().create_test()
         self.__init__() # Opening the interface
         self.mainloop()
 

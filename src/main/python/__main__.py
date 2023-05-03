@@ -10,6 +10,7 @@ from UsefulFunction.UsefulFunction import run_as_admin
 from RCTest.Precondition import Precondition
 
 from FilesManagement.InitTestReportFolder import InitTestReportFolder
+from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -22,7 +23,6 @@ def __main():
     run_as_admin()
     InitSoftFolders()
     InitSettingsFile()
-    Precondition().start_precondition()
     test = MainInterface()
     test.mainloop()
 
@@ -33,7 +33,7 @@ def __test():
     `Description:` procedure to test things
     """
     
-    InitTestReportFolder("test_1")
+    UserEntryPopUp("test", ["liste", "name"]).mainloop()
     
 
 # Execution of the main function

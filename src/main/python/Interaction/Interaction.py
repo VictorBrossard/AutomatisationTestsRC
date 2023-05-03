@@ -10,13 +10,17 @@ import time
 
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 from GraphicInterface.SettingsInterface import SettingsInterface
+from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 
 from Interaction.Screenshot import Screenshot
-from Interaction.InputRecorder import InputRecorder
 from Interaction.ExecuteTest import ExecuteTest
+from Interaction.InputRecorder import InputRecorder
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.InitSoftFolders import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.InitTestReportFolder import InitTestReportFolder
+
+from RCTest.Precondition import Precondition
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -54,20 +58,28 @@ class Interaction(object):
         Screenshot()
 
 
-    def write_test(self):
+    def create_test(self):
         """ `+`
         `Type:` Procedure
-        `Description:` initiates the action of recording user actions
+        `Description:` creates an entire test
         """
 
         # pop-up asking for the name of the file we are going to create to save the test
-        pop_up = UserEntryPopUp("Record Tests", "Entrez le nom du test : ")
+        pop_up = UserEntryPopUp("Create Tests", ["Entrez le nom du test :", "Nombre de cartes à produire :"])
         pop_up.mainloop()
 
-        recorder = InputRecorder(pop_up.get_user_entry())
+        user_entry_list = pop_up.get_user_entries()
+
+        for entries in user_entry_list:
+            if entries == "":
+                return
+
+        Precondition().start_precondition()
+
+        """recorder = InputRecorder()
 
         if recorder.get_was_file_created():
-            recorder.start_recording()
+            recorder.start_recording()"""
 
 
     def settings(self):

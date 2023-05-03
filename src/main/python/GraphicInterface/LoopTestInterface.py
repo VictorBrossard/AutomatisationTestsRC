@@ -83,6 +83,7 @@ class LoopTestInterface(tk.Tk):
             test_name_label = ttk.Label(test_frame, text=test_name)
             test_name_label.grid(column=0, row=i, padx=10, pady=5)
 
+            # Variable that stores the value given by the user
             self.entry_var_list.append(tk.StringVar(value="1"))
 
             test_entry = ttk.Entry(test_frame, textvariable=self.entry_var_list[i], justify='center')

@@ -43,11 +43,11 @@ class InitSettingsFile(object):
         subprocess.run(['type', 'nul', '>', CONSTANT_NAME_SETTINGS_FILE], shell=True)
 
         # Opening the pop-up that asks the user for the path
-        simu_pop_up = UserEntryPopUp("Simulator Path", "Enter the path to access the simulator : ")
+        simu_pop_up = UserEntryPopUp("Simulator Path", ["Enter the path to access the simulator : "])
         simu_pop_up.mainloop()
 
         # Opening the pop-up that asks the user for the path
-        rc_pop_up = UserEntryPopUp("RC Path", "Enter the path to access RC : ")
+        rc_pop_up = UserEntryPopUp("RC Path", ["Enter the path to access RC : "])
         rc_pop_up.mainloop()
 
         settings_list = ["Simulat.exe\n",                                   # Simulator software name
