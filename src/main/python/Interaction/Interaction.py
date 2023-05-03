@@ -19,6 +19,7 @@ from Interaction.InputRecorder import InputRecorder
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.InitSoftFolders import CONSTANT_TESTS_FOLDER_PATH
 from FilesManagement.InitTestReportFolder import InitTestReportFolder
+from FilesManagement.InitFolder import InitFolder
 
 from RCTest.Precondition import Precondition
 
@@ -75,11 +76,16 @@ class Interaction(object):
                 return
 
         Precondition().start_precondition()
+        test_folder_path = InitFolder().create_test_folder(user_entry_list[0])
 
-        """recorder = InputRecorder()
+        before_production = SimpleQuestionInterface("Avant production", "Avez-vous des choses à faire avant la production ?")
+        before_production.mainloop()
 
-        if recorder.get_was_file_created():
-            recorder.start_recording()"""
+        """if before_production.get_is_yes():
+            precondition = InputRecorder("precondition")
+
+            if precondition.get_was_file_created():
+                precondition.start_recording()"""
 
 
     def settings(self):

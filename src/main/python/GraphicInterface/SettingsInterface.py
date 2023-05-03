@@ -7,8 +7,11 @@ import tkinter as tk
 import ctypes
 
 from tkinter import ttk
+
 from UsefulFunction.UsefulFunction import cant_close
+
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+
 from GraphicInterface.ChangeKeyInterface import ChangeKeyInterface
 
 #-----------------------------------------------------------------------------------------------------

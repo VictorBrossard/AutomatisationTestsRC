@@ -7,9 +7,7 @@ from GraphicInterface.MainInterface import MainInterface
 from FilesManagement.InitSettingsFile import InitSettingsFile
 from FilesManagement.InitSoftFolders import InitSoftFolders
 from UsefulFunction.UsefulFunction import run_as_admin
-from RCTest.Precondition import Precondition
 
-from FilesManagement.InitTestReportFolder import InitTestReportFolder
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 
 #-----------------------------------------------------------------------------------------------------

@@ -3,14 +3,14 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
-import os
 import datetime
 
-from FilesManagement.InitSoftFolders import CONSTANT_REPORTS_FOLDER_PATH
+from FilesManagement.InitFolder import InitFolder
+from FilesManagement.InitFolder import CONSTANT_REPORTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 
-class InitTestReportFolder(object):
+class InitTestReportFolder(InitFolder):
     """ `+`
     :class:`InitTestFolder` creates a folder to store the information of the test we just performed
     """
@@ -20,27 +20,15 @@ class InitTestReportFolder(object):
         `Type:` Constructor
         """
 
+        super().__init__()
+
         self.name = self.__find_folder_name(name)
         self.folder_path = f"{CONSTANT_REPORTS_FOLDER_PATH}\\{self.name}"
 
-        self.__create_folder(self.name, CONSTANT_REPORTS_FOLDER_PATH)
-        self.__create_folder("screenshot", self.folder_path)
-        self.__create_folder("traces", self.folder_path)
-        self.__create_folder("database", self.folder_path)
-
-
-    def __create_folder(self, name_folder: str, path: str):
-        """ `-`
-        `Type:` Procedure
-        `Description:` create a folder with its name and path
-        :param:`name_folder:` name of the folder to be created
-        :param:`path:` path where we create the folder
-        """
-        
-        # Check that the file doesn't exist
-        if not os.path.exists(path + "\\" + name_folder):
-            os.chdir(path)              # Change the current working directory by giving the path
-            os.makedirs(name_folder)    # create the folder
+        self.main = self._create_folder(self.name, CONSTANT_REPORTS_FOLDER_PATH)
+        self.screenshot = self._create_folder("screenshot", self.folder_path)
+        self.traces =  self._create_folder("traces", self.folder_path)
+        self.database = self._create_folder("database", self.folder_path)
 
 
     def __find_folder_name(self, test_name: str) -> str:

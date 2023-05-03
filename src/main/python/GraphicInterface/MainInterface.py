@@ -4,8 +4,6 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 import tkinter as tk
-import tkinter.messagebox
-import subprocess
 import ctypes
 
 from tkinter import ttk
@@ -16,7 +14,7 @@ from Interaction.Interaction import Interaction
 from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 from GraphicInterface.LoopTestInterface import LoopTestInterface
 
-from FilesManagement.InitSoftFolders import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
 
 from UsefulFunction.UsefulFunction import cant_close
 

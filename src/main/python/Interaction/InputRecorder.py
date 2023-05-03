@@ -16,7 +16,7 @@ from pynput.mouse import Button
 from Interaction.KeyTranslation import KeyTranslation
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.InitSoftFolders import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants

@@ -3,29 +3,15 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
-import os
-
-#-----------------------------------------------------------------------------------------------------
-# Initialization of constants
-CONSTANT_INIT_PATH = "C:\Program Files"
-
-CONSTANT_MAIN_FOLDER_PATH = CONSTANT_INIT_PATH + "\AutomatisationRC"
-
-CONSTANT_FILES_FOLDER_PATH = CONSTANT_MAIN_FOLDER_PATH + "\Files"
-
-CONSTANT_SCREENSHOTS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\screenshots"
-CONSTANT_TESTS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\tests"  # \\ because \ does not work on its own when there is a t or an n
-CONSTANT_SETTINGS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\settings"
-
-CONSTANT_REPORTS_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\reports"
-CONSTANT_EXCUTABLE_TESTS_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\executable tests"
-
-CONSTANT_NAME_SETTINGS_FILE = 'settings.txt'
-
+from FilesManagement.InitFolder import InitFolder
+from FilesManagement.InitFolder import CONSTANT_INIT_PATH
+from FilesManagement.InitFolder import CONSTANT_MAIN_FOLDER_PATH
+from FilesManagement.InitFolder import CONSTANT_FILES_FOLDER_PATH
+from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 
-class InitSoftFolders(object):
+class InitSoftFolders(InitFolder):
     """ `+`
     :class:`InitFolders` creates all the folders where we will store our files
     """
@@ -35,27 +21,83 @@ class InitSoftFolders(object):
         `Type:` Constructor
         """
 
-        self.__create_folder("AutomatisationRC", CONSTANT_INIT_PATH)
+        self.main = self._create_folder("AutomatisationRC", CONSTANT_INIT_PATH)
 
-        self.__create_folder("Files", CONSTANT_MAIN_FOLDER_PATH)
+        self.files = self._create_folder("Files", CONSTANT_MAIN_FOLDER_PATH)
 
-        self.__create_folder("screenshots", CONSTANT_FILES_FOLDER_PATH)
-        self.__create_folder("tests", CONSTANT_FILES_FOLDER_PATH)
-        self.__create_folder("settings", CONSTANT_FILES_FOLDER_PATH)
+        self.screenshot = self._create_folder("screenshots", CONSTANT_FILES_FOLDER_PATH)
+        self.tests = self._create_folder("tests", CONSTANT_FILES_FOLDER_PATH)
+        self.settings = self._create_folder("settings", CONSTANT_FILES_FOLDER_PATH)
 
-        self.__create_folder("reports", CONSTANT_TESTS_FOLDER_PATH)
-        self.__create_folder("executable tests", CONSTANT_TESTS_FOLDER_PATH)
+        self.reports = self._create_folder("reports", CONSTANT_TESTS_FOLDER_PATH)
+        self.ex_tests = self._create_folder("executable tests", CONSTANT_TESTS_FOLDER_PATH)
 
-     
-    def __create_folder(self, name_folder: str, path: str):
-        """ `-`
-        `Type:` Procedure
-        `Description:` create a folder with its name and path
-        :param:`name_folder:` name of the folder to be created
-        :param:`path:` path where we create the folder
+    
+    def get_main_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable main
+        `Return:` main
         """
-        
-        # Check that the file doesn't exist
-        if not os.path.exists(path + "\\" + name_folder):
-            os.chdir(path)              # Change the current working directory by giving the path
-            os.makedirs(name_folder)    # create the folder
+
+        return self.main
+    
+
+    def get_files_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable files
+        `Return:` files
+        """
+
+        return self.files
+    
+
+    def get_screenshot_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable screenshot
+        `Return:` screenshot
+        """
+
+        return self.screenshot
+    
+
+    def get_tests_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable tests
+        `Return:` tests
+        """
+
+        return self.tests
+    
+
+    def get_settings_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable settings
+        `Return:` settings
+        """
+
+        return self.settings
+    
+
+    def get_reports_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable reports
+        `Return:` reports
+        """
+
+        return self.reports
+    
+
+    def get_ex_tests_folder_path(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable ex_tests
+        `Return:` ex_tests
+        """
+
+        return self.ex_tests

@@ -8,12 +8,10 @@ import subprocess
 import os
 
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
-from FilesManagement.InitSoftFolders import CONSTANT_SETTINGS_FOLDER_PATH  # path where we store the settings file
-from FilesManagement.InitSoftFolders import CONSTANT_NAME_SETTINGS_FILE
-from FilesManagement.InitSoftFolders import CONSTANT_INIT_PATH
 
-#-----------------------------------------------------------------------------------------------------
-# Initialization of constants
+from FilesManagement.InitFolder import CONSTANT_SETTINGS_FOLDER_PATH  # path where we store the settings file
+from FilesManagement.InitFolder import CONSTANT_NAME_SETTINGS_FILE
+from FilesManagement.InitFolder import CONSTANT_INIT_PATH
 
 #-----------------------------------------------------------------------------------------------------
 

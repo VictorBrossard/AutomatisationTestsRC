@@ -18,7 +18,7 @@ from Interaction.KeyTranslation import KeyTranslation
 from Interaction.Screenshot import Screenshot
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.InitSoftFolders import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
 
 from UsefulFunction.UsefulFunction import starts_with
 
