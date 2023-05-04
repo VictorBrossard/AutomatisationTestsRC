@@ -6,7 +6,6 @@
 from GraphicInterface.MainInterface import MainInterface
 from GraphicInterface.MessageBox import MessageBox
 
-from FilesManagement.Files.InitSettingsFile import InitSettingsFile
 from FilesManagement.Files.ManageFiles import ManageFiles
 from FilesManagement.Folders.ManageFolders import ManageFolders
 from FilesManagement.Files.TestPiecesFile import TestPiecesFile
