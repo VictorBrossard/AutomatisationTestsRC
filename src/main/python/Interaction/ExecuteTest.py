@@ -37,6 +37,8 @@ class ExecuteTest(object):
         self.screen_width, self.screen_height = pyautogui.size() # useful screen size so that all tests are feasible on any type of screen
         self.does_want_stop = False
 
+        self.settings = ManipulationSettingsFile()
+
         # Initializing controls
         self.mouse = MouseController()
         self.keyboard = KeyboardController()
@@ -66,6 +68,8 @@ class ExecuteTest(object):
             # We do the same for all the lines of the file
             for line in test_file:
                 if self.does_want_stop:
+                    self.keyboard_listener.stop()
+                    test_file.close()
                     return
                 
                 now_word_list = line.split(";")
@@ -162,7 +166,7 @@ class ExecuteTest(object):
 
         key_char = now_word_list[1]
 
-        if key_char != "None":
+        if key_char != "None" and key_char != self.settings.get_line(6):
             # the key combinations all start with < so we check if our action is a combination or not
             if starts_with(key_char, "<"):
                 hotkeys = HotKey.parse(key_char)
@@ -177,12 +181,12 @@ class ExecuteTest(object):
             else:
                 key = KeyTranslation().find_correct_key(key_char) # translate string to Key or KeyCode
 
-                if key == Key.print_screen:
+                """if key == Key.print_screen:
                     Screenshot()
-                else:
-                    self.keyboard.press(key)
-                    time.sleep(0.5)
-                    self.keyboard.release(key)
+                else:"""
+                self.keyboard.press(key)
+                time.sleep(0.5)
+                self.keyboard.release(key)
 
 
     def __scroll_input(self, now_word_list: list, before_word_list: list):
@@ -289,5 +293,5 @@ class ExecuteTest(object):
         except AttributeError:
             key_name = key.name
 
-        if key_name == ManipulationSettingsFile().get_test_stop_key(): # key that stops recording
+        if key_name == self.settings.get_line(6): # key that stops recording
             self.does_want_stop = True

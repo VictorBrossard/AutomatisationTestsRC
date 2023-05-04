@@ -156,6 +156,7 @@ class InputRecorder(object):
         else:
             if key_name not in CONSTANT_KEYBOARD_SHORTCUTS:             # we prevent to simply write the ctrl, alt or cmd keys because they are just used to make keyboard shortcuts
                 if key_name == ManipulationSettingsFile().get_line(6):  # key that stops recording
+                    self.__write_in_file(f"Key;{key_name}")
                     self.__stop_recording() 
                 else:
                     if key_name == None: # numpad key when in num_lock

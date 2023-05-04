@@ -15,6 +15,7 @@ from Interaction.Interaction import Interaction
 
 from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 from GraphicInterface.LoopTestInterface import LoopTestInterface
+from GraphicInterface.SettingsInterface import SettingsInterface
 
 from FilesManagement.InitFolder import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 
@@ -130,7 +131,7 @@ class MainInterface(tk.Tk):
         """
 
         self.destroy()
-        Interaction().settings()
+        SettingsInterface().mainloop()
         self.__init__()
         self.mainloop()
 

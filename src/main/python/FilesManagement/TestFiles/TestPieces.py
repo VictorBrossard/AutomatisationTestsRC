@@ -3,8 +3,6 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
-import os
-
 from FilesManagement.InitFile import InitFile
 from FilesManagement.InitFolder import CONSTANT_TEST_PIECES_FOLDER_PATH
 
@@ -20,8 +18,13 @@ class TestPieces(InitFile):
         `Type:` Constructor
         """
 
-        self.partial = self.__partial_prod()
-        self.complete = self.__complete_prod()
+        self.__partial_prod()
+        self.__complete_prod()
+        self.__name_prod()
+        self.__nb_card_to_make_prod()
+        self.__nb_card_make_prod()
+        self.__start_prod()
+        self.__stop_prod()
 
 
     def __partial_prod(self):
@@ -36,16 +39,10 @@ class TestPieces(InitFile):
             "Release;left;0.7770833333333333;0.7888888888888889;1683117215.502193",
             "Click;left;0.50625;0.5768518518518518;1683117217.0307155",
             "Release;left;0.50625;0.5768518518518518;1683117217.102244",
-            "Click;left;0.50625;0.5768518518518518;1683117226.0307345",
-            "Release;left;0.50625;0.5768518518518518;1683117226.1266954"
+            "Key;tab;1683117226.0307345"
         ]
 
-        full_path = f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod.txt"
-
-        if os.path.exists(full_path):
-            os.remove(full_path)
-
-        return self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "partial_prod.txt", execute_list)
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "partial_prod.txt", execute_list)
 
 
     def __complete_prod(self):
@@ -57,9 +54,82 @@ class TestPieces(InitFile):
 
         execute_list = []
 
-        full_path = f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\complete_prod.txt"
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "complete_prod.txt", execute_list)
+    
 
-        if os.path.exists(full_path):
-            os.remove(full_path)
+    def __name_prod(self):
+        """ `-`
+        `Type:` Function
+        `Description:` deletes the name of the production
+        `Return:` file path
+        """
 
-        return self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "complete_prod.txt", execute_list)
+        execute_list = [
+            "Click;left;0.359375;0.21296296296296297;1683187807.883292",
+            "Release;left;0.359375;0.21296296296296297;1683187808.0112479",
+            "Key;delete;1683187809.2044904"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "name_prod.txt", execute_list)
+    
+
+    def __nb_card_to_make_prod(self):
+        """ `-`
+        `Type:` Function
+        `Description:` 
+        `Return:` file path
+        """
+
+        execute_list = [
+            "Key;down;1683191945.778898",
+            "Key;delete;1683191946.6426668"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "nb_card_to_make_prod.txt", execute_list)
+    
+
+    def __nb_card_make_prod(self):
+        """ `-`
+        `Type:` Function
+        `Description:` 
+        `Return:` file path
+        """
+
+        execute_list = [
+            "Key;down;1683191945.778898",
+            "Key;delete;1683191946.6426668"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "nb_card_make_prod.txt", execute_list)
+
+    
+    def __start_prod(self):
+        """ `-`
+        `Type:` Function
+        `Description:` 
+        `Return:` file path
+        """
+
+        execute_list = [
+            "Click;left;0.7609375;0.7777777777777778;1683205478.9532094",
+            "Release;left;0.7609375;0.7777777777777778;1683205479.0177057",
+            "Click;left;0.425;0.5787037037037037;1683205480.3938558",
+            "Release;left;0.425;0.5787037037037037;1683205480.481786",
+            "Key;tab;1683205483.4509356"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "start_prod.txt", execute_list)
+
+
+    def __stop_prod(self):
+        """ `-`
+        `Type:` Function
+        `Description:` 
+        `Return:` file path
+        """
+
+        execute_list = [
+            
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "stop_prod.txt", execute_list)

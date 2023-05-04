@@ -22,6 +22,8 @@ class InitTestReportFolder(InitFolder):
 
         super().__init__()
 
+        self.now = ""
+
         self.name = self.__find_folder_name(name)
         self.folder_path = f"{CONSTANT_REPORTS_FOLDER_PATH}\\{self.name}"
 
@@ -38,8 +40,8 @@ class InitTestReportFolder(InitFolder):
         `Return:` a new name
         """
 
-        now = datetime.datetime.now().strftime("%Y-%m-%d_%Hh%Mm%Ss")
-        new_name = f"{test_name}_{now}"
+        self.now = datetime.datetime.now().strftime("%Y-%m-%d_%Hh%Mm%Ss")
+        new_name = f"{test_name}_{self.now}"
         return new_name
     
 
@@ -81,3 +83,13 @@ class InitTestReportFolder(InitFolder):
         """
 
         return self.database
+    
+
+    def get_now(self):
+        """ `+`
+        `Type:` Function
+        `Description:` getter that returns the variable now
+        `Return:` now
+        """
+
+        return self.now

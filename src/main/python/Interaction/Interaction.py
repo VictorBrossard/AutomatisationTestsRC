@@ -85,18 +85,24 @@ class Interaction(object):
         if test_folder_path == "":
             tkinter.messagebox.showinfo('Test Name ERROR', 'Ce nom de test existe déjà.')
             return
-        
-        soft = ManageSoftwares()
-        soft.open_soft()
 
         new_file = InitFile()
         new_file.create_file(test_folder_path, f"{user_entry_list[0]}_settings.txt", user_entry_list)
-        time.sleep(6)
+        new_file.create_executing_file(test_folder_path, "name.txt", user_entry_list[0])
+        new_file.create_executing_file(test_folder_path, "card_to_make.txt", user_entry_list[1])
+        new_file.create_executing_file(test_folder_path, "card_make.txt", "0")
 
         before_production = SimpleQuestionInterface("Avant production", "Avez-vous des choses à faire avant la production ?")
         before_production.mainloop()
 
         if before_production.get_is_yes():
+            soft = ManageSoftwares()
+            soft.open_soft()
+
+            time.sleep(6)
+
+            tkinter.messagebox.showinfo("Test Start", "L'enregistrement commence.")
+
             precondition = InputRecorder("precondition", test_folder_path)
 
             if precondition.get_was_file_created():
@@ -104,53 +110,40 @@ class Interaction(object):
             else:
                 return
             
-        new_file.create_file(CONSTANT_TEST_AVAILABLE_FOLDER_PATH, f"{user_entry_list[0]}.txt", [test_folder_path])
+            soft.close_soft()
             
-        soft.close_soft()
-
-
-    def settings(self):
-        """ `+`
-        `Type:` Procedure
-        `Description:` launch the settings interface
-        """
-
-        SettingsInterface().mainloop()
+        new_file.create_file(CONSTANT_TEST_AVAILABLE_FOLDER_PATH, f"{user_entry_list[0]}.txt", [test_folder_path])
 
 
     def execute_test(self, file_paths_list: list):
         """ `+`
         `Type:` Procedure
         `Description:` execute all the test files in the parameter list
-        :param:`file_paths_list:` list of file paths to run
+        :param:`file_paths_list:` list of file paths that store the paths to the test folders
         """
 
-        for file in file_paths_list:
-            """# We separate the name of the file and its path to be able to handle it better later
-            file_path_without_name = os.path.dirname(file)
-            file_name = os.path.basename(file)
-
-            # checking if the file is in the right folder otherwise it is not a test
-            if os.path.abspath(file_path_without_name) == os.path.abspath(CONSTANT_TESTS_FOLDER_PATH):
-                ExecuteTest().read_test_file(file_name)
-                time.sleep(2)"""
-            
-            all_test_file = self.__get_all_test_file(file)
+        for fil in file_paths_list:
+            file_name, extension = os.path.splitext(os.path.basename(fil))
+            folder = InitTestReportFolder(file_name)
+            all_test_file = self.__get_all_test_file(fil, folder.get_now())
 
             if all_test_file == []:
                 return
 
             Precondition().start_precondition()
-            folder = InitTestReportFolder("test")
-            time.sleep(6)
+            time.sleep(6.5)
 
             for small_test in all_test_file:
-                print(small_test)
-                ExecuteTest().read_test_file(small_test)
-                time.sleep(1)
+                if os.path.basename(small_test) == "start_prod.txt":
+                    print("JE FAIS LA PROD")
+                    ExecuteTest().read_test_file(small_test)
+                    time.sleep(10)
+                else:
+                    ExecuteTest().read_test_file(small_test)
+                    time.sleep(0.5)
 
             PostCondition().start_postcondition(folder.get_folder_path())
-            time.sleep(1)
+            time.sleep(0.5)
 
 
     def test_pieces(self):
@@ -159,20 +152,24 @@ class Interaction(object):
         `Description:`
         """
 
-        soft = ManageSoftwares()
-        soft.open_soft()
-
-        time.sleep(5)
         pop_up = UserEntryPopUp("Create Test Pieces", ["Entrez le nom du test :"], [0])
         pop_up.mainloop()
 
         user_entry_list = pop_up.get_user_entries()
 
-        for entries in user_entry_list:
-            if entries == "":
-                tkinter.messagebox.showinfo('Missing Information ERROR', "Vous n'avez pas remplis toutes les cases.")
-                soft.close_soft()
-                return
+        if user_entry_list[0] == "":
+            tkinter.messagebox.showinfo('Missing Information ERROR', "Vous n'avez pas remplis toutes les cases.")
+            return
+            
+        if os.path.exists(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{user_entry_list[0]}.txt"):
+            tkinter.messagebox.showinfo('File Name ERROR', "Ce fichier existe déjà.")
+            return
+        
+        soft = ManageSoftwares()
+        soft.open_soft()
+
+        time.sleep(6)
+        tkinter.messagebox.showinfo("Test Start", "L'enregistrement commence.")
         
         precondition = InputRecorder(user_entry_list[0], CONSTANT_TEST_PIECES_FOLDER_PATH)
 
@@ -184,7 +181,7 @@ class Interaction(object):
         soft.close_soft()
 
 
-    def __get_all_test_file(self, file_with_path: str) -> list:
+    def __get_all_test_file(self, file_with_path: str, date_time: str) -> list:
         """
         """
 
@@ -194,15 +191,39 @@ class Interaction(object):
             fil = open(file_with_path, 'r')
             path_line = fil.readlines()[0].rstrip()
             fil.close()
-        except Exception:
-            tkinter.messagebox.showinfo("File ERROR", "L'un des fichiers sélectionnés est corrompus.")
+        except Exception as e:
+            tkinter.messagebox.showinfo("File ERROR", e)
             return []
+        
+        InitFile().create_executing_file(path_line, "last_execution.txt", f"_{date_time}")
 
         precond_path = f"{path_line}\\precondition.txt"
         if os.path.exists(precond_path):
             file_list.append(precond_path)
 
         file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod.txt") ######################## A CHANGER
+        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\name_prod.txt")
+
+        name_path = f"{path_line}\\name.txt"
+        last_execution_path = f"{path_line}\\last_execution.txt"
+        if os.path.exists(name_path):
+            file_list.append(name_path)
+            file_list.append(last_execution_path)
+
+        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_to_make_prod.txt")
+
+        card_path = f"{path_line}\\card_to_make.txt"
+        if os.path.exists(card_path):
+            file_list.append(card_path)
+
+        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_make_prod.txt")
+
+        card_path = f"{path_line}\\card_make.txt"
+        if os.path.exists(card_path):
+            file_list.append(card_path)
+
+        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\start_prod.txt")
+        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\stop_prod.txt")
 
         postcond_path = f"{path_line}\\postcondition.txt"
         if os.path.exists(postcond_path):

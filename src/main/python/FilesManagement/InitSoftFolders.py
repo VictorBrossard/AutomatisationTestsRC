@@ -30,9 +30,9 @@ class InitSoftFolders(InitFolder):
         self.settings = self._create_folder("settings", CONSTANT_FILES_FOLDER_PATH)
 
         self.reports = self._create_folder("reports", CONSTANT_TESTS_FOLDER_PATH)
-        self.ex_tests = self._create_folder("executable tests", CONSTANT_TESTS_FOLDER_PATH)
-        self.test_pieces = self._create_folder("test pieces", CONSTANT_TESTS_FOLDER_PATH)
-        self.test_available = self._create_folder("test available", CONSTANT_TESTS_FOLDER_PATH)
+        self.ex_tests = self._create_folder("executable_tests", CONSTANT_TESTS_FOLDER_PATH)
+        self.test_pieces = self._create_folder("test_pieces", CONSTANT_TESTS_FOLDER_PATH)
+        self.test_available = self._create_folder("test_available", CONSTANT_TESTS_FOLDER_PATH)
 
     
     def get_main_folder_path(self):

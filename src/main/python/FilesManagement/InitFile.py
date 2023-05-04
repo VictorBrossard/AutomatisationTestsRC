@@ -46,3 +46,26 @@ class InitFile(object):
                 file_path.write(f"{line}\n")
 
         file_path.close()
+
+
+    def create_executing_file(self, path: str, file_name: str, str_to_transform: str):
+        """ `+`
+        `Type:` Porcedure
+        `Description:`
+        :param:`path:` folder where we will store the file
+        :param:`file_name:` name of the file you are creating
+        :param:`str_to_transform:` string to transform into a file InputRecorder
+        """
+
+        file_line_list = []
+        tme = 0.000
+
+        for chr in str_to_transform:
+            file_line_list.append(f"Key;{chr};{tme}")
+            tme = tme + 0.001
+
+        if os.path.exists(f"{path}\\{file_name}"):
+            os.remove(f"{path}\\{file_name}")
+
+        self.create_file(path, file_name, file_line_list)
+        

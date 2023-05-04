@@ -11,6 +11,7 @@ from FilesManagement.TestFiles.TestPieces import TestPieces
 
 from UsefulFunction.UsefulFunction import run_as_admin
 
+import tkinter.messagebox
 #-----------------------------------------------------------------------------------------------------
 
 def __main():
@@ -32,7 +33,9 @@ def __test():
     `Type:` Procedure
     `Description:` procedure to test things
     """
+
+    tkinter.messagebox.askokcancel("test", "test")
     
 
 # Execution of the main function
-__main()
+__test()
