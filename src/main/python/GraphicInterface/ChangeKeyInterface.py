@@ -4,8 +4,9 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 import tkinter as tk
-import tkinter.messagebox
 import ctypes
+
+from GraphicInterface.MessageBox import MessageBox
 
 from UsefulFunction.UsefulFunction import cant_close
 
@@ -68,9 +69,9 @@ class ChangeKeyInterface(tk.Tk):
     
         if key_name not in CONSTANT_KEYBOARD_SHORTCUTS:
             # Change settings file with new key
-            self.settings_f.manage_file(self.settings_f.get_simu_exe(), self.settings_f.get_rc_exe(), self.settings_f.get_simu_path(), 
-                                    self.settings_f.get_rc_path(), self.settings_f.get_folder_path(), self.settings_f.get_rc_window_name(), key_name)
+            #self.settings_f.manage_file(self.settings_f.get_simu_exe(), self.settings_f.get_rc_exe(), self.settings_f.get_simu_path(), 
+                                    #self.settings_f.get_rc_path(), self.settings_f.get_folder_path(), self.settings_f.get_rc_window_name(), key_name)
             self.listener.stop()
             self.destroy()
         else:
-            tkinter.messagebox.showinfo("Cannot choose this key","You cannot choose this key because it is useful for keyboard shortcuts")
+            MessageBox("ERREUR Impossible de choisir cette clé", "[ERREUR] Vous ne pouvez pas choisir cette touche car elle est utile pour les raccourcis clavier.").mainloop()

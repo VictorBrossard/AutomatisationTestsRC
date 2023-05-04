@@ -6,7 +6,6 @@
 import tkinter as tk
 import ctypes
 import os
-import tkinter.messagebox
 
 from tkinter import ttk
 from tkinter import filedialog
@@ -16,6 +15,7 @@ from Interaction.Interaction import Interaction
 from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 from GraphicInterface.LoopTestInterface import LoopTestInterface
 from GraphicInterface.SettingsInterface import SettingsInterface
+from GraphicInterface.MessageBox import MessageBox
 
 from FilesManagement.InitFolder import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 
@@ -158,7 +158,7 @@ class MainInterface(tk.Tk):
 
                 # checking if the file is in the right folder otherwise it is not a test
                 if os.path.abspath(file_path_without_name) != os.path.abspath(CONSTANT_TEST_AVAILABLE_FOLDER_PATH):
-                    tkinter.messagebox.showinfo("Select Test File ERROR", f"Le fichier {file_name} n'est pas un fichier test.")
+                    MessageBox("ERREUR Sélection Fichier Test", f"[ERREUR] Le fichier {file_name} n'est pas un fichier test.")
                     self.__init__()
                     self.mainloop()
                     return

@@ -4,10 +4,11 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 import tkinter
-import tkinter.messagebox
 import ctypes
 import sys
 import subprocess
+
+from GraphicInterface.MessageBox import MessageBox
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -17,7 +18,7 @@ def cant_close():
     `Description:` returns a pop up to warn that the interface cannot be closed in this way
     """
 
-    tkinter.messagebox.showinfo("Window cannot be closed","Can't close the window this way")
+    MessageBox("Fenêtre", "[INFO] Vous ne pouvez pas fermer la fenêtre de cette façon.").mainloop()
 
 
 def run_as_admin():

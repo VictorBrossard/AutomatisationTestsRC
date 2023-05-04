@@ -3,10 +3,7 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
-import os
 import time
-import subprocess
-import tkinter.messagebox
 import pyautogui
 
 from pynput import keyboard
@@ -17,7 +14,6 @@ from Interaction.KeyTranslation import KeyTranslation
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.InitFile import InitFile
-from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants

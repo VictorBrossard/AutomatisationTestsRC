@@ -4,6 +4,7 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 from GraphicInterface.MainInterface import MainInterface
+from GraphicInterface.MessageBox import MessageBox
 
 from FilesManagement.InitSettingsFile import InitSettingsFile
 from FilesManagement.InitSoftFolders import InitSoftFolders
@@ -34,8 +35,8 @@ def __test():
     `Description:` procedure to test things
     """
 
-    tkinter.messagebox.askokcancel("test", "test")
+    MessageBox("test", "test").mainloop()
     
 
 # Execution of the main function
-__test()
+__main()

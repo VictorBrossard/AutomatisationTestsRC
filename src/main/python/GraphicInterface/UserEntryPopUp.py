@@ -4,10 +4,11 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
 import tkinter as tk
-import tkinter.messagebox
 import ctypes
 
 from tkinter import ttk
+
+from GraphicInterface.MessageBox import MessageBox
 
 from UsefulFunction.UsefulFunction import cant_close
 from UsefulFunction.UsefulFunction import validate_int
@@ -29,7 +30,7 @@ class UserEntryPopUp(tk.Tk):
 
         # Check precondition
         if len(label_list) != len(int_entry_list) or not all(isinstance(x, int) for x in int_entry_list):
-            tkinter.messagebox.showinfo('Handling ERROR', 'Erreur de manipulation des UserEntryPopUp.')
+            MessageBox("ERREUR Manipulation", "[ERREUR] Mauvaise manipulation des UserEntryPopUp.").mainloop()
             return
 
         # Parent constructor

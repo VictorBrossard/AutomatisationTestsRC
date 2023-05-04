@@ -5,9 +5,9 @@
 # Import of files useful for code execution 
 import subprocess
 import os
-import tkinter.messagebox
 
 from GraphicInterface.SettingsInterface import SettingsInterface
+from GraphicInterface.MessageBox import MessageBox
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
 
@@ -39,10 +39,10 @@ class ManageSoftwares(object):
 
         try:
             # Opening the software 
-            os.chdir(simu_path)                                     # Change the current working directory by giving the path
-            subprocess.run(['start', simu_exe], shell=True)         # Open the software using the start command
+            os.chdir(simu_path)                                                 # Change the current working directory by giving the path
+            subprocess.run(['start', simu_exe], shell=True)                     # Open the software using the start command
         except Exception as e:
-            tkinter.messagebox.showinfo('Simulator Path ERROR', e)  # Displaying the error message for the user
+            MessageBox("ERREUR Chemin Simulateur", f"[ERREUR] {e}").mainloop()  # Displaying the error message for the user
             settings = SettingsInterface()
             settings.mainloop()
             self.__start_simu()
@@ -59,10 +59,10 @@ class ManageSoftwares(object):
 
         try:
             # Opening the software
-            os.chdir(rc_path)                               # Change the current working directory by giving the path
-            subprocess.run(['start', rc_exe], shell=True)   # Open the software using the start command
+            os.chdir(rc_path)                                           # Change the current working directory by giving the path
+            subprocess.run(['start', rc_exe], shell=True)               # Open the software using the start command
         except Exception as e:
-            tkinter.messagebox.showinfo('RC Path ERROR',e)  # Displaying the error message for the user
+            MessageBox("ERREUR Chemin RC", f"[ERREUR] {e}").mainloop()  # Displaying the error message for the user
             settings = SettingsInterface()
             settings.mainloop()
             self.__start_rc()        
@@ -103,12 +103,12 @@ class ManageSoftwares(object):
             if os.path.isfile(file_to_delete):
                 os.remove(file_to_delete)
         except Exception as e:
-            tkinter.messagebox.showinfo('RC Closing ERROR', e)                  # Displaying the error message for the user
+            MessageBox("ERREUR Fermeture RC", f"[ERREUR] {e}").mainloop()       # Displaying the error message for the user
             return
 
         try:
             if is_soft_open(simu_exe):
-                subprocess.run(['taskkill', '/f', '/im', simu_exe], shell=True) # Shell command to close the simulator
+                subprocess.run(['taskkill', '/f', '/im', simu_exe], shell=True)     # Shell command to close the simulator
         except Exception as e:
-            tkinter.messagebox.showinfo('Simulator Closing ERROR', e)           # Displaying the error message for the user
+            MessageBox("ERREUR Fermeture Simulateur", f"[ERREUR] {e}").mainloop()   # Displaying the error message for the user
             return

@@ -4,10 +4,10 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 import win32gui
-import tkinter.messagebox
 import os
 import time
 
+from GraphicInterface.MessageBox import MessageBox
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 from GraphicInterface.SettingsInterface import SettingsInterface
 from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
@@ -77,13 +77,13 @@ class Interaction(object):
 
         for entries in user_entry_list:
             if entries == "":
-                tkinter.messagebox.showinfo('Missing Information ERROR', "Vous n'avez pas remplis toutes les cases.")
+                MessageBox("ERREUR Manque d'information", "[ERREUR] Vous n'avez pas remplis toutes les cases.").mainloop()
                 return
             
         test_folder_path = InitFolder().create_test_folder(user_entry_list[0])
 
         if test_folder_path == "":
-            tkinter.messagebox.showinfo('Test Name ERROR', 'Ce nom de test existe déjà.')
+            MessageBox("ERREUR Nom de test", "[ERREUR] Ce nom de test existe déjà.").mainloop()
             return
 
         new_file = InitFile()
@@ -101,7 +101,7 @@ class Interaction(object):
 
             time.sleep(6)
 
-            tkinter.messagebox.showinfo("Test Start", "L'enregistrement commence.")
+            MessageBox("Enregistrement", "[INFO] L'enregistrement commence.").mainloop()
 
             precondition = InputRecorder("precondition", test_folder_path)
 
@@ -158,18 +158,18 @@ class Interaction(object):
         user_entry_list = pop_up.get_user_entries()
 
         if user_entry_list[0] == "":
-            tkinter.messagebox.showinfo('Missing Information ERROR', "Vous n'avez pas remplis toutes les cases.")
+            MessageBox("ERREUR Manque d'information", "[ERREUR] Vous n'avez pas remplis toutes les cases.").mainloop()
             return
             
         if os.path.exists(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{user_entry_list[0]}.txt"):
-            tkinter.messagebox.showinfo('File Name ERROR', "Ce fichier existe déjà.")
+            MessageBox("ERREUR Nom de fichier", "[ERREUR] Ce fichier existe déjà.").mainloop()
             return
         
         soft = ManageSoftwares()
         soft.open_soft()
 
         time.sleep(6)
-        tkinter.messagebox.showinfo("Test Start", "L'enregistrement commence.")
+        MessageBox("Enregistrement", "[INFO] L'enregistrement commence.").mainloop()
         
         precondition = InputRecorder(user_entry_list[0], CONSTANT_TEST_PIECES_FOLDER_PATH)
 
@@ -192,7 +192,7 @@ class Interaction(object):
             path_line = fil.readlines()[0].rstrip()
             fil.close()
         except Exception as e:
-            tkinter.messagebox.showinfo("File ERROR", e)
+            MessageBox("ERREUR Fichier", f"[ERREUR] {e}").mainloop()
             return []
         
         InitFile().create_executing_file(path_line, "last_execution.txt", f"_{date_time}")
@@ -246,7 +246,7 @@ def rc_window_foreground(window_name: str):
     try :
         win32gui.SetForegroundWindow(hwnd) # Bringing RC to the fore
     except Exception as e:
-        tkinter.messagebox.showinfo('RC Window Name ERROR', e)  # Displaying the error message for the user
+        MessageBox("ERREUR Nom de la fenêtre de RC", f"[ERREUR] {e}").mainloop() # Displaying the error message for the user
         settings = SettingsInterface()
         settings.mainloop()
         rc_window_foreground(ManipulationSettingsFile().get_line(4))

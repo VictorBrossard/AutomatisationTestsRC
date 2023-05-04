@@ -53,10 +53,10 @@ class SimpleQuestionInterface(tk.Tk):
         button_frame.pack(side=tk.TOP)  
 
         # Button
-        yes_button = ttk.Button(button_frame, text="Yes", command=lambda: self.__answer("yes"))
+        yes_button = ttk.Button(button_frame, text="Oui", command=lambda: self.__answer("oui"))
         yes_button.pack(side=tk.LEFT, padx=10)
 
-        no_button = ttk.Button(button_frame, text="No", command=lambda: self.__answer("no"))    
+        no_button = ttk.Button(button_frame, text="Non", command=lambda: self.__answer("non"))    
         no_button.pack(side=tk.LEFT, padx=10)
 
         self.__init_size(question)
@@ -89,7 +89,7 @@ class SimpleQuestionInterface(tk.Tk):
         :param:`answer:` user's answer
         """
 
-        if answer == "yes":
+        if answer == "oui":
             self.is_yes = True
         
         self.destroy()
