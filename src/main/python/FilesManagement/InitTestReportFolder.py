@@ -27,7 +27,6 @@ class InitTestReportFolder(InitFolder):
 
         self.main = self._create_folder(self.name, CONSTANT_REPORTS_FOLDER_PATH)
         self.screenshot = self._create_folder("screenshot", self.folder_path)
-        self.traces =  self._create_folder("traces", self.folder_path)
         self.database = self._create_folder("database", self.folder_path)
 
 
@@ -72,16 +71,6 @@ class InitTestReportFolder(InitFolder):
         """
 
         return self.screenshot
-    
-
-    def get_traces_folder_path(self):
-        """ `+`
-        `Type:` Function
-        `Description:` getter that returns the variable traces
-        `Return:` traces
-        """
-
-        return self.traces
     
 
     def get_database_folder_path(self):

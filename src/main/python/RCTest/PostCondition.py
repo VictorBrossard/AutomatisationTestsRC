@@ -36,4 +36,4 @@ class PostCondition(object):
 
         tmp_path = self.settings.get_line(8)
 
-        shutil.copytree(tmp_path, copy_traces_path)
+        shutil.copytree(tmp_path, f"{copy_traces_path}\\traces")

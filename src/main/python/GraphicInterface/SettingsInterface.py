@@ -163,8 +163,6 @@ class SettingsInterface(tk.Tk):
         `Description:` close only the interface and change the value of the settings file
         """
 
-
-
         # Save possible new values
         #self.line_settings_file.manage_file(new_list)
 

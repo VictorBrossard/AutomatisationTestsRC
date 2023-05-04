@@ -43,14 +43,12 @@ class ExecuteTest(object):
         self.keyboard_listener = keyboard.Listener(on_press=self.__stop_execution)
 
 
-    def read_test_file(self, file_name: str):
+    def read_test_file(self, file_path: str):
         """ `+`
         `Type:` Procedure
         `Description:` read all lines from test file
-        :param:`file_name:` name of the file to read
+        :param:`file_path:` path with the name of the file to read
         """
-
-        file_path = CONSTANT_TESTS_FOLDER_PATH + "\\" + file_name
 
         try:
             test_file = open(file_path, "r")
@@ -76,8 +74,8 @@ class ExecuteTest(object):
 
             self.keyboard_listener.stop()
             test_file.close()
-        except Exception as e:
-            print(f'ERROR in {file_name} : {e}')
+        except Exception:
+            pass
 
 
     def __find_action(self, now_word_list: list, before_word_list: list):

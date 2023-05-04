@@ -17,7 +17,6 @@ from Interaction.ExecuteTest import ExecuteTest
 from Interaction.InputRecorder import InputRecorder
 
 from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
 from FilesManagement.InitFolder import CONSTANT_TEST_PIECES_FOLDER_PATH
 from FilesManagement.InitFolder import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 from FilesManagement.InitTestReportFolder import InitTestReportFolder
@@ -136,10 +135,21 @@ class Interaction(object):
                 ExecuteTest().read_test_file(file_name)
                 time.sleep(2)"""
             
+            all_test_file = self.__get_all_test_file(file)
+
+            if all_test_file == []:
+                return
+
             Precondition().start_precondition()
-            p = InitTestReportFolder("test")
+            folder = InitTestReportFolder("test")
             time.sleep(6)
-            PostCondition().start_postcondition(p.get_traces_folder_path())
+
+            for small_test in all_test_file:
+                print(small_test)
+                ExecuteTest().read_test_file(small_test)
+                time.sleep(1)
+
+            PostCondition().start_postcondition(folder.get_folder_path())
             time.sleep(1)
 
 
@@ -172,6 +182,33 @@ class Interaction(object):
             return
 
         soft.close_soft()
+
+
+    def __get_all_test_file(self, file_with_path: str) -> list:
+        """
+        """
+
+        file_list = []
+
+        try:
+            fil = open(file_with_path, 'r')
+            path_line = fil.readlines()[0].rstrip()
+            fil.close()
+        except Exception:
+            tkinter.messagebox.showinfo("File ERROR", "L'un des fichiers sélectionnés est corrompus.")
+            return []
+
+        precond_path = f"{path_line}\\precondition.txt"
+        if os.path.exists(precond_path):
+            file_list.append(precond_path)
+
+        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod.txt") ######################## A CHANGER
+
+        postcond_path = f"{path_line}\\postcondition.txt"
+        if os.path.exists(postcond_path):
+            file_list.append(postcond_path)
+
+        return file_list
 
 #-----------------------------------------------------------------------------------------------------
 

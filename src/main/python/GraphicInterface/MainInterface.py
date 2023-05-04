@@ -5,7 +5,8 @@
 # Import of files useful for code execution
 import tkinter as tk
 import ctypes
-import time
+import os
+import tkinter.messagebox
 
 from tkinter import ttk
 from tkinter import filedialog
@@ -147,6 +148,19 @@ class MainInterface(tk.Tk):
         if file_paths:
             file_paths_list = list(file_paths) # turns the tuple into a list
             self.destroy()
+
+            # Verification of the origin of the files
+            for fil in file_paths_list:
+                # We separate the name of the file and its path to be able to handle it better later
+                file_path_without_name = os.path.dirname(fil)
+                file_name = os.path.basename(fil)
+
+                # checking if the file is in the right folder otherwise it is not a test
+                if os.path.abspath(file_path_without_name) != os.path.abspath(CONSTANT_TEST_AVAILABLE_FOLDER_PATH):
+                    tkinter.messagebox.showinfo("Select Test File ERROR", f"Le fichier {file_name} n'est pas un fichier test.")
+                    self.__init__()
+                    self.mainloop()
+                    return
 
             # asks the user if he wants to loop on some tests
             simple_question = SimpleQuestionInterface("Question", "Do you want to test several times in a row?")
