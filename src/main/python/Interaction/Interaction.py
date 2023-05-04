@@ -16,12 +16,12 @@ from Interaction.Screenshot import Screenshot
 from Interaction.ExecuteTest import ExecuteTest
 from Interaction.InputRecorder import InputRecorder
 
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.InitFolder import CONSTANT_TEST_PIECES_FOLDER_PATH
-from FilesManagement.InitFolder import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
-from FilesManagement.InitTestReportFolder import InitTestReportFolder
-from FilesManagement.InitFolder import InitFolder
-from FilesManagement.InitFile import InitFile
+from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_PIECES_FOLDER_PATH
+from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
+from FilesManagement.Folders.TestReportFolder import TestReportFolder
+from FilesManagement.Folders.ManageFolders import ManageFolders
+from FilesManagement.Files.ManageFiles import ManageFiles
 
 from RCTest.Precondition import Precondition
 from RCTest.PostCondition import PostCondition
@@ -80,13 +80,13 @@ class Interaction(object):
                 MessageBox("ERREUR Manque d'information", "[ERREUR] Vous n'avez pas remplis toutes les cases.").mainloop()
                 return
             
-        test_folder_path = InitFolder().create_test_folder(user_entry_list[0])
+        test_folder_path = ManageFolders().create_test_folder(user_entry_list[0])
 
         if test_folder_path == "":
             MessageBox("ERREUR Nom de test", "[ERREUR] Ce nom de test existe déjà.").mainloop()
             return
 
-        new_file = InitFile()
+        new_file = ManageFiles()
         new_file.create_file(test_folder_path, f"{user_entry_list[0]}_settings.txt", user_entry_list)
         new_file.create_executing_file(test_folder_path, "name.txt", user_entry_list[0])
         new_file.create_executing_file(test_folder_path, "card_to_make.txt", user_entry_list[1])
@@ -124,7 +124,7 @@ class Interaction(object):
 
         for fil in file_paths_list:
             file_name, extension = os.path.splitext(os.path.basename(fil))
-            folder = InitTestReportFolder(file_name)
+            folder = TestReportFolder(file_name)
             all_test_file = self.__get_all_test_file(fil, folder.get_now())
 
             if all_test_file == []:
@@ -195,7 +195,7 @@ class Interaction(object):
             MessageBox("ERREUR Fichier", f"[ERREUR] {e}").mainloop()
             return []
         
-        InitFile().create_executing_file(path_line, "last_execution.txt", f"_{date_time}")
+        ManageFiles().create_executing_file(path_line, "last_execution.txt", f"_{date_time}")
 
         precond_path = f"{path_line}\\precondition.txt"
         if os.path.exists(precond_path):

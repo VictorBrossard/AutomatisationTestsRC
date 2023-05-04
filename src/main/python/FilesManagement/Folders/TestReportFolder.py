@@ -5,12 +5,12 @@
 # Import of files useful for code execution
 import datetime
 
-from FilesManagement.InitFolder import InitFolder
-from FilesManagement.InitFolder import CONSTANT_REPORTS_FOLDER_PATH
+from FilesManagement.Folders.ManageFolders import ManageFolders
+from FilesManagement.Folders.ManageFolders import CONSTANT_REPORTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 
-class InitTestReportFolder(InitFolder):
+class TestReportFolder(ManageFolders):
     """ `+`
     :class:`InitTestFolder` creates a folder to store the information of the test we just performed
     """

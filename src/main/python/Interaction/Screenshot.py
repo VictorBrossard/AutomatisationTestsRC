@@ -7,7 +7,7 @@ import time
 import os
 import datetime
 
-from FilesManagement.InitFolder import CONSTANT_SCREENSHOTS_FOLDER_PATH
+from FilesManagement.Folders.ManageFolders import CONSTANT_SCREENSHOTS_FOLDER_PATH
 
 from PIL import ImageGrab
 

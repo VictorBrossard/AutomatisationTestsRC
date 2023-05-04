@@ -7,7 +7,7 @@ import shutil
 
 from RCTest.ManageSoftwares import ManageSoftwares
 
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
 #-----------------------------------------------------------------------------------------------------
 

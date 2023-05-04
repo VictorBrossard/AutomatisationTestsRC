@@ -10,7 +10,7 @@ from GraphicInterface.MessageBox import MessageBox
 
 from UsefulFunction.UsefulFunction import cant_close
 
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
 from pynput import keyboard
 from pynput.keyboard import Key

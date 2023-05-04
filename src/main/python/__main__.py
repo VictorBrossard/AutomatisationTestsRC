@@ -6,13 +6,13 @@
 from GraphicInterface.MainInterface import MainInterface
 from GraphicInterface.MessageBox import MessageBox
 
-from FilesManagement.InitSettingsFile import InitSettingsFile
-from FilesManagement.InitSoftFolders import InitSoftFolders
-from FilesManagement.TestFiles.TestPieces import TestPieces
+from FilesManagement.Files.InitSettingsFile import InitSettingsFile
+from FilesManagement.Files.ManageFiles import ManageFiles
+from FilesManagement.Folders.ManageFolders import ManageFolders
+from FilesManagement.Files.TestPiecesFile import TestPiecesFile
 
 from UsefulFunction.UsefulFunction import run_as_admin
 
-import tkinter.messagebox
 #-----------------------------------------------------------------------------------------------------
 
 def __main():
@@ -22,9 +22,9 @@ def __main():
     """
 
     run_as_admin()
-    InitSoftFolders()
-    InitSettingsFile()
-    TestPieces()
+    ManageFolders().create_soft_folders()
+    ManageFiles().create_settings_file()
+    TestPiecesFile()
     test = MainInterface()
     test.mainloop()
 

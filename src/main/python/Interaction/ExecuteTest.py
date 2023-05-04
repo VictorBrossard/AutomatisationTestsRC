@@ -17,8 +17,7 @@ from pynput.keyboard import Controller as KeyboardController
 from Interaction.KeyTranslation import KeyTranslation
 from Interaction.Screenshot import Screenshot
 
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.InitFolder import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
 from UsefulFunction.UsefulFunction import starts_with
 

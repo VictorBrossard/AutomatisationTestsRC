@@ -9,7 +9,7 @@ import os
 from GraphicInterface.SettingsInterface import SettingsInterface
 from GraphicInterface.MessageBox import MessageBox
 
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
 from UsefulFunction.UsefulFunction import is_soft_open
 

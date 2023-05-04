@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : Class that allows you to create any type of file
+# Description   : Class that allows you to manage any type of folder
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
@@ -24,9 +24,9 @@ CONSTANT_TEST_AVAILABLE_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\test_avail
 
 #-----------------------------------------------------------------------------------------------------
 
-class InitFolder(object):
+class ManageFolders(object):
     """ `+`
-    :class:`InitFolder` allows you to create any type of file
+    :class:`ManageFolders` allows you to manage any type of folder
     """
 
     def __init__(self):
@@ -66,4 +66,24 @@ class InitFolder(object):
         """
 
         return self._create_folder(name, CONSTANT_EXCUTABLE_TESTS_FOLDER_PATH)
+    
+
+    def create_soft_folders(self):
+        """ `+`
+        `Type:` Procedure
+        `Description:` creates all the folders where we will store our files
+        """
+
+        self._create_folder("AutomatisationRC", CONSTANT_INIT_PATH)
+
+        self._create_folder("Files", CONSTANT_MAIN_FOLDER_PATH)
+
+        self._create_folder("screenshots", CONSTANT_FILES_FOLDER_PATH)
+        self._create_folder("tests", CONSTANT_FILES_FOLDER_PATH)
+        self._create_folder("settings", CONSTANT_FILES_FOLDER_PATH)
+
+        self._create_folder("reports", CONSTANT_TESTS_FOLDER_PATH)
+        self._create_folder("executable_tests", CONSTANT_TESTS_FOLDER_PATH)
+        self._create_folder("test_pieces", CONSTANT_TESTS_FOLDER_PATH)
+        self._create_folder("test_available", CONSTANT_TESTS_FOLDER_PATH)
 

@@ -17,7 +17,7 @@ from GraphicInterface.LoopTestInterface import LoopTestInterface
 from GraphicInterface.SettingsInterface import SettingsInterface
 from GraphicInterface.MessageBox import MessageBox
 
-from FilesManagement.InitFolder import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
+from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 
 from UsefulFunction.UsefulFunction import cant_close
 

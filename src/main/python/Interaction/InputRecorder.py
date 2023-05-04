@@ -12,8 +12,8 @@ from pynput.mouse import Button
 
 from Interaction.KeyTranslation import KeyTranslation
 
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.InitFile import InitFile
+from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.Files.ManageFiles import ManageFiles
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants
@@ -44,7 +44,7 @@ class InputRecorder(object):
         self.screen_width, self.screen_height = pyautogui.size() # useful screen size so that all tests are feasible on any type of screen
         
         # Create the file
-        InitFile().create_file(path, self.name_file, [])
+        ManageFiles().create_file(path, self.name_file, [])
         self.was_file_created = True
 
         # Open the file to write to

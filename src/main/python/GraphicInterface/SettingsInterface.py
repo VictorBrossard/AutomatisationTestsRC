@@ -10,7 +10,7 @@ from tkinter import ttk
 
 from UsefulFunction.UsefulFunction import cant_close
 
-from FilesManagement.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
 from GraphicInterface.ChangeKeyInterface import ChangeKeyInterface
 

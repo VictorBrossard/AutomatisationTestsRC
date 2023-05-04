@@ -3,14 +3,14 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
-from FilesManagement.InitFile import InitFile
-from FilesManagement.InitFolder import CONSTANT_TEST_PIECES_FOLDER_PATH
+from FilesManagement.Files.ManageFiles import ManageFiles
+from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_PIECES_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 
-class TestPieces(InitFile):
+class TestPiecesFile(ManageFiles):
     """ `+`
-    :class:`TestPieces` creates the useful test pieces to do the real tests
+    :class:`TestPiecesFile` creates the useful test pieces to do the real tests
     """
     
     def __init__(self):
