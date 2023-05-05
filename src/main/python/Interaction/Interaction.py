@@ -140,10 +140,13 @@ class Interaction(object):
             for test_piece in all_test_file:
                 if os.path.basename(test_piece) == "start_prod.txt":
                     ExecuteTest().read_test_file(test_piece)
-                    time.sleep(10) # TEMPS A MODIFIER
+                    time.sleep(5) # TEMPS A MODIFIER
                 else:
                     ExecuteTest().read_test_file(test_piece)
                     time.sleep(0.5)
+
+            # take a screenshot
+            Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
 
             # launches the general postcondition to stop a test
             PostCondition().start_postcondition(folder.get_folder_path())

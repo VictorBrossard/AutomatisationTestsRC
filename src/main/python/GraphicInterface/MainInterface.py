@@ -83,8 +83,8 @@ class MainInterface(tk.Tk):
         create_button = ttk.Button(self, text='Create Test', command=self.__create_test)
         create_button.grid(column=1, row=1, **padding)
 
-        settings_button = ttk.Button(self, text='Settings', command=self.__settings)
-        settings_button.grid(column=0, row=2, **padding)
+        delete_button = ttk.Button(self, text='Delete Test', command=self.__delete_test)
+        delete_button.grid(column=0, row=2, **padding)
 
         pieces_button = ttk.Button(self, text='Test Pieces', command=self.__test_pieces)
         pieces_button.grid(column=2, row=1, **padding)
@@ -124,14 +124,13 @@ class MainInterface(tk.Tk):
         self.mainloop()
 
 
-    def __settings(self):
+    def __delete_test(self):
         """ `-`
         `Type:` Procedure
-        `Description:` open the settings interface
+        `Description:` delete test
         """
 
         self.destroy()
-        SettingsInterface().mainloop()
         self.__init__()
         self.mainloop()
 

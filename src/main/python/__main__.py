@@ -4,7 +4,6 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 from GraphicInterface.MainInterface import MainInterface
-from GraphicInterface.MessageBox import MessageBox
 
 from FilesManagement.Files.ManageFiles import ManageFiles
 from FilesManagement.Folders.ManageFolders import ManageFolders
@@ -33,8 +32,6 @@ def __test():
     `Type:` Procedure
     `Description:` procedure to test things
     """
-
-    MessageBox("test", "test").mainloop()
     
 
 # Execution of the main function
