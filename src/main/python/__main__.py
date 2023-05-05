@@ -21,7 +21,7 @@ def __main():
 
     run_as_admin()
     ManageFolders().create_soft_folders()
-    ManageFiles().create_settings_soft_file()
+    ManageFiles().create_soft_settings_file()
     TestPiecesFile()
     test = MainInterface()
     test.mainloop()
@@ -32,6 +32,8 @@ def __test():
     `Type:` Procedure
     `Description:` procedure to test things
     """
+
+    ManageFiles().create_database_settings_file()
     
 
 # Execution of the main function
