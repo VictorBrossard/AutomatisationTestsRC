@@ -69,6 +69,7 @@ class ManageFiles(object):
         file_line_list = []
         tme = 0.000
 
+        # creation of the instruction list
         for chr in str_to_transform:
             file_line_list.append(f"Key;{chr};{tme}")
             tme = tme + 0.001
@@ -76,10 +77,11 @@ class ManageFiles(object):
         if os.path.exists(f"{path}\\{file_name}"):
             os.remove(f"{path}\\{file_name}")
 
+        # file creation
         self.create_file(path, file_name, file_line_list)
 
 
-    def create_settings_file(self):
+    def create_settings_soft_file(self):
         """ `+`
         `Type:` Procedure
         `Description:` create the file that contains all the parameters

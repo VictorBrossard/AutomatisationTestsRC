@@ -164,7 +164,7 @@ class MainInterface(tk.Tk):
                     return
 
             # asks the user if he wants to loop on some tests
-            simple_question = SimpleQuestionInterface("Question", "Do you want to test several times in a row?")
+            simple_question = SimpleQuestionInterface("Question", "Est-ce que vous voulez jouer un test plusieurs fois d'affilée ?")
             simple_question.mainloop()
 
             # checks the user's response

@@ -52,7 +52,9 @@ class TestPiecesFile(ManageFiles):
         `Return:` file path
         """
 
-        execute_list = []
+        execute_list = [
+
+        ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "complete_prod.txt", execute_list)
     
@@ -76,7 +78,7 @@ class TestPiecesFile(ManageFiles):
     def __nb_card_to_make_prod(self):
         """ `-`
         `Type:` Function
-        `Description:` 
+        `Description:` removes the number of cards to be made
         `Return:` file path
         """
 
@@ -91,7 +93,7 @@ class TestPiecesFile(ManageFiles):
     def __nb_card_make_prod(self):
         """ `-`
         `Type:` Function
-        `Description:` 
+        `Description:` removes the number of cards made
         `Return:` file path
         """
 
@@ -106,16 +108,16 @@ class TestPiecesFile(ManageFiles):
     def __start_prod(self):
         """ `-`
         `Type:` Function
-        `Description:` 
+        `Description:` starts production
         `Return:` file path
         """
 
         execute_list = [
-            "Click;left;0.7609375;0.7777777777777778;1683205478.9532094",
-            "Release;left;0.7609375;0.7777777777777778;1683205479.0177057",
-            "Click;left;0.425;0.5787037037037037;1683205480.3938558",
-            "Release;left;0.425;0.5787037037037037;1683205480.481786",
-            "Key;tab;1683205483.4509356"
+            "Click;left;0.4046875;0.7898148148148149;1683268416.6014845",
+            "Release;left;0.4046875;0.7898148148148149;1683268416.7127273",
+            "Click;left;0.928125;0.16296296296296298;1683268419.7686532",
+            "Release;left;0.928125;0.16296296296296298;1683268419.8581877",
+            "Key;tab;1683268422.801447"
         ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "start_prod.txt", execute_list)
@@ -124,12 +126,14 @@ class TestPiecesFile(ManageFiles):
     def __stop_prod(self):
         """ `-`
         `Type:` Function
-        `Description:` 
+        `Description:` ends production
         `Return:` file path
         """
 
         execute_list = [
-            
+            "Click;left;0.9135416666666667;0.2101851851851852;1683268464.5933928",
+            "Release;left;0.9135416666666667;0.2101851851851852;1683268464.6497576",
+            "Key;tab;1683268467.7141564"
         ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "stop_prod.txt", execute_list)

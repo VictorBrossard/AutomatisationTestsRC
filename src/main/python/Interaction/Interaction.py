@@ -43,16 +43,6 @@ class Interaction(object):
         self.rc_window_name = self.line_settings_file.get_line(5)
 
     
-    def close_rc(self):
-        """ `+`
-        `Type:` Procedure
-        `Description:` performs the action of closing RC
-        """
-
-        rc_window_foreground(self.rc_window_name)
-        ExecuteTest().read_test_file("close_rc.txt")
-
-    
     def screenshot(self):
         """ `+`
         `Type:` Procedure
@@ -73,45 +63,54 @@ class Interaction(object):
         pop_up = UserEntryPopUp("Create Tests", ["Entrez le nom du test :", "Nombre de cartes à produire :"], [0, 1])
         pop_up.mainloop()
 
+        # recovery of input values
         user_entry_list = pop_up.get_user_entries()
 
+        # verification that the user has given us all the values
         for entries in user_entry_list:
             if entries == "":
                 MessageBox("ERREUR Manque d'information", "[ERREUR] Vous n'avez pas remplis toutes les cases.").mainloop()
                 return
             
+        # creation of the file that stores the test pieces
         test_folder_path = ManageFolders().create_test_folder(user_entry_list[0])
 
         if test_folder_path == "":
             MessageBox("ERREUR Nom de test", "[ERREUR] Ce nom de test existe déjà.").mainloop()
             return
 
+        # creation of test piece files
         new_file = ManageFiles()
         new_file.create_file(test_folder_path, f"{user_entry_list[0]}_settings.txt", user_entry_list)
         new_file.create_executing_file(test_folder_path, "name.txt", user_entry_list[0])
         new_file.create_executing_file(test_folder_path, "card_to_make.txt", user_entry_list[1])
         new_file.create_executing_file(test_folder_path, "card_make.txt", "0")
 
+        # asks the user a question
         before_production = SimpleQuestionInterface("Avant production", "Avez-vous des choses à faire avant la production ?")
         before_production.mainloop()
 
         if before_production.get_is_yes():
+            # software opening
             soft = ManageSoftwares()
             soft.open_soft()
 
-            time.sleep(6)
+            time.sleep(6) # waiting time for the opening of the software
 
-            MessageBox("Enregistrement", "[INFO] L'enregistrement commence.").mainloop()
-
+            # start of the recording
+            MessageBox("Enregistrement", "[INFO] L'enregistrement va commencer.").mainloop()
             precondition = InputRecorder("precondition", test_folder_path)
 
+            # verification that the file did not have a problem at its creation
             if precondition.get_was_file_created():
                 precondition.start_recording()
             else:
                 return
             
+            # software closure
             soft.close_soft()
             
+        # creation of the only file that the user can select to run the tests
         new_file.create_file(CONSTANT_TEST_AVAILABLE_FOLDER_PATH, f"{user_entry_list[0]}.txt", [test_folder_path])
 
 
@@ -122,55 +121,65 @@ class Interaction(object):
         :param:`file_paths_list:` list of file paths that store the paths to the test folders
         """
 
+        # execution of each file in the list
         for fil in file_paths_list:
+            # creation of a file for the test report
             file_name, extension = os.path.splitext(os.path.basename(fil))
             folder = TestReportFolder(file_name)
-            all_test_file = self.__get_all_test_file(fil, folder.get_now())
 
+            # will look for all the files that compose a test
+            all_test_file = self.__get_all_test_file(fil, folder.get_now())
             if all_test_file == []:
                 return
 
+            # launches the general precondition for launching a test
             Precondition().start_precondition()
             time.sleep(6.5)
 
-            for small_test in all_test_file:
-                if os.path.basename(small_test) == "start_prod.txt":
-                    print("JE FAIS LA PROD")
-                    ExecuteTest().read_test_file(small_test)
-                    time.sleep(10)
+            # execution of each test piece
+            for test_piece in all_test_file:
+                if os.path.basename(test_piece) == "start_prod.txt":
+                    ExecuteTest().read_test_file(test_piece)
+                    time.sleep(10) # TEMPS A MODIFIER
                 else:
-                    ExecuteTest().read_test_file(small_test)
+                    ExecuteTest().read_test_file(test_piece)
                     time.sleep(0.5)
 
+            # launches the general postcondition to stop a test
             PostCondition().start_postcondition(folder.get_folder_path())
-            time.sleep(0.5)
 
 
     def test_pieces(self):
         """ `+`
         `Type:` Procedure
-        `Description:`
+        `Description:` record a test piece
         """
 
-        pop_up = UserEntryPopUp("Create Test Pieces", ["Entrez le nom du test :"], [0])
+        # request the name of the test piece to the user
+        pop_up = UserEntryPopUp("Create Test Pieces", ["Entrez le nom du bout de test :"], [0])
         pop_up.mainloop()
 
+        # recovery of input values
         user_entry_list = pop_up.get_user_entries()
 
+        # verification that the user has given us a value
         if user_entry_list[0] == "":
             MessageBox("ERREUR Manque d'information", "[ERREUR] Vous n'avez pas remplis toutes les cases.").mainloop()
             return
             
+        # check that the name is not already taken
         if os.path.exists(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{user_entry_list[0]}.txt"):
             MessageBox("ERREUR Nom de fichier", "[ERREUR] Ce fichier existe déjà.").mainloop()
             return
         
+        # software opening
         soft = ManageSoftwares()
         soft.open_soft()
 
-        time.sleep(6)
+        time.sleep(6) # we wait until the software is well opened
         MessageBox("Enregistrement", "[INFO] L'enregistrement commence.").mainloop()
         
+        # recording of user's actions
         precondition = InputRecorder(user_entry_list[0], CONSTANT_TEST_PIECES_FOLDER_PATH)
 
         if precondition.get_was_file_created():
@@ -178,12 +187,20 @@ class Interaction(object):
         else:
             return
 
+        # software closure
         soft.close_soft()
 
 
     def __get_all_test_file(self, file_with_path: str, date_time: str) -> list:
+        """ `-`
+        `Type:` Function
+        `Description:` put the test files in the right order of execution
+        :param:`file_with_path:` full path of a file
+        :param:`date_time:` date and time of the test
+        `Return:` list of files to be executed
         """
-        """
+
+        ################ IGNOBLE A REFAIRE ##################
 
         file_list = []
 

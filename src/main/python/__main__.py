@@ -22,7 +22,7 @@ def __main():
 
     run_as_admin()
     ManageFolders().create_soft_folders()
-    ManageFiles().create_settings_file()
+    ManageFiles().create_settings_soft_file()
     TestPiecesFile()
     test = MainInterface()
     test.mainloop()
