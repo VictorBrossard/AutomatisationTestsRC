@@ -18,6 +18,8 @@ from GraphicInterface.SettingsInterface import SettingsInterface
 from GraphicInterface.MessageBox import MessageBox
 
 from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
+from FilesManagement.Folders.ManageFolders import ManageFolders
+from FilesManagement.Files.ManageFiles import ManageFiles
 
 from UsefulFunction.UsefulFunction import cant_close
 
@@ -71,26 +73,26 @@ class MainInterface(tk.Tk):
         padding = {'padx': 5, 'pady': 5}
 
         # Button
-        exit_button = ttk.Button(self, text='Exit', command=self.__close_softwares) # Creation of the button
-        exit_button.grid(column=2, row=2, **padding)                                # Object position
+        exit_button = ttk.Button(self, text='Exit', command=self.__close)   # Creation of the button
+        exit_button.grid(column=2, row=2, **padding)                        # Object position
+
+        settings_button = ttk.Button(self, text='Settings', command=self.__settings)
+        settings_button.grid(column=0, row=2, **padding)
+
+        create_test_button = ttk.Button(self, text='Create Test', command=self.__create_test)
+        create_test_button.grid(column=1, row=1, **padding)
+
+        delete_test_button = ttk.Button(self, text='Delete Test', command=self.__delete_test)
+        delete_test_button.grid(column=2, row=0, **padding)
 
         start_test_button = ttk.Button(self, text='Start Test', command=self.__start_test)
         start_test_button.grid(column=1, row=0, **padding)
 
-        screenshot_button = ttk.Button(self, text='Screenshot', command=self.__screenshot)
-        screenshot_button.grid(column=2, row=0, **padding)
-
-        create_button = ttk.Button(self, text='Create Test', command=self.__create_test)
-        create_button.grid(column=1, row=1, **padding)
-
-        delete_button = ttk.Button(self, text='Delete Test', command=self.__delete_test)
-        delete_button.grid(column=0, row=2, **padding)
-
-        pieces_button = ttk.Button(self, text='Test Pieces', command=self.__test_pieces)
-        pieces_button.grid(column=2, row=1, **padding)
+        test_pieces_button = ttk.Button(self, text='Test Pieces', command=self.__test_pieces)
+        test_pieces_button.grid(column=2, row=1, **padding)
 
     
-    def __close_softwares(self):
+    def __close(self):
         """ `-`
         `Type:` Procedure
         `Description:` close software and the interface
@@ -99,15 +101,15 @@ class MainInterface(tk.Tk):
         ManageSoftwares().close_soft()
         self.destroy()
 
-    
-    def __screenshot(self):
+
+    def __settings(self):
         """ `-`
         `Type:` Procedure
-        `Description:` take a screenshot
+        `Description:` open the settings interface
         """
 
         self.destroy()
-        Interaction().screenshot()
+        SettingsInterface().mainloop()
         self.__init__()
         self.mainloop()
 
@@ -130,9 +132,49 @@ class MainInterface(tk.Tk):
         `Description:` delete test
         """
 
-        self.destroy()
-        self.__init__()
-        self.mainloop()
+        # Selection of files by the user
+        file_paths = filedialog.askopenfilenames(initialdir=CONSTANT_TEST_AVAILABLE_FOLDER_PATH, title="Select folders")
+
+        # checking if it is empty or not
+        if file_paths:
+            file_paths_list = list(file_paths) # turns the tuple into a list
+            self.destroy()
+
+            # Verification of the origin of the files
+            for fil in file_paths_list:
+                # We separate the name of the file and its path to be able to handle it better later
+                file_path_without_name = os.path.dirname(fil)
+                file_name = os.path.basename(fil)
+
+                # checking if the file is in the right folder otherwise it is not a test
+                if os.path.abspath(file_path_without_name) != os.path.abspath(CONSTANT_TEST_AVAILABLE_FOLDER_PATH):
+                    MessageBox("ERREUR Sélection Fichier Test", f"[ERREUR] Le fichier {file_name} n'est pas un fichier test.")
+                    self.__init__()
+                    self.mainloop()
+                    return
+
+                # open the file that has the path to the folder to be deleted
+                try:
+                    open_file = open(fil, 'r')
+                    path_file_to_delete = open_file.readlines()[0].rstrip()
+                    open_file.close()
+                except Exception as e:
+                    MessageBox("ERREUR Fichier", f"[ERREUR] {e}").mainloop()
+                    self.__init__()
+                    self.mainloop()
+                    return
+                
+                # delete folder
+                folder = ManageFolders()
+                folder.delete_inside_folder(path_file_to_delete)
+                folder.delete_folder(path_file_to_delete)
+
+                # delete file
+                ManageFiles().delete_file(fil)
+
+            MessageBox("Information", "[INFO] Tous les fichiers ont bien été supprimé.").mainloop()
+            self.__init__()
+            self.mainloop()
 
 
     def __start_test(self):

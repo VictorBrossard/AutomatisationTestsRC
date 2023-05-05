@@ -31,7 +31,7 @@ class Screenshot(object):
         :param:`file_name:` file name
         """
         
-        time.sleep(1)               # waiting time otherwise the photo taking is too fast
+        time.sleep(2)               # waiting time otherwise the photo taking is too fast
         screen = ImageGrab.grab()   # take the picture
 
         # saving the picture

@@ -7,13 +7,12 @@ import os
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants
-CONSTANT_INIT_PATH = "C:\Program Files"
+CONSTANT_INIT_PATH = "C:\\Program Files"
 
-CONSTANT_MAIN_FOLDER_PATH = CONSTANT_INIT_PATH + "\AutomatisationRC"
+CONSTANT_MAIN_FOLDER_PATH = CONSTANT_INIT_PATH + "\\AutomatisationRC"
 
-CONSTANT_FILES_FOLDER_PATH = CONSTANT_MAIN_FOLDER_PATH + "\Files"
+CONSTANT_FILES_FOLDER_PATH = CONSTANT_MAIN_FOLDER_PATH + "\\Files"
 
-CONSTANT_SCREENSHOTS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\screenshots"
 CONSTANT_TESTS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\tests" 
 CONSTANT_SETTINGS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\settings"
 
@@ -78,7 +77,6 @@ class ManageFolders(object):
 
         self._create_folder("Files", CONSTANT_MAIN_FOLDER_PATH)
 
-        self._create_folder("screenshots", CONSTANT_FILES_FOLDER_PATH)
         self._create_folder("tests", CONSTANT_FILES_FOLDER_PATH)
         self._create_folder("settings", CONSTANT_FILES_FOLDER_PATH)
 
@@ -109,9 +107,19 @@ class ManageFolders(object):
                     if os.path.isfile(sub_element_path):
                         os.remove(sub_element_path)
                     else:
-                        self.delete_files_and_folder(sub_element_path)
+                        self.delete_inside_folder(sub_element_path)
                         os.rmdir(sub_element_path)
                 
                 os.rmdir(element_path)
             elif os.path.isfile(element_path):
                 os.remove(element_path)
+
+
+    def delete_folder(self, path: str):
+        """ `+`
+        `Type:` Procedure
+        `Description:` delete the folder
+        :param:`path:` path of the folder
+        """
+
+        os.rmdir(path)

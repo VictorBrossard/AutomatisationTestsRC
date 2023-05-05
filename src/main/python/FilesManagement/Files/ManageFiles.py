@@ -110,4 +110,14 @@ class ManageFiles(object):
             ]   
 
             self.create_file(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, settings_list)
+
+
+    def delete_file(self, path: str):
+        """ `+`
+        `Type:` Procedure
+        `Description:` delete the file
+        :param:`path:` path of the file
+        """
+
+        os.remove(path)
         
