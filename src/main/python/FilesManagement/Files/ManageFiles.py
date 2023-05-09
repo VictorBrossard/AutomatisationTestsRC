@@ -5,6 +5,11 @@
 # Import of files useful for code execution 
 import subprocess
 import os
+import sys
+import base64
+import hashlib
+
+from cryptography.fernet import Fernet
 
 from FilesManagement.Folders.ManageFolders import CONSTANT_SETTINGS_FOLDER_PATH  # path where we store the settings file
 from FilesManagement.Folders.ManageFolders import CONSTANT_INIT_PATH
@@ -16,6 +21,7 @@ from GraphicInterface.MessageBox import MessageBox
 # Initialization of constants
 CONSTANT_NAME_SETTINGS_FILE = "settings.txt"
 CONSTANT_NAME_DATABASE_FILE = "database_settings.txt"
+CONSTANT_ENCRYPTION_KEY = "GEJvRguUGA1y8cPK"
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -141,14 +147,86 @@ class ManageFiles(object):
                     return
 
             settings_list = [
-                f"{user_entry_list[0]}", # Username
-                f"{user_entry_list[1]}", # Password
-                f"{user_entry_list[2]}", # Host
-                f"{user_entry_list[3]}", # Port
-                f"{user_entry_list[4]}"  # Database
+                f"{user_entry_list[0]}",                                                # Username
+                f"{self.__encryption(user_entry_list[1], CONSTANT_ENCRYPTION_KEY)}",    # Encrypted password
+                f"{user_entry_list[2]}",                                                # Host
+                f"{user_entry_list[3]}",                                                # Port
+                f"{user_entry_list[4]}"                                                 # Database
             ]   
 
             self.create_file(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_DATABASE_FILE, settings_list)
+
+
+    def get_database_lines(self) -> list:
+        """ `+`
+        `Type:` Function
+        `Description:` get all the lines of the database file 
+        `Return:` list of file lines
+        """
+
+        lines_list = []
+
+        try:
+            fil = open(f"{CONSTANT_SETTINGS_FOLDER_PATH}\\{CONSTANT_NAME_DATABASE_FILE}", "r")
+            lines = fil.readlines()
+            fil.close()
+        except Exception:
+            MessageBox("ERREUR", "[ERREUR] Problème avec le fichier database.").mainloop()
+            sys.exit(1)
+
+        # recovery of all the lines of the file without the \n and modification of the line of the password
+        for i, line in enumerate(lines):
+            original_line = line.rstrip() # line without back to the line
+
+            if i == 1: # Password
+                decryption_sentence = self.__decryption(line, CONSTANT_ENCRYPTION_KEY)
+                lines_list.append(decryption_sentence)
+            else:
+                lines_list.append(original_line)
+
+        return lines_list
+    
+
+    def __encryption(self, sentence: str, key: str) -> str:
+        """ `-`
+        `Type:` Function
+        `Description:` encrypts a sentence with a key
+        :param:`sentence:` sentence to encrypted
+        :param:`key:` encryption key
+        `Return:` string encrypted sentence
+        """
+
+        # obtaining a valid key in 32 bytes encoded in base64
+        key_bytes = key.encode("utf-8")
+        key_valid_bytes = hashlib.sha256(key_bytes).digest()
+
+        # encryption of the sentence with the key
+        cipher = Fernet(base64.urlsafe_b64encode(key_valid_bytes))
+        encrypted_sentence_bytes = cipher.encrypt(sentence.encode("utf-8"))
+
+        # returns the key encrypted in string and not in byte
+        return encrypted_sentence_bytes.decode("utf-8")
+
+
+    def __decryption(self, sentence: str, key: str) -> str:
+        """ `-`
+        `Type:` Function
+        `Description:` decodes a sentence with a key
+        :param:`sentence:` sentence to be decoded
+        :param:`key:` encryption key
+        `Return:` sentence decoded in string
+        """
+
+        # obtaining a valid key in 32 bytes encoded in base64
+        key_bytes = key.encode("utf-8")
+        key_valid_bytes = hashlib.sha256(key_bytes).digest()
+
+        # decryption of the sentence with the key
+        cipher = Fernet(base64.urlsafe_b64encode(key_valid_bytes))
+        decoded_sentence_bytes = cipher.decrypt(sentence.encode("utf-8"))
+
+        # returns the decrypted key in string and not in byte
+        return decoded_sentence_bytes.decode("utf-8")
 
 
     def delete_file(self, path: str):

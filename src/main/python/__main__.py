@@ -33,8 +33,10 @@ def __test():
     `Description:` procedure to test things
     """
 
-    ManageFiles().create_database_settings_file()
+    test = ManageFiles()
+    test.create_database_settings_file()
+    lines = test.get_database_lines()
     
 
 # Execution of the main function
-__main()
+__test()

@@ -23,7 +23,14 @@ class Database(object):
         `Type:` Constructor
         """
 
-        self.__connect("europlacer", "", "127.0.0.1", 3306, "promon")
+        settings_database = ManageFiles().get_database_lines()
+        """self.__connect(
+            settings_database[0],       # Username
+            settings_database[1],       # Password
+            settings_database[2],       # Host
+            int(settings_database[3]),  # Port
+            settings_database[4]        # Database
+        )"""
 
 
     def __connect(self, user: str, password: str, host: str, port: int, database: str):
