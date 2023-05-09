@@ -11,6 +11,8 @@ from FilesManagement.Files.TestPiecesFile import TestPiecesFile
 
 from UsefulFunction.UsefulFunction import run_as_admin
 
+from Database.Database import Database
+
 #-----------------------------------------------------------------------------------------------------
 
 def __main():
@@ -33,9 +35,7 @@ def __test():
     `Description:` procedure to test things
     """
 
-    test = ManageFiles()
-    test.create_database_settings_file()
-    lines = test.get_database_lines()
+    Database()
     
 
 # Execution of the main function
