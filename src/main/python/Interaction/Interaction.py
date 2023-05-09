@@ -16,16 +16,20 @@ from Interaction.Screenshot import Screenshot
 from Interaction.ExecuteTest import ExecuteTest
 from Interaction.InputRecorder import InputRecorder
 
-from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_PIECES_FOLDER_PATH
 from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 from FilesManagement.Folders.TestReportFolder import TestReportFolder
 from FilesManagement.Folders.ManageFolders import ManageFolders
-from FilesManagement.Files.ManageFiles import ManageFiles
+
+from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
+from FilesManagement.Files.ManageReportFile import ManageReportFile
 
 from RCTest.Precondition import Precondition
 from RCTest.PostCondition import PostCondition
 from RCTest.ManageSoftwares import ManageSoftwares
+
+from Database.Database import Database
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -80,7 +84,7 @@ class Interaction(object):
             return
 
         # creation of test piece files
-        new_file = ManageFiles()
+        new_file = ManageSpecificFiles()
         new_file.create_file(test_folder_path, f"{user_entry_list[0]}_settings.txt", user_entry_list)
         new_file.create_executing_file(test_folder_path, "name.txt", user_entry_list[0])
         new_file.create_executing_file(test_folder_path, "card_to_make.txt", user_entry_list[1])
@@ -114,10 +118,11 @@ class Interaction(object):
         new_file.create_file(CONSTANT_TEST_AVAILABLE_FOLDER_PATH, f"{user_entry_list[0]}.txt", [test_folder_path])
 
 
-    def execute_test(self, file_paths_list: list):
+    def execute_test(self, database: Database, file_paths_list: list):
         """ `+`
         `Type:` Procedure
         `Description:` execute all the test files in the parameter list
+        :param:`database:` object that manages the interaction with the database
         :param:`file_paths_list:` list of file paths that store the paths to the test folders
         """
 
@@ -133,14 +138,31 @@ class Interaction(object):
                 return
 
             # launches the general precondition for launching a test
-            Precondition().start_precondition()
+            Precondition().start_precondition(database)
             time.sleep(6.5)
 
             # execution of each test piece
             for test_piece in all_test_file:
                 if os.path.basename(test_piece) == "start_prod.txt":
                     ExecuteTest().read_test_file(test_piece)
-                    time.sleep(5) # TEMPS A MODIFIER
+                    time.sleep(2) # pause to let the database refresh
+
+                    # get the production time of the card and the number of cards to make in the database
+                    tuples = database.get_tuples(
+                        "SELECT MAX(wrms.ExpectedCycleTime), (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS cartes FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder JOIN workorderrecipemachinestages wrms ON wrm.IdWorkOrderRecipeMachine = wrms.IdWorkOrderRecipeMachine WHERE w.Name = ?", 
+                        [folder.get_folder_name()]
+                    )
+
+                    # verification that there were no bugs in the execution of the command
+                    if len(tuples) != 1:
+                        break
+
+                    # decomposition of the tuple to calculate the production time
+                    (unit_time, nb_cards) = tuples[0]
+                    time_for_a_card = int(unit_time)/1000
+                    time_for_cards = time_for_a_card * nb_cards - 2
+
+                    time.sleep(time_for_cards)
                 else:
                     ExecuteTest().read_test_file(test_piece)
                     time.sleep(0.5)
@@ -148,8 +170,11 @@ class Interaction(object):
             # take a screenshot
             Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
 
+            # create report
+            ManageReportFile()
+
             # launches the general postcondition to stop a test
-            PostCondition().start_postcondition(folder.get_folder_path())
+            PostCondition().start_postcondition(database, folder.get_folder_path())
 
 
     def test_pieces(self):
@@ -215,7 +240,7 @@ class Interaction(object):
             MessageBox("ERREUR Fichier", f"[ERREUR] {e}").mainloop()
             return []
         
-        ManageFiles().create_executing_file(path_line, "last_execution.txt", f"_{date_time}")
+        ManageSpecificFiles().create_executing_file(path_line, "last_execution.txt", f"_{date_time}")
 
         precond_path = f"{path_line}\\precondition.txt"
         if os.path.exists(precond_path):

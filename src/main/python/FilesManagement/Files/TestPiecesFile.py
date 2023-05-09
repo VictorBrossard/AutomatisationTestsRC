@@ -3,12 +3,13 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
-from FilesManagement.Files.ManageFiles import ManageFiles
+from FilesManagement.Files.ManageAnyFile import ManageAnyFile
+
 from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_PIECES_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 
-class TestPiecesFile(ManageFiles):
+class TestPiecesFile(ManageAnyFile):
     """ `+`
     :class:`TestPiecesFile` creates the useful test pieces to do the real tests
     """

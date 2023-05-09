@@ -19,11 +19,14 @@ from GraphicInterface.MessageBox import MessageBox
 
 from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 from FilesManagement.Folders.ManageFolders import ManageFolders
-from FilesManagement.Files.ManageFiles import ManageFiles
+
+from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
 from UsefulFunction.UsefulFunction import cant_close
 
 from RCTest.ManageSoftwares import ManageSoftwares
+
+from Database.Database import Database
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -32,13 +35,16 @@ class MainInterface(tk.Tk):
     :class:`MainInterface` manages the main interface of the project
     """
 
-    def __init__(self):
+    def __init__(self, database: Database):
         """ `-`
         `Type:` Constructor
+        :param:`database:` object that manages the interaction with the database
         """
 
         # Parent constructor
         super().__init__()
+
+        self.data = database # Database object
 
         # Window size and position
         height = 600
@@ -99,6 +105,7 @@ class MainInterface(tk.Tk):
         """
 
         ManageSoftwares().close_soft()
+        self.data.close_connection()
         self.destroy()
 
 
@@ -110,7 +117,7 @@ class MainInterface(tk.Tk):
 
         self.destroy()
         SettingsInterface().mainloop()
-        self.__init__()
+        self.__init__(self.data)
         self.mainloop()
 
     
@@ -122,7 +129,7 @@ class MainInterface(tk.Tk):
 
         self.destroy()
         Interaction().create_test()
-        self.__init__() # Opening the interface
+        self.__init__(self.data) # Opening the interface
         self.mainloop()
 
 
@@ -149,7 +156,7 @@ class MainInterface(tk.Tk):
                 # checking if the file is in the right folder otherwise it is not a test
                 if os.path.abspath(file_path_without_name) != os.path.abspath(CONSTANT_TEST_AVAILABLE_FOLDER_PATH):
                     MessageBox("ERREUR Sélection Fichier Test", f"[ERREUR] Le fichier {file_name} n'est pas un fichier test.")
-                    self.__init__()
+                    self.__init__(self.data)
                     self.mainloop()
                     return
 
@@ -160,7 +167,7 @@ class MainInterface(tk.Tk):
                     open_file.close()
                 except Exception as e:
                     MessageBox("ERREUR Fichier", f"[ERREUR] {e}").mainloop()
-                    self.__init__()
+                    self.__init__(self.data)
                     self.mainloop()
                     return
                 
@@ -170,10 +177,10 @@ class MainInterface(tk.Tk):
                 folder.delete_folder(path_file_to_delete)
 
                 # delete file
-                ManageFiles().delete_file(fil)
+                ManageAnyFile().delete_file(fil)
 
             MessageBox("Information", "[INFO] Tous les fichiers ont bien été supprimé.").mainloop()
-            self.__init__()
+            self.__init__(self.data)
             self.mainloop()
 
 
@@ -200,7 +207,7 @@ class MainInterface(tk.Tk):
                 # checking if the file is in the right folder otherwise it is not a test
                 if os.path.abspath(file_path_without_name) != os.path.abspath(CONSTANT_TEST_AVAILABLE_FOLDER_PATH):
                     MessageBox("ERREUR Sélection Fichier Test", f"[ERREUR] Le fichier {file_name} n'est pas un fichier test.")
-                    self.__init__()
+                    self.__init__(self.data)
                     self.mainloop()
                     return
 
@@ -218,11 +225,11 @@ class MainInterface(tk.Tk):
                 new_list = loop.get_new_test_list()
 
                 if new_list != []:
-                    Interaction().execute_test(new_list)
+                    Interaction().execute_test(self.data, new_list)
             else:
-                Interaction().execute_test(file_paths_list)
+                Interaction().execute_test(self.data, file_paths_list)
 
-            self.__init__()
+            self.__init__(self.data)
             self.mainloop()
 
 
@@ -234,5 +241,5 @@ class MainInterface(tk.Tk):
 
         self.destroy()
         Interaction().test_pieces()
-        self.__init__()
+        self.__init__(self.data)
         self.mainloop()

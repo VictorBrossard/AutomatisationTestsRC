@@ -5,9 +5,10 @@
 # Import of files useful for code execution
 from GraphicInterface.MainInterface import MainInterface
 
-from FilesManagement.Files.ManageFiles import ManageFiles
-from FilesManagement.Folders.ManageFolders import ManageFolders
+from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
 from FilesManagement.Files.TestPiecesFile import TestPiecesFile
+
+from FilesManagement.Folders.ManageFolders import ManageFolders
 
 from UsefulFunction.UsefulFunction import run_as_admin
 
@@ -23,9 +24,10 @@ def __main():
 
     run_as_admin()
     ManageFolders().create_soft_folders()
-    ManageFiles().create_soft_settings_file()
+    ManageSpecificFiles().create_soft_settings_file()
     TestPiecesFile()
-    test = MainInterface()
+    database = Database()
+    test = MainInterface(database)
     test.mainloop()
 
 
@@ -35,8 +37,20 @@ def __test():
     `Description:` procedure to test things
     """
 
-    Database()
+    database = Database()
+
+    tuples = database.get_tuples(
+                        "SELECT MAX(wrms.ExpectedCycleTime), (w.NbUnitsToDo div wrm.NbUnitsPerWork) FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder JOIN workorderrecipemachinestages wrms ON wrm.IdWorkOrderRecipeMachine = wrms.IdWorkOrderRecipeMachine WHERE w.Name = ?", 
+                        ["all_test_2023-05-09_16h56m19s"]
+                    )
     
+    tuple_one = tuples[0]
+    (test, test2) = tuple_one
+
+    print(tuple_one)
+    print(test)
+    print(test2)
+    print(tuples)
 
 # Execution of the main function
-__test()
+__main()

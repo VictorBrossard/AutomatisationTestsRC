@@ -9,6 +9,8 @@ from RCTest.ManageSoftwares import ManageSoftwares
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
+from Database.Database import Database
+
 #-----------------------------------------------------------------------------------------------------
 
 class PostCondition(object):
@@ -25,15 +27,17 @@ class PostCondition(object):
         self.softwares = ManageSoftwares()
 
 
-    def start_postcondition(self, copy_traces_path: str):
+    def start_postcondition(self, database: Database, folder_path: str):
         """ `+`
         `Type:` Function
         `Description:` launches the selected postcondition
+        :param:`database:` object that manages the interaction with the database
         :param:`copy_traces_path:` path where we copy the trace folder
         """
 
         self.softwares.close_soft()
 
-        tmp_path = self.settings.get_line(8)
+        database.save_all_tuples(f"{folder_path}\\database")
 
-        shutil.copytree(tmp_path, f"{copy_traces_path}\\traces")
+        tmp_path = self.settings.get_line(8)
+        shutil.copytree(tmp_path, f"{folder_path}\\traces")

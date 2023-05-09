@@ -7,8 +7,9 @@ import mariadb
 import sys
 import os
 
-from FilesManagement.Files.ManageFiles import ManageFiles
-from FilesManagement.Files.ManageFiles import CONSTANT_NAME_DATABASE_FILE
+from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
+from FilesManagement.Files.ManageSpecificFiles import CONSTANT_NAME_DATABASE_FILE
+
 from FilesManagement.Folders.ManageFolders import CONSTANT_SETTINGS_FOLDER_PATH
 
 from GraphicInterface.MessageBox import MessageBox
@@ -26,7 +27,7 @@ class Database(object):
         `Type:` Constructor
         """
 
-        self.manage_file = ManageFiles()
+        self.manage_file = ManageSpecificFiles()
         self.manage_file.create_database_settings_file()
 
         settings_database = self.manage_file.get_database_lines()
@@ -93,30 +94,31 @@ class Database(object):
         `Description:` deletes all data from the database
         """
 
-        # retrieve the name of all the tables in the database
-        self.cursor.execute(
-            "SHOW TABLES FROM ?",
-            (self.name_database,)
-        )
-
         # deactivation of constraints
         self.cursor.execute(
-            "SET FOREIGN_KEY_CHECKS = 0;",
+            "SET FOREIGN_KEY_CHECKS = 0",
+            ()
+        )
+
+        # retrieve the name of all the tables in the database
+        self.cursor.execute(
+            f"SHOW TABLES FROM {self.name_database}",
             ()
         )
 
         rows = self.cursor.fetchall()
 
         # deletion of tuples from each table
-        for table_name in rows:
+        for row in rows:
+            str_row = str(",".join([str(x) for x in row]))
             self.cursor.execute(
-                "DELETE FROM ?",
-                (table_name,)
+                f"DELETE FROM {str_row}",
+                ()
             )
 
         # activation of constraints
         self.cursor.execute(
-            "SET FOREIGN_KEY_CHECKS = 1;",
+            "SET FOREIGN_KEY_CHECKS = 1",
             ()
         )
 
@@ -130,14 +132,15 @@ class Database(object):
 
         # retrieve the name of all the tables in the database
         self.cursor.execute(
-            "SHOW TABLES FROM ?",
-            (self.name_database,)
+            "SHOW TABLES",
+            ()
         )
 
         rows = self.cursor.fetchall()
 
         for row in rows:
-            self.__save_table_tuples(row, path)
+            str_row = str(",".join([str(x) for x in row]))
+            self.__save_table_tuples(str_row, path)
 
 
     def __save_table_tuples(self, table_name: str, path: str):
@@ -150,13 +153,18 @@ class Database(object):
 
         # selection of the tuples of the table
         self.cursor.execute(
-            "SELECT * FROM ?",
-            (table_name)
+            f"SELECT * FROM {table_name}",
+            ()
         )
 
         rows = self.cursor.fetchall()
+        str_rows_list = []
 
-        self.manage_file.create_file(path, f"{table_name}.txt", rows)
+        for row in rows:
+            str_row = ",".join([str(x) for x in row])
+            str_rows_list.append(str_row)
+
+        self.manage_file.create_file(path, f"{table_name}.txt", str_rows_list)
 
 
     def get_tuples(self, command: str, variable_list: list) -> list:
@@ -173,38 +181,11 @@ class Database(object):
             (','.join(variable_list),)
         )
 
-        return self.cursor.fetchall()
-
-    
-    def get_nb_cards(self, test_name: str) -> int:
-        """
-        """
-
-        self.cursor.execute(
-            "SELECT IdWorkOrder, NbUnitsToDo FROM promon.workorders WHERE workorders.Name = ?",
-            (test_name,)
-        )
-
         rows = self.cursor.fetchall()
+        str_rows_list = []
 
-        if len(rows) != 1:
-            return 0
-        else:
-            return rows
+        for row in rows:
+            #str_row = ",".join([str(x) for x in row])
+            str_rows_list.append(row)
 
-
-    def get_time_prod_card(self, test_name: str) -> int:
-        """
-        """
-
-        self.cursor.execute(
-            "SET FOREIGN_KEY_CHECKS = 1;",
-            (test_name,)
-        )
-
-        rows = self.cursor.fetchall()
-
-        if len(rows) != 1:
-            return 0
-        else:
-            return rows
+        return str_rows_list
