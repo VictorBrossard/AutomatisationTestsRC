@@ -41,12 +41,17 @@ def __test():
     database = Database()
 
     database.test_execution(
-        "DELETE FROM workorders",
-        []
+        "SELECT DateCreation FROM workorders WHERE NAME = ?",
+        ["test4_2023-05-10_16h35m27s"]
     )
 
+    liste = database.get_tuples(
+        "SELECT DateCreation FROM workorders WHERE NAME = ?",
+        ["test4_2023-05-10_16h35m27s"]
+    )
+
+    print(liste[0][0])
 
     
-
 # Execution of the main function
 __main()

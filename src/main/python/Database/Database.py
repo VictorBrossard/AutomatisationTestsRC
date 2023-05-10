@@ -200,7 +200,7 @@ class Database(object):
         `Description:` gets all tuples of the command given in parameter
         :param:`command:` command to be executed
         :param:`varaible_list:` list of variables in the command
-        `Return:`
+        `Return:` all data retrieved by the SQL command
         """
 
         self.cursor.execute(
@@ -233,5 +233,15 @@ class Database(object):
             command,
             (','.join(variable_list),)
         )
+
+        rows = self.cursor.fetchall()
+        str_rows_list = []
+
+        for row in rows:
+            str_row = ",".join([str(x) for x in row])
+            mini_list = str_row.split(',')
+            str_rows_list.append(mini_list)
+
+        print(str_rows_list)
 
         self.connector.commit()
