@@ -13,6 +13,7 @@ from FilesManagement.Folders.ManageFolders import ManageFolders
 from UsefulFunction.UsefulFunction import run_as_admin
 
 from Database.Database import Database
+from FilesManagement.Files.ManageReportFile import ManageReportFile
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -39,18 +40,14 @@ def __test():
 
     database = Database()
 
-    tuples = database.get_tuples(
-                        "SELECT MAX(wrms.ExpectedCycleTime), (w.NbUnitsToDo div wrm.NbUnitsPerWork) FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder JOIN workorderrecipemachinestages wrms ON wrm.IdWorkOrderRecipeMachine = wrms.IdWorkOrderRecipeMachine WHERE w.Name = ?", 
-                        ["all_test_2023-05-09_16h56m19s"]
-                    )
-    
-    tuple_one = tuples[0]
-    (test, test2) = tuple_one
+    database.get_tuples(
+        "SELECT (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS carte FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder WHERE w.Name = ?",
+        ["test4_2023-05-09_17h29m15s"]
+    )
 
-    print(tuple_one)
-    print(test)
-    print(test2)
-    print(tuples)
+    ManageReportFile(database).create_report_file("C:\\Users\\vbrossard.ext\\Documents", "C:\\Program Files\\AutomatisationRC\\Files\\tests\\test_available\\test4.txt")
+
+    
 
 # Execution of the main function
 __main()

@@ -185,7 +185,8 @@ class Database(object):
         str_rows_list = []
 
         for row in rows:
-            #str_row = ",".join([str(x) for x in row])
-            str_rows_list.append(row)
+            str_row = ",".join([str(x) for x in row])
+            mini_list = str_row.split(',')
+            str_rows_list.append(mini_list)
 
         return str_rows_list

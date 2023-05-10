@@ -158,11 +158,13 @@ class Interaction(object):
                         break
 
                     # decomposition of the tuple to calculate the production time
-                    (unit_time, nb_cards) = tuples[0]
-                    time_for_a_card = int(unit_time)/1000
+                    #(unit_time, nb_cards) = tuples[0]
+                    unit_time = float(tuples[0][0])
+                    nb_cards = float(tuples[0][1])
+                    time_for_a_card = unit_time/1000
                     time_for_cards = time_for_a_card * nb_cards - 2
 
-                    time.sleep(time_for_cards)
+                    time.sleep(5)
                 else:
                     ExecuteTest().read_test_file(test_piece)
                     time.sleep(0.5)
@@ -171,7 +173,8 @@ class Interaction(object):
             Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
 
             # create report
-            ManageReportFile()
+            report = ManageReportFile(database)
+            report.create_report_file(folder.get_folder_path(), fil)
 
             # launches the general postcondition to stop a test
             PostCondition().start_postcondition(database, folder.get_folder_path())
