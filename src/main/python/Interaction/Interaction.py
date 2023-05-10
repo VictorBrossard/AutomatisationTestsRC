@@ -3,7 +3,6 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
-import win32gui
 import os
 import time
 
@@ -46,16 +45,6 @@ class Interaction(object):
         self.line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
         self.rc_window_name = self.line_settings_file.get_line(5)
 
-    
-    def screenshot(self):
-        """ `+`
-        `Type:` Procedure
-        `Description:` take a screenshot
-        """
-
-        rc_window_foreground(self.rc_window_name)
-        Screenshot()
-
 
     def create_test(self):
         """ `+`
@@ -86,9 +75,9 @@ class Interaction(object):
         # creation of test piece files
         new_file = ManageSpecificFiles()
         new_file.create_file(test_folder_path, f"{user_entry_list[0]}_settings.txt", user_entry_list)
-        new_file.create_executing_file(test_folder_path, "name.txt", user_entry_list[0])
-        new_file.create_executing_file(test_folder_path, "card_to_make.txt", user_entry_list[1])
-        new_file.create_executing_file(test_folder_path, "card_make.txt", "0")
+        new_file.create_execution_file(test_folder_path, "name.txt", user_entry_list[0])
+        new_file.create_execution_file(test_folder_path, "card_to_make.txt", user_entry_list[1])
+        new_file.create_execution_file(test_folder_path, "card_make.txt", "0")
 
         # asks the user a question
         before_production = SimpleQuestionInterface("Avant production", "Avez-vous des choses à faire avant la production ?")
@@ -145,25 +134,7 @@ class Interaction(object):
             for test_piece in all_test_file:
                 if os.path.basename(test_piece) == "start_prod.txt":
                     ExecuteTest().read_test_file(test_piece)
-                    time.sleep(2) # pause to let the database refresh
-
-                    # get the production time of the card and the number of cards to make in the database
-                    tuples = database.get_tuples(
-                        "SELECT MAX(wrms.ExpectedCycleTime), (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS cartes FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder JOIN workorderrecipemachinestages wrms ON wrm.IdWorkOrderRecipeMachine = wrms.IdWorkOrderRecipeMachine WHERE w.Name = ?", 
-                        [folder.get_folder_name()]
-                    )
-
-                    # verification that there were no bugs in the execution of the command
-                    if len(tuples) != 1:
-                        break
-
-                    # decomposition of the tuple to calculate the production time
-                    unit_time = float(tuples[0][0])
-                    nb_cards = float(tuples[0][1])
-                    time_for_a_card = unit_time/1000
-                    time_for_cards = time_for_a_card * nb_cards - 3
-
-                    time.sleep(2)
+                    self.__prod_waiting_time(database, folder.get_folder_name())
                 else:
                     ExecuteTest().read_test_file(test_piece)
                     time.sleep(0.5)
@@ -230,10 +201,7 @@ class Interaction(object):
         `Return:` list of files to be executed
         """
 
-        ################ IGNOBLE A REFAIRE ##################
-
-        file_list = []
-
+        # get the path in the file
         try:
             fil = open(file_with_path, 'r')
             path_line = fil.readlines()[0].rstrip()
@@ -242,59 +210,75 @@ class Interaction(object):
             MessageBox("ERREUR Fichier", f"[ERREUR] {e}").mainloop()
             return []
         
-        ManageSpecificFiles().create_executing_file(path_line, "last_execution.txt", f"_{date_time}")
+        # execution file to write the date after the test name
+        ManageSpecificFiles().create_execution_file(path_line, "last_execution.txt", f"_{date_time}")
 
-        precond_path = f"{path_line}\\precondition.txt"
-        if os.path.exists(precond_path):
-            file_list.append(precond_path)
+        # list of files to be executed in the right order
+        file_list = [
+            f"{path_line}\\precondition.txt",
+            f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod.txt",
+            f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\name_prod.txt",
+            f"{path_line}\\name.txt",
+            f"{path_line}\\last_execution.txt",
+            f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_to_make_prod.txt",
+            f"{path_line}\\card_to_make.txt",
+            f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_make_prod.txt",
+            f"{path_line}\\card_make.txt",
+            f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\start_prod.txt",
+            #f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\stop_prod.txt",
+            f"{path_line}\\postcondition.txt"
+        ]
 
-        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod.txt") ######################## A CHANGER
-        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\name_prod.txt")
-
-        name_path = f"{path_line}\\name.txt"
-        last_execution_path = f"{path_line}\\last_execution.txt"
-        if os.path.exists(name_path):
-            file_list.append(name_path)
-            file_list.append(last_execution_path)
-
-        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_to_make_prod.txt")
-
-        card_path = f"{path_line}\\card_to_make.txt"
-        if os.path.exists(card_path):
-            file_list.append(card_path)
-
-        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_make_prod.txt")
-
-        card_path = f"{path_line}\\card_make.txt"
-        if os.path.exists(card_path):
-            file_list.append(card_path)
-
-        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\start_prod.txt")
-        file_list.append(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\stop_prod.txt")
-
-        postcond_path = f"{path_line}\\postcondition.txt"
-        if os.path.exists(postcond_path):
-            file_list.append(postcond_path)
+        for fil in file_list:
+            if not os.path.exists(fil):
+                file_list.remove(fil)
 
         return file_list
+    
 
-#-----------------------------------------------------------------------------------------------------
+    def __prod_waiting_time(self, database: Database, folder_name: str):
+        """ `-`
+        `Type:` Procedure
+        `Description:` makes the software wait for the production time
+        :param:`database:` object that manages the interaction with the database
+        :param:`folder_name:` name of the file which is equivalent to the name of the test in the database
+        """
 
-def rc_window_foreground(window_name: str):
-    """ `+`
-    `Type:` Procedure
-    `Description:` puts the RC window in the foreground to be sure that we are handling the right software
-    :param:`window_name:` RC window name
-    """
+        time.sleep(2) # pause to let the database refresh
 
-    # window to search
-    hwnd = win32gui.FindWindow(None, window_name)
+        # get the production time of the card and the number of cards to make in the database
+        max_time_tuple = database.get_tuples(
+            "SELECT MAX(wrms.ExpectedCycleTime), (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS cartes FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder JOIN workorderrecipemachinestages wrms ON wrm.IdWorkOrderRecipeMachine = wrms.IdWorkOrderRecipeMachine WHERE w.Name = ?", 
+            [folder_name]
+        )
 
-    try :
-        win32gui.SetForegroundWindow(hwnd) # Bringing RC to the fore
-    except Exception as e:
-        MessageBox("ERREUR Nom de la fenêtre de RC", f"[ERREUR] {e}").mainloop() # Displaying the error message for the user
-        settings = SettingsInterface()
-        settings.mainloop()
-        rc_window_foreground(ManipulationSettingsFile().get_line(4))
-        
+        # verification that there were no bugs in the execution of the command
+        if len(max_time_tuple) != 1:
+            return
+
+        # decomposition of the tuple to calculate the max production time
+        unit_time = float(max_time_tuple[0][0])
+        nb_cards_to_made = int(max_time_tuple[0][1])
+        time_for_a_card = unit_time/1000
+        time_for_cards = time_for_a_card * nb_cards_to_made - 3
+
+        card_made = 0
+
+        # loop that allows the time to wait for the execution of the next file
+        while time_for_cards > 0  and card_made != nb_cards_to_made:
+            # sql command that fetches the number of cards in works
+            card_made_tuple = database.get_tuples(
+                "SELECT COUNT(*) FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?", 
+                [folder_name]
+            )
+
+            card_made = int(card_made_tuple[0][0])
+            
+            if card_made == nb_cards_to_made:
+                # if there is the right number of cards in works we wait for the end of the production of the last card
+                time.sleep(time_for_a_card)
+            else:
+                # in the other case, we wait a little while before asking the database again until we reach the maximum production time
+                # if we are in this case then there was surely a problem
+                time.sleep(2)
+                time_for_cards = time_for_cards - 2

@@ -39,7 +39,7 @@ class ManageSpecificFiles(ManageAnyFile):
         pass
 
 
-    def create_executing_file(self, path: str, file_name: str, str_to_transform: str):
+    def create_execution_file(self, path: str, file_name: str, str_to_transform: str):
         """ `+`
         `Type:` Porcedure
         `Description:`

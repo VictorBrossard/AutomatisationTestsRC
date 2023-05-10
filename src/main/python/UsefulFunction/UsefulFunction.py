@@ -3,10 +3,10 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
-import tkinter
 import ctypes
 import sys
 import subprocess
+import win32gui
 
 from GraphicInterface.MessageBox import MessageBox
 
@@ -112,3 +112,22 @@ def validate_int(value: str) -> bool:
         return True
     except ValueError:
         return False
+    
+
+def rc_window_foreground(window_name: str):
+    """ `+`
+    `Type:` Procedure
+    `Description:` puts the RC window in the foreground to be sure that we are handling the right software
+    :param:`window_name:` RC window name
+    """
+
+    # window to search
+    hwnd = win32gui.FindWindow(None, window_name)
+
+    try :
+        win32gui.SetForegroundWindow(hwnd) # Bringing RC to the fore
+    except Exception as e:
+        MessageBox("ERREUR Nom de la fenêtre de RC", f"[ERREUR] {e}").mainloop() # Displaying the error message for the user
+        """settings = SettingsInterface()
+        settings.mainloop()
+        rc_window_foreground(ManipulationSettingsFile().get_line(4))"""

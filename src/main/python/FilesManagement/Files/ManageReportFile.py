@@ -94,7 +94,7 @@ class ManageReportFile(ManageAnyFile):
         `Return:` settings values list
         """
 
-        # how to get there
+        # get the path in the file
         try:
             fil = open(file_with_path, 'r')
             path_line = fil.readlines()[0].rstrip()

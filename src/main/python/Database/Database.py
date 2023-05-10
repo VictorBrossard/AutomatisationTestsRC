@@ -165,6 +165,8 @@ class Database(object):
             str_row = str(",".join([str(x) for x in row]))
             self.__save_table_tuples(str_row, path)
 
+        self.connector.commit()
+
 
     def __save_table_tuples(self, table_name: str, path: str):
         """ `-`
@@ -186,6 +188,8 @@ class Database(object):
         for row in rows:
             str_row = ",".join([str(x) for x in row])
             str_rows_list.append(str_row)
+
+        self.connector.commit()
 
         self.manage_file.create_file(path, f"{table_name}.txt", str_rows_list)
 
@@ -211,6 +215,8 @@ class Database(object):
             str_row = ",".join([str(x) for x in row])
             mini_list = str_row.split(',')
             str_rows_list.append(mini_list)
+
+        self.connector.commit()
 
         return str_rows_list
     
