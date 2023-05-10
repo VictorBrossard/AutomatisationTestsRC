@@ -40,12 +40,11 @@ def __test():
 
     database = Database()
 
-    database.get_tuples(
-        "SELECT (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS carte FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder WHERE w.Name = ?",
-        ["test4_2023-05-09_17h29m15s"]
+    database.test_execution(
+        "DELETE FROM workorders",
+        []
     )
 
-    ManageReportFile(database).create_report_file("C:\\Users\\vbrossard.ext\\Documents", "C:\\Program Files\\AutomatisationRC\\Files\\tests\\test_available\\test4.txt")
 
     
 

@@ -158,13 +158,12 @@ class Interaction(object):
                         break
 
                     # decomposition of the tuple to calculate the production time
-                    #(unit_time, nb_cards) = tuples[0]
                     unit_time = float(tuples[0][0])
                     nb_cards = float(tuples[0][1])
                     time_for_a_card = unit_time/1000
-                    time_for_cards = time_for_a_card * nb_cards - 2
+                    time_for_cards = time_for_a_card * nb_cards - 3
 
-                    time.sleep(5)
+                    time.sleep(2)
                 else:
                     ExecuteTest().read_test_file(test_piece)
                     time.sleep(0.5)

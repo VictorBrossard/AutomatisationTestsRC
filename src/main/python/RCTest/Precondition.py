@@ -40,6 +40,6 @@ class Precondition(object):
         self.softwares.close_soft()
 
         ManageFolders().delete_inside_folder(tmp_path)
-        #database.deletes_all_tuples()
+        database.deletes_all_tuples()
 
         self.softwares.open_soft()

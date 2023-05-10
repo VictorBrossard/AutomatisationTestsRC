@@ -85,7 +85,28 @@ class Database(object):
         `Description:` close the connection with the database
         """
 
+        self.connector.commit()
         self.connector.close()
+
+
+    def reconnect(self):
+        """ `+`
+        `Type:` Procedure
+        `Description:` reconnections to the database using the information we already had
+        """
+
+        try:
+            settings_database = self.manage_file.get_database_lines()
+
+            self.cursor = self.__connect(
+                settings_database[0],       # Username
+                settings_database[1],       # Password
+                settings_database[2],       # Host
+                int(settings_database[3]),  # Port
+                self.name_database          # Database
+            )
+        except Exception:
+            self.__init__()
 
 
     def deletes_all_tuples(self):
@@ -115,6 +136,8 @@ class Database(object):
                 f"DELETE FROM {str_row}",
                 ()
             )
+
+        self.connector.commit()
 
         # activation of constraints
         self.cursor.execute(
@@ -190,3 +213,19 @@ class Database(object):
             str_rows_list.append(mini_list)
 
         return str_rows_list
+    
+
+    def test_execution(self, command: str, variable_list: list):
+        """ `+`
+        `Type:` Procedure
+        `Description:` execute the command to test
+        :param:`command:` command to be executed
+        :param:`varaible_list:` list of variables in the command
+        """
+
+        self.cursor.execute(
+            command,
+            (','.join(variable_list),)
+        )
+
+        self.connector.commit()
