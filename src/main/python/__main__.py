@@ -41,8 +41,8 @@ def __test():
     database = Database()
 
     database.test_execution(
-        "SELECT COUNT(*) FROM workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine JOIN activities a ON w.IdWork = a.IdWork JOIN components c ON c.IdActivity = a.IdActivity WHERE wo.Name = ? AND w.IdWork = ?",
-        ["test4_2023-05-11_10h33m19s", 126]
+        "SELECT w.DateBegin, w.DateEnd FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?",
+        ["2_cartes_2023-05-11_12h32m31s"]
     )
 
 

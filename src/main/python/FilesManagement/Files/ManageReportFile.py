@@ -15,6 +15,11 @@ from Database.Database import Database
 from GraphicInterface.MessageBox import MessageBox
 
 #-----------------------------------------------------------------------------------------------------
+#
+CONSTANT_FORMAT_DATES_DATABASE = "%Y-%m-%d %H:%M:%S.%f"
+CONSTANT_SHORT_FORMAT_DATES_DATABASE = "%Y-%m-%d %H:%M:%S"
+
+#-----------------------------------------------------------------------------------------------------
 
 class ManageReportFile(ManageAnyFile):
     """ `+`
@@ -221,7 +226,11 @@ class ManageReportFile(ManageAnyFile):
             # dates in string
             date_result = tuples[0][0]
 
-            date1 = datetime.strptime(date_result, "%Y-%m-%d %H:%M:%S.%f")
+            try:
+                date1 = datetime.strptime(date_result, CONSTANT_FORMAT_DATES_DATABASE)
+            except Exception:
+                date1 = datetime.strptime(date_result, CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+
             date2 = datetime.strptime(execution_time, "%Y-%m-%d_%Hh%Mm%Ss")
     
             # calculate the difference between the two dates and define the tolerance at 2 minutes
@@ -238,6 +247,106 @@ class ManageReportFile(ManageAnyFile):
                 content_list.append(f"   - Valeur expectée : {date2}")
         except Exception as e:
             content_list.append(f"==> [ERREUR] Date de création => {e}")
+
+        content_list.append(" ")
+
+        self.__check_start_end_date_card(content_list, execution_time)
+
+
+    def __check_start_end_date_card(self, content_list: list, execution_time: str):
+        """ `-`
+        `Type:` Procedure
+        `Description:`
+        :param:`content_list:` file content
+        :param:`execution_time:` time at which the test is performed
+        """
+
+        # verification of start date and end date
+        try:
+            # get the value in the database
+            date_tuples = self.data.get_tuples(
+                "SELECT w.DateBegin, w.DateEnd FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?",
+                [self.folder_name]
+            )
+
+            # get the production time of the card and the number of cards to make in the database
+            max_time_tuple = self.data.get_tuples(
+                "SELECT MAX(wrms.ExpectedCycleTime), (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS cartes FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder JOIN workorderrecipemachinestages wrms ON wrm.IdWorkOrderRecipeMachine = wrms.IdWorkOrderRecipeMachine WHERE w.Name = ?", 
+                [self.folder_name]
+            )
+
+            # decomposition of the tuple to calculate the max production time
+            unit_time = float(max_time_tuple[0][0])
+            nb_cards_to_made = int(max_time_tuple[0][1])
+            time_for_a_card = unit_time/1000
+            time_for_cards = time_for_a_card * nb_cards_to_made - 3
+            time_cards_sec = timedelta(seconds=time_for_cards)
+
+            content_list.append("-> Cohérence des dates de début et de fin de la production d'une carte")
+
+            for i in range(0, len(date_tuples)):
+                content_list.append(f"  => Carte N°{i+1}")
+
+                try:
+                    begin_date = datetime.strptime(date_tuples[i][0], CONSTANT_FORMAT_DATES_DATABASE)
+                except Exception:
+                    begin_date = datetime.strptime(date_tuples[i][0], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+
+                try:
+                    end_date = datetime.strptime(date_tuples[i][1], CONSTANT_FORMAT_DATES_DATABASE)
+                except Exception:
+                    end_date = datetime.strptime(date_tuples[i][1], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+
+                max_end_date = begin_date + time_cards_sec
+
+                if i == 0:
+                    if begin_date < end_date and end_date <= max_end_date:
+                        content_list.append("       -> Cohérence date de début et de fin => OK")
+                        content_list.append(f"          - Date de début : {begin_date}")
+                        content_list.append(f"          - Date de fin : {end_date}")
+                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
+                    else:
+                        content_list.append("       -> Cohérence date de début et de fin => NOK")
+                        content_list.append(f"          - Date de début : {begin_date}")
+                        content_list.append(f"          - Date de fin : {end_date}")
+                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
+                else:
+                    try:
+                        before_begin_date = datetime.strptime(date_tuples[i-1][0], CONSTANT_FORMAT_DATES_DATABASE)
+                    except Exception:
+                        before_begin_date = datetime.strptime(date_tuples[i-1][0], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+
+                    try:
+                        before_end_date = datetime.strptime(date_tuples[i][1], CONSTANT_FORMAT_DATES_DATABASE)
+                    except Exception:
+                        before_end_date = datetime.strptime(date_tuples[i][1], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+
+                    #
+                    if before_begin_date < begin_date and begin_date < before_end_date:
+                        content_list.append("       -> Début de carte comprise entre début et fin de la carte d'avant => OK")
+                        content_list.append(f"          - Date de début : {begin_date}")
+                        content_list.append(f"          - Date de début de la carte d'avant : {before_begin_date}")
+                        content_list.append(f"          - Date de fin de la carte d'avant : {before_end_date}")
+                    else:
+                        content_list.append("       -> Début de carte comprise entre début et fin de la carte d'avant => NOK")
+                        content_list.append(f"          - Date de début : {begin_date}")
+                        content_list.append(f"          - Date de début de la carte d'avant : {before_begin_date}")
+                        content_list.append(f"          - Date de fin de la carte d'avant : {before_end_date}")
+
+                    #
+                    if begin_date < end_date and end_date <= max_end_date:
+                        content_list.append("       -> Cohérence date de début et de fin => OK")
+                        content_list.append(f"          - Date de début : {begin_date}")
+                        content_list.append(f"          - Date de fin : {end_date}")
+                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
+                    else:
+                        content_list.append("       -> Cohérence date de début et de fin => NOK")
+                        content_list.append(f"          - Date de début : {begin_date}")
+                        content_list.append(f"          - Date de fin : {end_date}")
+                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
+
+        except Exception as e:
+            content_list.append(f"==> [ERREUR] Cohérence des dates de début et Date de fin de la production d'une carte => {e}")
 
         content_list.append(" ")
 
