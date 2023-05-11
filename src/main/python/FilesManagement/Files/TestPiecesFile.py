@@ -100,7 +100,7 @@ class TestPiecesFile(ManageAnyFile):
 
         execute_list = [
             "Key;down;1683191945.778898",
-            "Key;delete;1683191946.6426668"
+            "Key;delete;1683191945.900000"
         ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "nb_card_make_prod.txt", execute_list)

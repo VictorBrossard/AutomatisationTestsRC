@@ -144,7 +144,7 @@ class Interaction(object):
 
             # create report
             report = ManageReportFile(database)
-            report.create_report_file(folder.get_folder_path(), fil)
+            report.create_report_file(folder.get_folder_path(), fil, folder.get_now())
 
             # launches the general postcondition to stop a test
             PostCondition().start_postcondition(database, folder.get_folder_path())

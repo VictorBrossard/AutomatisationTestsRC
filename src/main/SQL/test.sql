@@ -33,9 +33,26 @@ DELETE FROM workorderstatushistory;
 DELETE FROM works;
 SET FOREIGN_KEY_CHECKS = 1;
 
-/* nombre de carte "faites" */
+/* nombre de carte passé dans la machine */
 SELECT COUNT(*) FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = "test8";
 
-/* datecréation */
+/* nombre de carte totalement finis */
+SELECT COUNT(*) FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE w.DateEnd != "" AND wo.Name = "test4_2023-05-11";
 
+/* datecréation */
 SELECT DateCreation FROM workorders WHERE NAME = "test4_2023-05-10_16h35m27s";
+
+/* result */
+SELECT ROW_NUMBER() OVER (ORDER BY w.Result) AS Num, w.Result FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = "test4_2023-05-11_09h00m49s";
+
+/*NB COMPOSENT PAR UNIT*/
+SELECT worm.NbUnitsPerWork, worm.NbComponentsPerUnit FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) WHERE wo.Name = "test4_2023-05-11_09h47m19s";
+
+/* IdWork */
+SELECT w.IdWork FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = "test4_2023-05-11_09h47m19s";
+
+/* nb components posés*/
+SELECT COUNT(*) FROM workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine JOIN activities a ON w.IdWork = a.IdWork JOIN components c ON c.IdActivity = a.IdActivity WHERE wo.Name = "test4_2023-05-11_09h47m19s" AND w.IdWork = 122;
+
+/* DateBegin DateEnd */
+SELECT w.DateBegin, w.DateEnd FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = "test4_2023-05-11_10h59m24s";

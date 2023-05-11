@@ -41,16 +41,10 @@ def __test():
     database = Database()
 
     database.test_execution(
-        "SELECT DateCreation FROM workorders WHERE NAME = ?",
-        ["test4_2023-05-10_16h35m27s"]
+        "SELECT COUNT(*) FROM workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine JOIN activities a ON w.IdWork = a.IdWork JOIN components c ON c.IdActivity = a.IdActivity WHERE wo.Name = ? AND w.IdWork = ?",
+        ["test4_2023-05-11_10h33m19s", 126]
     )
 
-    liste = database.get_tuples(
-        "SELECT DateCreation FROM workorders WHERE NAME = ?",
-        ["test4_2023-05-10_16h35m27s"]
-    )
-
-    print(liste[0][0])
 
     
 # Execution of the main function

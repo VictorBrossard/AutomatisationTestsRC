@@ -205,7 +205,7 @@ class Database(object):
 
         self.cursor.execute(
             command,
-            (','.join(variable_list),)
+            tuple(variable_list)
         )
 
         rows = self.cursor.fetchall()
@@ -231,7 +231,7 @@ class Database(object):
 
         self.cursor.execute(
             command,
-            (','.join(variable_list),)
+            tuple(variable_list)
         )
 
         rows = self.cursor.fetchall()
