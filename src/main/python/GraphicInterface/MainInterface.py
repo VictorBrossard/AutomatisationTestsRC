@@ -11,6 +11,7 @@ from tkinter import ttk
 from tkinter import filedialog
 
 from Interaction.Interaction import Interaction
+from Interaction.ManageSoftwares import ManageSoftwares
 
 from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 from GraphicInterface.LoopTestInterface import LoopTestInterface
@@ -23,8 +24,6 @@ from FilesManagement.Folders.ManageFolders import ManageFolders
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
 from UsefulFunction.UsefulFunction import cant_close
-
-from RCTest.ManageSoftwares import ManageSoftwares
 
 from Database.Database import Database
 

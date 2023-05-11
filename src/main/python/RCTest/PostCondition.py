@@ -5,7 +5,7 @@
 # Import of files useful for code execution
 import shutil
 
-from RCTest.ManageSoftwares import ManageSoftwares
+from Interaction.ManageSoftwares import ManageSoftwares
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 

@@ -5,19 +5,13 @@
 # Import of files useful for code execution 
 import os
 
-from datetime import timedelta
-from datetime import datetime
-
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
 from Database.Database import Database
 
 from GraphicInterface.MessageBox import MessageBox
 
-#-----------------------------------------------------------------------------------------------------
-#
-CONSTANT_FORMAT_DATES_DATABASE = "%Y-%m-%d %H:%M:%S.%f"
-CONSTANT_SHORT_FORMAT_DATES_DATABASE = "%Y-%m-%d %H:%M:%S"
+from RCTest.CheckTest import CheckTest
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -26,16 +20,35 @@ class ManageReportFile(ManageAnyFile):
     :class:`ManageReportFile` manages report file
     """
     
-    def __init__(self, database: Database):
+    def __init__(self, database: Database, folder_path: str, file_with_path: str, execution_time: str):
         """ `-`
         `Type:` Constructor
+        :param:`database:` object that manages the interaction with the database
+        :param:`path:` path where you save the file
+        :param:`file_with_path:` file that stores the path to the settings
+        :param:`execution_time:` time at which the test is performed
         """
 
         self.data = database
+        self.folder_path = folder_path
+        self.file_with_path = file_with_path
+        self.execution_time = execution_time
+        self.test_name = os.path.basename(folder_path) # name of the file which is also the name of the test
+        self.check_test = CheckTest(self.data, self.test_name)
+        self.content_list = [] # future file content
 
 
-    def create_report_file(self, folder_path: str, file_with_path: str, execution_time: str):
+    def create_report_file(self):
         """ `+`
+        `Type:` Procedure
+        `Description:` execute the private function __create_report_file
+        """
+
+        self.__create_report_file(self.folder_path, self.file_with_path, self.execution_time)
+
+
+    def __create_report_file(self, folder_path: str, file_with_path: str, execution_time: str):
+        """ `-`
         `Type:` Procedure
         `Description:` creates a txt file
         :param:`path:` path where you save the file
@@ -43,24 +56,19 @@ class ManageReportFile(ManageAnyFile):
         :param:`execution_time:` time at which the test is performed
         """
 
-        # retrieve the folder name
-        self.folder_name = os.path.basename(folder_path)
-
         # will retrieve the values of the settings used for the report
         settings = self.__get_settings_values(file_with_path)
 
         if settings == []: return
 
-        # future file content
-        content_list = []
-        content_list.append(f"Nom : {settings[0]}\n")
+        self.content_list.append(f"Nom : {settings[0]}\n")
 
-        self.__create_card_section(content_list, settings[1])
-        self.__create_date_section(content_list, execution_time)
-        self.__create_component_section(content_list)
+        self.__create_card_section(settings[1])
+        self.__create_date_section(execution_time)
+        self.__create_component_section()
         
         # report creation
-        self.create_file(folder_path, "report.txt", content_list)
+        self.create_file(folder_path, "report.txt", self.content_list)
 
 
     def __get_settings_values(self, file_with_path: str):
@@ -97,115 +105,29 @@ class ManageReportFile(ManageAnyFile):
         return settings_values
     
 
-    def __create_card_section(self, content_list: list, card_to_make: str):
+    def __create_card_section(self, card_to_make: str):
         """ `-`
         `Type:` Procedure
         `Description:` write in the report file the tests in the card section
-        :param:`content_list:` file content
         :param:`card_to_made:` card to make
         """
 
-        content_list.append("-------------------- Carte --------------------\n")
+        self.content_list.append("-------------------- Carte --------------------\n")
 
         # verification of the number of cards to be produced
-        try:
-            # get the value in the database
-            card_to_make_tuples = self.data.get_tuples(
-                "SELECT (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS carte FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder WHERE w.Name = ?",
-                [self.folder_name]
-            )
-            
-            result = card_to_make_tuples[0][0]
-            if result == card_to_make:
-                content_list.append("-> Nombre de cartes à produire => OK")
-                content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {card_to_make}")
-            else:
-                content_list.append("-> Nombre de cartes à produire => NOK")
-                content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {card_to_make}")
-        except Exception as e:
-            content_list.append(f"==> [ERREUR] Nombre de cartes à produire => {e}")
-
-        content_list.append(" ")
+        self.check_test.nb_cards_to_be_produced(self.content_list, card_to_make)
         
         # verification of the number of cards passed through the machine
-        try:
-            # get the value in the database
-            card_tuples = self.data.get_tuples(
-                "SELECT COUNT(*) FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?",
-                [self.folder_name]
-            )
-            
-            result = card_tuples[0][0]
-            if result == card_to_make:
-                content_list.append("-> Nombre de cartes passées dans la machine => OK")
-                content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {card_to_make}")
-            else:
-                content_list.append("-> Nombre de cartes passées dans la machine => NOK")
-                content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {card_to_make}")
-        except Exception as e:
-            content_list.append(f"==> [ERREUR] Nombre de cartes passées dans la machine => {e}")
-
-        content_list.append(" ")
+        self.check_test.nb_cards_passed_machine(self.content_list, card_to_make)
 
         # verification of the number of fully produced cards
-        try:
-            # get the value in the database
-            card_made_tuples = self.data.get_tuples(
-                "SELECT COUNT(*) FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE w.DateEnd != '' AND wo.Name = ?",
-                [self.folder_name]
-            )
-            
-            result = card_made_tuples[0][0]
-            if result == card_to_make:
-                content_list.append("-> Nombre de cartes produites entièrement => OK")
-                content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {card_to_make}")
-            else:
-                content_list.append("-> Nombre de cartes produites entièrement => NOK")
-                content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {card_to_make}")
-        except Exception as e:
-            content_list.append(f"==> [ERREUR] Nombre de cartes produites entièrement => {e}")
-
-        content_list.append(" ")
+        self.check_test.nb_produced_cards(self.content_list, card_to_make)
 
         # verification of the result status of the cards
-        try:
-            # get the value in the database
-            status_tuples = self.data.get_tuples(
-                "SELECT w.Result FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?",
-                [self.folder_name]
-            )
-
-            content_list.append("-> Status Result")
-            expected_value = "0"
-            
-            # for each card we look at its status
-            for i, row in enumerate(status_tuples):
-                # card status
-                value = row[0]
-
-                content_list.append(f"  => Carte N°{i+1}")
-
-                if value == expected_value:
-                    content_list.append("       -> Status Result => OK")
-                    content_list.append(f"          - Valeur obtenue : {value}")
-                    content_list.append(f"          - Valeur expectée : {expected_value}")
-                else:
-                    content_list.append("       -> Status Result => NOK")
-                    content_list.append(f"          - Valeur obtenue : {value}")
-                    content_list.append(f"          - Valeur expectée : {expected_value}")
-        except Exception as e:
-            content_list.append(f"==> [ERREUR] Status Result => {e}")
-
-        content_list.append(" ")
+        self.check_test.cards_result_status(self.content_list)
 
 
-    def __create_date_section(self, content_list: list, execution_time: str):
+    def __create_date_section(self, execution_time: str):
         """ `-`
         `Type:` Procedure
         `Description:` write in the report file the tests in the date section
@@ -213,198 +135,22 @@ class ManageReportFile(ManageAnyFile):
         :param:`execution_time:` time at which the test is performed
         """
 
-        content_list.append("-------------------- Date --------------------\n")
+        self.content_list.append("-------------------- Date --------------------\n")
 
         # verification of the consistency of the creation date
-        try:
-            # get the value in the database
-            tuples = self.data.get_tuples(
-                "SELECT DateCreation FROM workorders WHERE NAME = ?",
-                [self.folder_name]
-            )
-            
-            # dates in string
-            date_result = tuples[0][0]
+        self.check_test.creation_date_constency(self.content_list, execution_time)
 
-            try:
-                date1 = datetime.strptime(date_result, CONSTANT_FORMAT_DATES_DATABASE)
-            except Exception:
-                date1 = datetime.strptime(date_result, CONSTANT_SHORT_FORMAT_DATES_DATABASE)
-
-            date2 = datetime.strptime(execution_time, "%Y-%m-%d_%Hh%Mm%Ss")
-    
-            # calculate the difference between the two dates and define the tolerance at 2 minutes
-            diff = abs(date1 - date2)
-            tolerance = timedelta(minutes=1)
-
-            if diff <= tolerance:
-                content_list.append("-> Date de création => OK")
-                content_list.append(f"   - Valeur obtenue : {date1}")
-                content_list.append(f"   - Valeur expectée : {date2}")
-            else:
-                content_list.append("-> Date de création => NOK")
-                content_list.append(f"   - Valeur obtenue : {date1}")
-                content_list.append(f"   - Valeur expectée : {date2}")
-        except Exception as e:
-            content_list.append(f"==> [ERREUR] Date de création => {e}")
-
-        content_list.append(" ")
-
-        self.__check_start_end_date_card(content_list, execution_time)
+        # checking the consistency of the start and end dates of a card
+        self.check_test.check_start_end_date_card(self.content_list)
 
 
-    def __check_start_end_date_card(self, content_list: list, execution_time: str):
-        """ `-`
-        `Type:` Procedure
-        `Description:`
-        :param:`content_list:` file content
-        :param:`execution_time:` time at which the test is performed
-        """
-
-        # verification of start date and end date
-        try:
-            # get the value in the database
-            date_tuples = self.data.get_tuples(
-                "SELECT w.DateBegin, w.DateEnd FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?",
-                [self.folder_name]
-            )
-
-            # get the production time of the card and the number of cards to make in the database
-            max_time_tuple = self.data.get_tuples(
-                "SELECT MAX(wrms.ExpectedCycleTime), (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS cartes FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder JOIN workorderrecipemachinestages wrms ON wrm.IdWorkOrderRecipeMachine = wrms.IdWorkOrderRecipeMachine WHERE w.Name = ?", 
-                [self.folder_name]
-            )
-
-            # decomposition of the tuple to calculate the max production time
-            unit_time = float(max_time_tuple[0][0])
-            nb_cards_to_made = int(max_time_tuple[0][1])
-            time_for_a_card = unit_time/1000
-            time_for_cards = time_for_a_card * nb_cards_to_made - 3
-            time_cards_sec = timedelta(seconds=time_for_cards)
-
-            content_list.append("-> Cohérence des dates de début et de fin de la production d'une carte")
-
-            for i in range(0, len(date_tuples)):
-                content_list.append(f"  => Carte N°{i+1}")
-
-                try:
-                    begin_date = datetime.strptime(date_tuples[i][0], CONSTANT_FORMAT_DATES_DATABASE)
-                except Exception:
-                    begin_date = datetime.strptime(date_tuples[i][0], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
-
-                try:
-                    end_date = datetime.strptime(date_tuples[i][1], CONSTANT_FORMAT_DATES_DATABASE)
-                except Exception:
-                    end_date = datetime.strptime(date_tuples[i][1], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
-
-                max_end_date = begin_date + time_cards_sec
-
-                if i == 0:
-                    if begin_date < end_date and end_date <= max_end_date:
-                        content_list.append("       -> Cohérence date de début et de fin => OK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de fin : {end_date}")
-                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
-                    else:
-                        content_list.append("       -> Cohérence date de début et de fin => NOK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de fin : {end_date}")
-                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
-                else:
-                    try:
-                        before_begin_date = datetime.strptime(date_tuples[i-1][0], CONSTANT_FORMAT_DATES_DATABASE)
-                    except Exception:
-                        before_begin_date = datetime.strptime(date_tuples[i-1][0], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
-
-                    try:
-                        before_end_date = datetime.strptime(date_tuples[i][1], CONSTANT_FORMAT_DATES_DATABASE)
-                    except Exception:
-                        before_end_date = datetime.strptime(date_tuples[i][1], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
-
-                    #
-                    if before_begin_date < begin_date and begin_date < before_end_date:
-                        content_list.append("       -> Début de carte comprise entre début et fin de la carte d'avant => OK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de début de la carte d'avant : {before_begin_date}")
-                        content_list.append(f"          - Date de fin de la carte d'avant : {before_end_date}")
-                    else:
-                        content_list.append("       -> Début de carte comprise entre début et fin de la carte d'avant => NOK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de début de la carte d'avant : {before_begin_date}")
-                        content_list.append(f"          - Date de fin de la carte d'avant : {before_end_date}")
-
-                    #
-                    if begin_date < end_date and end_date <= max_end_date:
-                        content_list.append("       -> Cohérence date de début et de fin => OK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de fin : {end_date}")
-                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
-                    else:
-                        content_list.append("       -> Cohérence date de début et de fin => NOK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de fin : {end_date}")
-                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
-
-        except Exception as e:
-            content_list.append(f"==> [ERREUR] Cohérence des dates de début et Date de fin de la production d'une carte => {e}")
-
-        content_list.append(" ")
-
-
-    def __create_component_section(self, content_list: list):
+    def __create_component_section(self):
         """ `-`
         `Type:` Procedure
         `Description:` write in the report file the tests in the component section
-        :param:`content_list:` file content
         """
 
-        content_list.append("-------------------- Composant --------------------\n")
+        self.content_list.append("-------------------- Composant --------------------\n")
 
         # verification of the number of components installed per card
-        try:
-            # get the values in the database
-            # number of components per card
-            nb_components_tuples = self.data.get_tuples(
-                "SELECT worm.NbUnitsPerWork, worm.NbComponentsPerUnit FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) WHERE wo.Name = ?",
-                [self.folder_name]
-            )
-            
-            nb_unit_per_work = nb_components_tuples[0][0]
-            nb_components_per_unit = nb_components_tuples[0][1]
-            nb_components_per_card_expected = int(nb_unit_per_work) * int(nb_components_per_unit)
-
-            # id of the cards
-            id_work_tuples = self.data.get_tuples(
-                "SELECT w.IdWork FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?",
-                [self.folder_name]
-            )
-
-            flat_list = [element for sub_list in id_work_tuples for element in sub_list]
-
-            content_list.append("-> Nombre de composants posés par carte")
-
-            # for each card we check the number of components placed
-            for i, id_work in enumerate(flat_list):
-
-                content_list.append(f"  => Carte N°{i+1}")
-
-                # number of components installed for this card
-                nb_components_installed_tuples = self.data.get_tuples(
-                    "SELECT COUNT(*) FROM workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine JOIN activities a ON w.IdWork = a.IdWork JOIN components c ON c.IdActivity = a.IdActivity WHERE wo.Name = ? AND w.IdWork = ?",
-                    [self.folder_name, id_work]
-                )
-
-                installed_components = nb_components_installed_tuples[0][0]
-
-                if int(installed_components) == nb_components_per_card_expected:
-                    content_list.append("       -> Nombre de composants posés par carte => OK")
-                    content_list.append(f"          - Valeur obtenue : {installed_components}")
-                    content_list.append(f"          - Valeur expectée : {nb_components_per_card_expected}")
-                else:
-                    content_list.append("       -> Nombre de composants posés par carte => NOK")
-                    content_list.append(f"          - Valeur obtenue : {installed_components}")
-                    content_list.append(f"          - Valeur expectée : {nb_components_per_card_expected}")
-        except Exception as e:
-            content_list.append(f"==> [ERREUR] Nombre de composants posés par carte => {e}")
-
-        content_list.append(" ")
+        self.check_test.nb_components_installed(self.content_list)

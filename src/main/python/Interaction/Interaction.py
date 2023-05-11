@@ -14,6 +14,7 @@ from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 from Interaction.Screenshot import Screenshot
 from Interaction.ExecuteTest import ExecuteTest
 from Interaction.InputRecorder import InputRecorder
+from Interaction.ManageSoftwares import ManageSoftwares
 
 from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_PIECES_FOLDER_PATH
 from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
@@ -26,7 +27,6 @@ from FilesManagement.Files.ManageReportFile import ManageReportFile
 
 from RCTest.Precondition import Precondition
 from RCTest.PostCondition import PostCondition
-from RCTest.ManageSoftwares import ManageSoftwares
 
 from Database.Database import Database
 
@@ -143,8 +143,7 @@ class Interaction(object):
             Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
 
             # create report
-            report = ManageReportFile(database)
-            report.create_report_file(folder.get_folder_path(), fil, folder.get_now())
+            ManageReportFile(database, folder.get_folder_path(), fil, folder.get_now()).create_report_file()
 
             # launches the general postcondition to stop a test
             PostCondition().start_postcondition(database, folder.get_folder_path())
@@ -260,7 +259,7 @@ class Interaction(object):
         unit_time = float(max_time_tuple[0][0])
         nb_cards_to_made = int(max_time_tuple[0][1])
         time_for_a_card = unit_time/1000
-        time_for_cards = time_for_a_card * nb_cards_to_made - 3
+        time_for_cards = time_for_a_card * nb_cards_to_made
 
         card_made = 0
 
