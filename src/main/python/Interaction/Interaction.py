@@ -9,7 +9,6 @@ import datetime
 
 from GraphicInterface.MessageBox import MessageBox
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
-from GraphicInterface.SettingsInterface import SettingsInterface
 from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 
 from Interaction.Screenshot import Screenshot
@@ -28,6 +27,7 @@ from FilesManagement.Files.ManageReportFile import ManageReportFile
 
 from RCTest.Precondition import Precondition
 from RCTest.PostCondition import PostCondition
+from RCTest.ReadTraceFile import ReadTraceFile
 
 from Database.Database import Database
 

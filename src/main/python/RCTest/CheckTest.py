@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : 
+# Description   : Class that performs all the tests with the database
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
@@ -17,14 +17,14 @@ CONSTANT_SHORT_FORMAT_DATES_DATABASE = "%Y-%m-%d %H:%M:%S"
 
 class CheckTest(object):
     """ `+`
-    :class:`CheckTest` 
+    :class:`CheckTest` performs all the tests with the database
     """
 
     def __init__(self, database: Database, test_name: str):
         """ `-`
         `Type:` Constructor
         :param:`database:` object that manages the interaction with the database
-        :param:`test_name:` 
+        :param:`test_name:` test name
         """
 
         self.data = database
