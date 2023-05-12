@@ -140,6 +140,9 @@ class ManageReportFile(ManageAnyFile):
         # verification of the consistency of the creation date
         self.check_test.creation_date_constency(self.content_list, execution_time)
 
+        # verification of the consistency of the begin date in workorderactivationhistory
+        self.check_test.begin_date_constency(self.content_list, execution_time)
+
         # checking the consistency of the start and end dates of a card
         self.check_test.check_start_end_date_card(self.content_list)
 

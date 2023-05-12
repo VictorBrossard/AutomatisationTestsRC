@@ -137,7 +137,7 @@ class Interaction(object):
                     self.__prod_waiting_time(database, folder.get_folder_name())
                 else:
                     ExecuteTest().read_test_file(test_piece)
-                    time.sleep(0.5)
+                    time.sleep(0.1)
 
             # take a screenshot
             Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
@@ -223,6 +223,7 @@ class Interaction(object):
             f"{path_line}\\card_to_make.txt",
             f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_make_prod.txt",
             f"{path_line}\\card_make.txt",
+            f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\validate_prod.txt",
             f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\start_prod.txt",
             #f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\stop_prod.txt",
             f"{path_line}\\postcondition.txt"

@@ -62,7 +62,7 @@ class ExecuteTest(object):
 
             before_word_list = first_word_list # We store the line before to know the waiting time between each instruction
 
-            time.sleep(1)
+            time.sleep(0.5)
 
             # We do the same for all the lines of the file
             for line in test_file:
@@ -173,7 +173,7 @@ class ExecuteTest(object):
                 for k in hotkeys:
                     self.keyboard.press(k)
 
-                time.sleep(0.1)
+                time.sleep(0.05)
 
                 for k in reversed(hotkeys):
                     self.keyboard.release(k)
@@ -184,7 +184,7 @@ class ExecuteTest(object):
                     Screenshot()
                 else:"""
                 self.keyboard.press(key)
-                time.sleep(0.5)
+                time.sleep(0.1)
                 self.keyboard.release(key)
 
 

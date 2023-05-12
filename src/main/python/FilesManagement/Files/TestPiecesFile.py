@@ -24,6 +24,7 @@ class TestPiecesFile(ManageAnyFile):
         self.__name_prod()
         self.__nb_card_to_make_prod()
         self.__nb_card_make_prod()
+        self.__validate_prod()
         self.__start_prod()
         self.__stop_prod()
 
@@ -105,6 +106,22 @@ class TestPiecesFile(ManageAnyFile):
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "nb_card_make_prod.txt", execute_list)
 
+
+    def __validate_prod(self):
+        """ `-`
+        `Type:` Function
+        `Description:` validate production
+        `Return:` file path
+        """
+
+        execute_list = [
+            "Click;left;0.3984375;0.7981481481481482;1683875857.9951065",
+            "Release;left;0.3984375;0.7981481481481482;1683875858.1147294",
+            "Key;tab;1683875858.2000000"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "validate_prod.txt", execute_list)
+
     
     def __start_prod(self):
         """ `-`
@@ -114,11 +131,9 @@ class TestPiecesFile(ManageAnyFile):
         """
 
         execute_list = [
-            "Click;left;0.4046875;0.7898148148148149;1683268416.6014845",
-            "Release;left;0.4046875;0.7898148148148149;1683268416.7127273",
-            "Click;left;0.928125;0.16296296296296298;1683268419.7686532",
-            "Release;left;0.928125;0.16296296296296298;1683268419.8581877",
-            "Key;tab;1683268422.801447"
+            "Click;left;0.9291666666666667;0.1648148148148148;1683875899.458727",
+            "Release;left;0.9291666666666667;0.1648148148148148;1683875899.5305402",
+            "Key;tab;1683875902.109196"
         ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "start_prod.txt", execute_list)

@@ -31,6 +31,9 @@ class CheckTest(object):
         self.test_name = test_name
 
 
+    ################################################################ Card section ################################################################
+
+
     def nb_cards_to_be_produced(self, content_list: list, card_to_make: str):
         """ `+`
         `Type:` Procedure
@@ -42,7 +45,10 @@ class CheckTest(object):
         try:
             # get the value in the database
             card_to_make_tuples = self.data.get_tuples(
-                "SELECT (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS carte FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder WHERE w.Name = ?",
+                """SELECT (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS carte 
+                FROM workorders w 
+                JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder 
+                WHERE w.Name = ?""",
                 [self.test_name]
             )
             
@@ -72,7 +78,11 @@ class CheckTest(object):
         try:
             # get the value in the database
             card_tuples = self.data.get_tuples(
-                "SELECT COUNT(*) FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?",
+                """SELECT COUNT(*) 
+                FROM workorders wo 
+                JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder 
+                JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine 
+                WHERE wo.Name = ?""",
                 [self.test_name]
             )
             
@@ -102,7 +112,11 @@ class CheckTest(object):
         try:
             # get the value in the database
             card_made_tuples = self.data.get_tuples(
-                "SELECT COUNT(*) FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE w.DateEnd != '' AND wo.Name = ?",
+                """SELECT COUNT(*) 
+                FROM workorders wo 
+                JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder 
+                JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine 
+                WHERE w.DateEnd != '' AND wo.Name = ?""",
                 [self.test_name]
             )
             
@@ -131,7 +145,11 @@ class CheckTest(object):
         try:
             # get the value in the database
             status_tuples = self.data.get_tuples(
-                "SELECT w.Result FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?",
+                """SELECT w.Result 
+                FROM workorders wo 
+                JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder 
+                JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine 
+                WHERE wo.Name = ?""",
                 [self.test_name]
             )
 
@@ -159,6 +177,9 @@ class CheckTest(object):
         content_list.append(" ")
 
 
+    ################################################################ Date section ################################################################
+
+
     def creation_date_constency(self, content_list : list, execution_time: str):
         """ `+`
         `Type:` Procedure
@@ -170,7 +191,9 @@ class CheckTest(object):
         try:
             # get the value in the database
             tuples = self.data.get_tuples(
-                "SELECT DateCreation FROM workorders WHERE NAME = ?",
+                """SELECT DateCreation 
+                FROM workorders 
+                WHERE NAME = ?""",
                 [self.test_name]
             )
             
@@ -213,13 +236,21 @@ class CheckTest(object):
         try:
             # get the value in the database
             date_tuples = self.data.get_tuples(
-                "SELECT w.DateBegin, w.DateEnd FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?",
+                """SELECT w.DateBegin, w.DateEnd 
+                FROM workorders wo 
+                JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder 
+                JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine 
+                WHERE wo.Name = ?""",
                 [self.test_name]
             )
 
             # get the production time of the card and the number of cards to make in the database
             max_time_tuple = self.data.get_tuples(
-                "SELECT MAX(wrms.ExpectedCycleTime), (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS cartes FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder JOIN workorderrecipemachinestages wrms ON wrm.IdWorkOrderRecipeMachine = wrms.IdWorkOrderRecipeMachine WHERE w.Name = ?", 
+                """SELECT MAX(wrms.ExpectedCycleTime), (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS cartes 
+                FROM workorders w 
+                JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder 
+                JOIN workorderrecipemachinestages wrms ON wrm.IdWorkOrderRecipeMachine = wrms.IdWorkOrderRecipeMachine 
+                WHERE w.Name = ?""", 
                 [self.test_name]
             )
 
@@ -299,6 +330,56 @@ class CheckTest(object):
         content_list.append(" ")
 
 
+    def begin_date_constency(self, content_list : list, execution_time: str):
+        """ `+`
+        `Type:` Procedure
+        `Description:` verification of the consistency of the begin date in workorderactivationhistory
+        :param:`content_list:` file content
+        :param:`execution_time:` time at which the test is performed
+        """
+
+        try:
+            # get the value in the database
+            date_tuples = self.data.get_tuples(
+                """SELECT woah.DateBegin
+                FROM workorders wo 
+                JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder
+                JOIN workorderactivationshistory woah ON woah.IdWorkOrderRecipeMachine = worm.IdWorkOrderRecipeMachine
+                WHERE wo.Name = ?""",
+                [self.test_name]
+            )
+            
+            # dates in string
+            date_result = date_tuples[0][0]
+
+            try:
+                date1 = datetime.strptime(date_result, CONSTANT_FORMAT_DATES_DATABASE)
+            except Exception:
+                date1 = datetime.strptime(date_result, CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+
+            date2 = datetime.strptime(execution_time, "%Y-%m-%d_%Hh%Mm%Ss")
+    
+            # calculate the difference between the two dates and define the tolerance at 2 minutes
+            diff = abs(date1 - date2)
+            tolerance = timedelta(minutes=1)
+
+            if diff <= tolerance:
+                content_list.append("-> Date de début => OK")
+                content_list.append(f"   - Valeur obtenue : {date1}")
+                content_list.append(f"   - Valeur expectée : {date2}")
+            else:
+                content_list.append("-> Date de début => NOK")
+                content_list.append(f"   - Valeur obtenue : {date1}")
+                content_list.append(f"   - Valeur expectée : {date2}")
+        except Exception as e:
+            content_list.append(f"==> [ERREUR] Date de début => {e}")
+
+        content_list.append(" ")
+
+
+    ################################################################ Component section ################################################################
+
+
     def nb_components_installed(self, content_list: list):
         """ `+`
         `Type:` Procedure
@@ -310,7 +391,10 @@ class CheckTest(object):
             # get the values in the database
             # number of components per card
             nb_components_tuples = self.data.get_tuples(
-                "SELECT worm.NbUnitsPerWork, worm.NbComponentsPerUnit FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) WHERE wo.Name = ?",
+                """SELECT worm.NbUnitsPerWork, worm.NbComponentsPerUnit 
+                FROM workorders wo 
+                JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder 
+                WHERE wo.Name = ?""",
                 [self.test_name]
             )
             
@@ -320,7 +404,11 @@ class CheckTest(object):
 
             # id of the cards
             id_work_tuples = self.data.get_tuples(
-                "SELECT w.IdWork FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?",
+                """SELECT w.IdWork 
+                FROM workorders wo 
+                JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder 
+                JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine 
+                WHERE wo.Name = ?""",
                 [self.test_name]
             )
 
@@ -335,7 +423,13 @@ class CheckTest(object):
 
                 # number of components installed for this card
                 nb_components_installed_tuples = self.data.get_tuples(
-                    "SELECT COUNT(*) FROM workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine JOIN activities a ON w.IdWork = a.IdWork JOIN components c ON c.IdActivity = a.IdActivity WHERE wo.Name = ? AND w.IdWork = ?",
+                    """SELECT COUNT(*) 
+                    FROM workorders wo 
+                    JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder 
+                    JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine 
+                    JOIN activities a ON w.IdWork = a.IdWork 
+                    JOIN components c ON c.IdActivity = a.IdActivity 
+                    WHERE wo.Name = ? AND w.IdWork = ?""",
                     [self.test_name, id_work]
                 )
 
