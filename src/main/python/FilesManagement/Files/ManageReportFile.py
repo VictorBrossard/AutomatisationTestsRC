@@ -20,19 +20,21 @@ class ManageReportFile(ManageAnyFile):
     :class:`ManageReportFile` manages report file
     """
     
-    def __init__(self, database: Database, folder_path: str, file_with_path: str, execution_time: str):
+    def __init__(self, database: Database, folder_path: str, file_with_path: str, folder_creation_time: str, start_test_time: str):
         """ `-`
         `Type:` Constructor
         :param:`database:` object that manages the interaction with the database
         :param:`path:` path where you save the file
         :param:`file_with_path:` file that stores the path to the settings
-        :param:`execution_time:` time at which the test is performed
+        :param:`folder_creation_time:` time the file is created
+        :param:`start_time:` time when you press start
         """
 
         self.data = database
         self.folder_path = folder_path
         self.file_with_path = file_with_path
-        self.execution_time = execution_time
+        self.folder_creation_time = folder_creation_time
+        self.start_time = start_test_time
         self.test_name = os.path.basename(folder_path) # name of the file which is also the name of the test
         self.check_test = CheckTest(self.data, self.test_name)
         self.content_list = [] # future file content
@@ -44,16 +46,15 @@ class ManageReportFile(ManageAnyFile):
         `Description:` execute the private function __create_report_file
         """
 
-        self.__create_report_file(self.folder_path, self.file_with_path, self.execution_time)
+        self.__create_report_file(self.folder_path, self.file_with_path)
 
 
-    def __create_report_file(self, folder_path: str, file_with_path: str, execution_time: str):
+    def __create_report_file(self, folder_path: str, file_with_path: str):
         """ `-`
         `Type:` Procedure
         `Description:` creates a txt file
         :param:`path:` path where you save the file
         :param:`file_with_path:` file that stores the path to the settings
-        :param:`execution_time:` time at which the test is performed
         """
 
         # will retrieve the values of the settings used for the report
@@ -64,7 +65,7 @@ class ManageReportFile(ManageAnyFile):
         self.content_list.append(f"Nom : {settings[0]}\n")
 
         self.__create_card_section(settings[1])
-        self.__create_date_section(execution_time)
+        self.__create_date_section()
         self.__create_component_section()
         
         # report creation
@@ -112,7 +113,7 @@ class ManageReportFile(ManageAnyFile):
         :param:`card_to_made:` card to make
         """
 
-        self.content_list.append("-------------------- Carte --------------------\n")
+        self.content_list.append("------------------------------------------------------------ Carte ------------------------------------------------------------\n")
 
         # verification of the number of cards to be produced
         self.check_test.nb_cards_to_be_produced(self.content_list, card_to_make)
@@ -127,21 +128,22 @@ class ManageReportFile(ManageAnyFile):
         self.check_test.cards_result_status(self.content_list)
 
 
-    def __create_date_section(self, execution_time: str):
+    def __create_date_section(self):
         """ `-`
         `Type:` Procedure
         `Description:` write in the report file the tests in the date section
-        :param:`content_list:` file content
-        :param:`execution_time:` time at which the test is performed
         """
 
-        self.content_list.append("-------------------- Date --------------------\n")
+        self.content_list.append("------------------------------------------------------------ Date ------------------------------------------------------------\n")
 
         # verification of the consistency of the creation date
-        self.check_test.creation_date_constency(self.content_list, execution_time)
+        self.check_test.creation_date_constency(self.content_list, self.folder_creation_time)
 
         # verification of the consistency of the begin date in workorderactivationhistory
-        self.check_test.begin_date_constency(self.content_list, execution_time)
+        self.check_test.test_begin_date_constency(self.content_list, self.folder_creation_time)
+
+        #
+        self.check_test.check_date_begin_equal_start(self.content_list, self.start_time)
 
         # checking the consistency of the start and end dates of a card
         self.check_test.check_start_end_date_card(self.content_list)
@@ -153,7 +155,7 @@ class ManageReportFile(ManageAnyFile):
         `Description:` write in the report file the tests in the component section
         """
 
-        self.content_list.append("-------------------- Composant --------------------\n")
+        self.content_list.append("------------------------------------------------------------ Composant ------------------------------------------------------------\n")
 
         # verification of the number of components installed per card
         self.check_test.nb_components_installed(self.content_list)

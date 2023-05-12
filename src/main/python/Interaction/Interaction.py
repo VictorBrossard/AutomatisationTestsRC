@@ -5,6 +5,7 @@
 # Import of files useful for code execution
 import os
 import time
+import datetime
 
 from GraphicInterface.MessageBox import MessageBox
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
@@ -134,6 +135,7 @@ class Interaction(object):
             for test_piece in all_test_file:
                 if os.path.basename(test_piece) == "start_prod.txt":
                     ExecuteTest().read_test_file(test_piece)
+                    start_time = datetime.datetime.now()
                     self.__prod_waiting_time(database, folder.get_folder_name())
                 else:
                     ExecuteTest().read_test_file(test_piece)
@@ -143,7 +145,7 @@ class Interaction(object):
             Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
 
             # create report
-            ManageReportFile(database, folder.get_folder_path(), fil, folder.get_now()).create_report_file()
+            ManageReportFile(database, folder.get_folder_path(), fil, folder.get_now(), start_time.strftime('%Y-%m-%d %H:%M:%S')).create_report_file()
 
             # launches the general postcondition to stop a test
             PostCondition().start_postcondition(database, folder.get_folder_path())

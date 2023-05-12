@@ -180,12 +180,12 @@ class CheckTest(object):
     ################################################################ Date section ################################################################
 
 
-    def creation_date_constency(self, content_list : list, execution_time: str):
+    def creation_date_constency(self, content_list : list, folder_creation_time: str):
         """ `+`
         `Type:` Procedure
         `Description:` verification of the consistency of the creation date
         :param:`content_list:` file content
-        :param:`execution_time:` time at which the test is performed
+        :param:`folder_creation_time:` time the file is created
         """
 
         try:
@@ -205,28 +205,28 @@ class CheckTest(object):
             except Exception:
                 date1 = datetime.strptime(date_result, CONSTANT_SHORT_FORMAT_DATES_DATABASE)
 
-            date2 = datetime.strptime(execution_time, "%Y-%m-%d_%Hh%Mm%Ss")
+            date2 = datetime.strptime(folder_creation_time, "%Y-%m-%d_%Hh%Mm%Ss")
     
             # calculate the difference between the two dates and define the tolerance at 2 minutes
             diff = abs(date1 - date2)
             tolerance = timedelta(minutes=1)
 
             if diff <= tolerance:
-                content_list.append("-> Date de création => OK")
+                content_list.append("-> Date de création du test => OK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
                 content_list.append(f"   - Valeur expectée : {date2}")
             else:
-                content_list.append("-> Date de création => NOK")
+                content_list.append("-> Date de création du test => NOK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
                 content_list.append(f"   - Valeur expectée : {date2}")
         except Exception as e:
-            content_list.append(f"==> [ERREUR] Date de création => {e}")
+            content_list.append(f"==> [ERREUR] Date de création du test => {e}")
 
         content_list.append(" ")
 
 
     def check_start_end_date_card(self, content_list: list):
-        """ `-`
+        """ `+`
         `Type:` Procedure
         `Description:` checking the consistency of the start and end dates of a card
         :param:`content_list:` file content
@@ -260,7 +260,7 @@ class CheckTest(object):
             time_for_a_card = unit_time/1000
             time_for_cards = time_for_a_card * nb_cards_to_made
 
-            content_list.append("-> Cohérence des dates de début et de fin de la production d'une carte")
+            content_list.append("-> Cohérence des dates de début et de fin d'une carte")
 
             for i in range(0, len(date_tuples)):
                 content_list.append(f"  => Carte N°{i+1}")
@@ -278,18 +278,7 @@ class CheckTest(object):
                 max_end_date = begin_date + timedelta(seconds=time_for_cards)
 
                 # consistency test of start and end dates
-                if i == 0:
-                    if begin_date < end_date and end_date <= max_end_date:
-                        content_list.append("       -> Cohérence date de début et de fin => OK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de fin : {end_date}")
-                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
-                    else:
-                        content_list.append("       -> Cohérence date de début et de fin => NOK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de fin : {end_date}")
-                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
-                else:
+                if i != 0:
                     try:
                         before_begin_date = datetime.strptime(date_tuples[i-1][0], CONSTANT_FORMAT_DATES_DATABASE)
                     except Exception:
@@ -302,40 +291,87 @@ class CheckTest(object):
 
                     # test of the start date of the card between start and end of the card before
                     if before_begin_date < begin_date and begin_date < before_end_date:
-                        content_list.append("       -> Début de carte comprise entre début et fin de la carte d'avant => OK")
+                        content_list.append("       -> Date de début de la carte comprise entre début et fin de la carte d'avant => OK")
                         content_list.append(f"          - Date de début : {begin_date}")
                         content_list.append(f"          - Date de début de la carte d'avant : {before_begin_date}")
                         content_list.append(f"          - Date de fin de la carte d'avant : {before_end_date}")
                     else:
-                        content_list.append("       -> Début de carte comprise entre début et fin de la carte d'avant => NOK")
+                        content_list.append("       -> Date de début de la carte comprise entre début et fin de la carte d'avant => NOK")
                         content_list.append(f"          - Date de début : {begin_date}")
                         content_list.append(f"          - Date de début de la carte d'avant : {before_begin_date}")
                         content_list.append(f"          - Date de fin de la carte d'avant : {before_end_date}")
 
-                    # consistency test of start and end dates
-                    if begin_date < end_date and end_date <= max_end_date:
-                        content_list.append("       -> Cohérence date de début et de fin => OK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de fin : {end_date}")
-                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
-                    else:
-                        content_list.append("       -> Cohérence date de début et de fin => NOK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de fin : {end_date}")
-                        content_list.append(f"          - Date de fin maximum : {max_end_date}")
-
+                # consistency test of start and end dates
+                if begin_date < end_date and end_date <= max_end_date:
+                    content_list.append("       -> Cohérence des date de début et de fin d'une carte => OK")
+                    content_list.append(f"          - Date de début : {begin_date}")
+                    content_list.append(f"          - Date de fin : {end_date}")
+                    content_list.append(f"          - Date de fin maximum : {max_end_date}")
+                else:
+                    content_list.append("       -> Cohérence des date de début et de fin d'une carte => NOK")
+                    content_list.append(f"          - Date de début : {begin_date}")
+                    content_list.append(f"          - Date de fin : {end_date}")
+                    content_list.append(f"          - Date de fin maximum : {max_end_date}")
         except Exception as e:
-            content_list.append(f"==> [ERREUR] Cohérence des dates de début et Date de fin de la production d'une carte => {e}")
+            content_list.append(f"==> [ERREUR] Cohérence des dates de début et de fin de la production d'une carte => {e}")
 
         content_list.append(" ")
 
 
-    def begin_date_constency(self, content_list : list, execution_time: str):
+    def check_date_begin_equal_start(self, content_list: list, start_time: str):
+        """ `+`
+        `Type:` Procedure
+        `Description:` 
+        :param:`content_list:` file content
+        :param:`start_time:` time when you press start
+        """
+
+        try:
+            # get the value in the database
+            date_tuples = self.data.get_tuples(
+                """SELECT w.DateBegin
+                FROM workorders wo 
+                JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder 
+                JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine 
+                WHERE wo.Name = ?
+                LIMIT 1;""",
+                [self.test_name]
+            )
+            
+            # dates in string
+            date_result = date_tuples[0][0]
+
+            try:
+                date1 = datetime.strptime(date_result, CONSTANT_FORMAT_DATES_DATABASE)
+            except Exception:
+                date1 = datetime.strptime(date_result, CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+
+            date2 = datetime.strptime(start_time, CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+    
+            # calculate the difference between the two dates and define the tolerance at 2 minutes
+            diff = abs(date1 - date2)
+            tolerance = timedelta(minutes=1)
+
+            if diff <= tolerance:
+                content_list.append("-> Date de mise en marche du test => OK")
+                content_list.append(f"   - Valeur obtenue : {date1}")
+                content_list.append(f"   - Valeur expectée : {date2}")
+            else:
+                content_list.append("-> Date de mise en marche du test => NOK")
+                content_list.append(f"   - Valeur obtenue : {date1}")
+                content_list.append(f"   - Valeur expectée : {date2}")
+        except Exception as e:
+            content_list.append(f"==> [ERREUR] Date de mise en marche du test => {e}")
+
+        content_list.append(" ")
+
+
+    def test_begin_date_constency(self, content_list : list, folder_creation_time: str):
         """ `+`
         `Type:` Procedure
         `Description:` verification of the consistency of the begin date in workorderactivationhistory
         :param:`content_list:` file content
-        :param:`execution_time:` time at which the test is performed
+        :param:`folder_creation_time:` time the file is created
         """
 
         try:
@@ -357,22 +393,22 @@ class CheckTest(object):
             except Exception:
                 date1 = datetime.strptime(date_result, CONSTANT_SHORT_FORMAT_DATES_DATABASE)
 
-            date2 = datetime.strptime(execution_time, "%Y-%m-%d_%Hh%Mm%Ss")
+            date2 = datetime.strptime(folder_creation_time, "%Y-%m-%d_%Hh%Mm%Ss")
     
             # calculate the difference between the two dates and define the tolerance at 2 minutes
             diff = abs(date1 - date2)
             tolerance = timedelta(minutes=1)
 
             if diff <= tolerance:
-                content_list.append("-> Date de début => OK")
+                content_list.append("-> Date de validation du test => OK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
                 content_list.append(f"   - Valeur expectée : {date2}")
             else:
-                content_list.append("-> Date de début => NOK")
+                content_list.append("-> Date de validation du test => NOK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
                 content_list.append(f"   - Valeur expectée : {date2}")
         except Exception as e:
-            content_list.append(f"==> [ERREUR] Date de début => {e}")
+            content_list.append(f"==> [ERREUR] Date de validation du test => {e}")
 
         content_list.append(" ")
 
