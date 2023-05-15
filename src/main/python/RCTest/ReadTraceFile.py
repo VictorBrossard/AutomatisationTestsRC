@@ -5,10 +5,19 @@
 # Import of files useful for code execution
 import os
 import shutil
+import chardet
+import time
+import datetime
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
 
 from FilesManagement.Folders.ManageFolders import CONSTANT_TESTS_FOLDER_PATH
+from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_PIECES_FOLDER_PATH
+
+from Interaction.ExecuteTestFile import ExecuteTestFile
+
+from Database.Database import Database
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -17,34 +26,209 @@ class ReadTraceFile(object):
     :class:`ReadTraceFile` reads the trace file and launches the right files for the test
     """
 
-    def __init__(self):
+    def __init__(self, test_available: str, database: Database, folder_name: str, create_folder_time: str, loaded_prg: str):
         """ `-`
         `Type:` Constructor
+        :param:`test_available:` test file name
+        :param:`database:` object that manages the interaction with the database
+        :param:`folder_name:` name of the folder which is equivalent to the name of the test in the database
+        :param:`create_folder_time:` date of creation of the report folder
+        :param:`loaded_prg:` name of the last program loaded in RC
         """
 
-        self.trace_path = ManipulationSettingsFile().get_line(8)
+        self.trace_file_path = ManipulationSettingsFile().get_line(8)
+        self.database = database
+        self.folder_name = folder_name
+        self.loaded_prg = loaded_prg
+
+        try:
+            fil = open(test_available, 'r')
+            self.test_folder_path = fil.readlines()[0].rstrip()
+            fil.close()
+        except Exception:
+            return
+        
+        # execution file to write the date after the test name
+        ManageSpecificFiles().create_execution_file(self.test_folder_path, "last_execution.txt", f"_{create_folder_time}")
+        
+    
+    def launch(self):
+        """ `+`
+        `Type:` Function
+        `Definition:` starts the execution of the complete test
+        `Return:` time at which the production is started
+        """
+
+        partial_prod_file = f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod.txt"
+        name_file = ""
+
+        if os.path.exists(partial_prod_file):
+            ExecuteTestFile().read_test_file(partial_prod_file)
+
+        while name_file != "start_prod.txt":
+            name_file = self.__find_trace()
+            self.__launch_test_file(name_file)
+
+        return self.start_time
 
 
-    def find_trace(self, trace_list: list):
-        """ ``
+    def __find_trace(self):
+        """ `-`
+        `Type:` Function
+        `Description:` digs into the traces to find out which file is to be executed
+        `Return:` the file name to be executed
+        """
+
+        path_trace_file = f"{self.trace_file_path}\\ieee001.TRC"
+        path_copy_trace_file = f"{CONSTANT_TESTS_FOLDER_PATH}\\ieee001.TRC"
+        name_file = ""
+
+        shutil.copy(path_trace_file, CONSTANT_TESTS_FOLDER_PATH)
+
+        # CHERCHE ENCODAGE
+        trace_file = open(path_copy_trace_file, "rb")
+        result = chardet.detect(trace_file.read())
+        trace_file.close()
+
+        #
+        trace_file = open(path_copy_trace_file, 'r', encoding=result['encoding'])
+        trace_file.seek(0, 2) # se positionner à la fin du fichier
+        pos = trace_file.tell() # obtenir la position courante dans le fichier
+
+        # parcourir le fichier ligne par ligne en remontant
+        while pos >= 0:
+            trace_file.seek(pos) # se positionner à la position courante
+            try:
+                next_char = trace_file.read(1) # lire le caractère suivant
+                if next_char == "\n": # si on a atteint une nouvelle ligne
+                    line = trace_file.readline().rstrip() # lire la ligne et enlever les espaces blancs
+
+                    boolean, name_file = self.__find_file_to_execute(line)
+
+                    if boolean:
+                        break
+                    else:
+                        pos -= len(line) + 1 # mettre à jour la position pour pointer sur la ligne précédente
+                else:
+                    pos -= 1 # avancer le curseur d'un caractère si on n'a pas atteint une nouvelle ligne
+            except Exception:
+                pos -= 1
+
+        trace_file.close()
+        os.remove(path_copy_trace_file)
+
+        return name_file
+
+
+    def __find_word(self, word: str, string: str) -> bool:
+        """ `-`
+        `Type:` Function
+        `Description:` check if the word is in the character string
+        :param:`word:` word to check
+        :param:`string:` string with which we check the word
+        `Return:` bool
+        """
+
+        if word in string:
+            return True
+        else:
+            return False
+        
+
+    def __find_file_to_execute(self, line: str) -> tuple[bool, str]:
+        """ `-`
+        `Type:` Function
+        `Description:` finds the right file to run based on the line in the trace file
+        :param:`line:` line in the trace file
+        `Return:` a bool and the name of the file to be executed
+        """
+
+        file_name_dictionary = {
+            "RC : ClgMyMDIChildWnd::OnCreate() : PRD_IDR_PRODUCTION_DOCUMENT" : "name_prod.txt",
+            "PRDBD_IDD_SUIVI_LOT" : "start_prod.txt"
+        }
+
+        for key in file_name_dictionary:
+            if self.__find_word(key, line):
+                file_to_execute = file_name_dictionary[key]
+                return True, file_to_execute
+
+        return False, ""
+    
+
+    def __launch_test_file(self, name_file: str):
+        """ `-`
         `Type:`
         `Description:`
         """
 
-        path_trace_file = f"{self.trace_path}\\ieee001.TRC"
-        path_copy_trace_file = f"{CONSTANT_TESTS_FOLDER_PATH}\\ieee001.TRC"
+        if name_file == "":
+            return
+        elif name_file == "start_prod.txt":
+            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
+            self.start_time = datetime.datetime.now()
+            self.__prod_waiting_time()
+        elif name_file == "name_prod.txt":
+            file_list = [
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\name_prod.txt",
+                f"{self.test_folder_path}\\name.txt",
+                f"{self.test_folder_path}\\last_execution.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_to_make_prod.txt",
+                f"{self.test_folder_path}\\card_to_make.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_make_prod.txt",
+                f"{self.test_folder_path}\\card_make.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\validate_prod.txt"
+            ]
 
-        shutil.copy(path_trace_file, CONSTANT_TESTS_FOLDER_PATH)
+            for fil in file_list:
+                ExecuteTestFile().read_test_file(fil)
+                time.sleep(0.1)
+        else:
+            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
+            time.sleep(0.5)
 
-        trace_file = open(path_copy_trace_file, "rb")
 
-        print(trace_list)
-        trace_file.seek(0, os.SEEK_END)
-        trace_file.seek(-2, os.SEEK_CUR)
-        trace_file.seek(-2, os.SEEK_CUR)
-        print(trace_file.readline().decode().strip())
+    def __prod_waiting_time(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` makes the software wait for the production time
+        """
 
-        trace_file.close()
+        time.sleep(2) # pause to let the database refresh
 
-        os.remove(path_copy_trace_file)
+        # get the production time of the card and the number of cards to make in the database
+        max_time_tuple = self.database.get_tuples(
+            "SELECT MAX(wrms.ExpectedCycleTime), (w.NbUnitsToDo div wrm.NbUnitsPerWork) AS cartes FROM workorders w JOIN workorderrecipemachines wrm ON w.IdWorkOrder = wrm.IdWorkOrder JOIN workorderrecipemachinestages wrms ON wrm.IdWorkOrderRecipeMachine = wrms.IdWorkOrderRecipeMachine WHERE w.Name = ?", 
+            [self.folder_name]
+        )
 
+        # verification that there were no bugs in the execution of the command
+        if len(max_time_tuple) != 1:
+            return
+
+        # decomposition of the tuple to calculate the max production time
+        unit_time = float(max_time_tuple[0][0])
+        nb_cards_to_made = int(max_time_tuple[0][1])
+        time_for_a_card = unit_time/1000
+        time_for_cards = time_for_a_card * nb_cards_to_made
+
+        card_made = 0
+
+        # loop that allows the time to wait for the execution of the next file
+        while time_for_cards > 0  and card_made != nb_cards_to_made:
+            # sql command that fetches the number of cards in works
+            card_made_tuple = self.database.get_tuples(
+                "SELECT COUNT(*) FROM (workorders wo JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder) JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine WHERE wo.Name = ?", 
+                [self.folder_name]
+            )
+
+            card_made = int(card_made_tuple[0][0])
+            
+            if card_made == nb_cards_to_made:
+                # if there is the right number of cards in works we wait for the end of the production of the last card
+                time.sleep(time_for_a_card)
+            else:
+                # in the other case, we wait a little while before asking the database again until we reach the maximum production time
+                # if we are in this case then there was surely a problem
+                time.sleep(2)
+                time_for_cards = time_for_cards - 2

@@ -31,4 +31,14 @@ Les combinaisons de touches supérieures à trois touches en même temps ne sont
 
 Le scroll dans l'interface loop fonctionne qui si notre curseur n'est pas sur un texte ou une entrée.
 
-Le bouton shift reste écris dans le fichier même s'il est pas utile. 
+Le bouton shift et tab reste écris dans le fichier même s'il est pas utile.
+
+### Utilisation de l'interface UserEntryPopUp
+Cette interface peut afficher des entrées de textes, des entrées d'entiers et des comboboxs.
+
+Les entiers dans la liste widget_list devront respecté ce format:
+- "0" = entrée de texte
+- "1" = entrée d'entier
+- "2" = comboboxs
+
+La liste combobox_list contient juste les valeurs des comboboxs. Elle n'est utilisé que dans le cas où il y a un "2" dans le liste widget_list.

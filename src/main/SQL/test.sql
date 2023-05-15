@@ -110,3 +110,6 @@ JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder
 JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine 
 WHERE wo.Name = "2_cartes_2023-05-12_09h28m51s"
 LIMIT 1;
+
+/* Dernier programme utilisé */
+SELECT RecipeName FROM workorderrecipemachines ORDER BY IdWorkOrderRecipeMachine DESC LIMIT 1;

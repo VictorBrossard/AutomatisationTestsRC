@@ -95,7 +95,8 @@ class ManageSpecificFiles(ManageAnyFile):
             "Menu général",                                 # RC window name
             "tab",                                          # Key to end test recording
             "C:\\EUROPLACER\\ep\\epi\\RCARRETPROPRE.txt",   # file that asks you to make a report when you kill RC
-            "C:\\EUROPLACER\\ep\\tmp"                       # file where there are traces of RC
+            "C:\\EUROPLACER\\ep\\tmp",                      # folder where there are traces of RC
+            "C:\\EUROPLACER\\ep\\prg"                       # folder where there are programs of RC
         ]   
 
         self.create_file(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, settings_list)

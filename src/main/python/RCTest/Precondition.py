@@ -17,27 +17,49 @@ class Precondition(object):
     :class:`Precondition` manages the preconditions of the tests
     """
 
-    def __init__(self):
+    def __init__(self, database: Database):
         """ `-`
         `Type:` Constructor
+        :param:`database:` object that manages the interaction with the database
         """
 
         self.settings = ManipulationSettingsFile()
         self.softwares = ManageSoftwares()
+        self.database = database
 
 
-    def start_precondition(self, database: Database):
+    def start_precondition(self):
         """ `+`
         `Type:` Function
         `Description:` launches the selected precondition
-        :param:`database:` object that manages the interaction with the database
+        `Return:` name of the last program loaded in RC
         """
+
+        prg = self.__get_loaded_program()
 
         tmp_path = self.settings.get_line(8)
 
         self.softwares.close_soft()
 
         ManageFolders().delete_inside_folder(tmp_path)
-        database.deletes_all_tuples()
+        self.database.deletes_all_tuples()
 
         self.softwares.open_soft()
+
+        return prg
+
+
+    def __get_loaded_program(self):
+        """ `-`
+        `Type:` Function
+        `Description:` Get the name of the last program loaded in RC
+        `Return:` name of the last program loaded in RC
+        """
+
+        # get the value in the database
+        prg = self.database.get_tuples(
+            "SELECT RecipeName FROM workorderrecipemachines ORDER BY IdWorkOrderRecipeMachine DESC LIMIT 1;",
+            []
+        )
+
+        return prg[0][0]

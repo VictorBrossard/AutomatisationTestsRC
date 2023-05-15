@@ -8,8 +8,6 @@ import ctypes
 
 from tkinter import ttk
 
-from GraphicInterface.MessageBox import MessageBox
-
 from UsefulFunction.UsefulFunction import cant_close
 from UsefulFunction.UsefulFunction import validate_int
 
@@ -20,18 +18,17 @@ class UserEntryPopUp(tk.Tk):
     :class:`UserEntryPopUp` handles user interaction through a pop-up
     """
 
-    def __init__(self, name: str, label_list: list, int_entry_list: list):
+    def __init__(self, name: str, label_list: list[str], widget_list: list[int], combobox_list: list[list[str]] | None = None):
         """ `-`
         `Type:` Constructor
         :param:`name:` pop-up name
         :param:`label_list:` explanations of what is required of the user
-        :param:`int_entry_list:` integer list that has a 1 at location i where i is the index of the input that will hold only integers  
+        :param:`widget_list:` list of integers with a number between 0 and 2 at index i where i is the index of the label associated with the future widget to create
+                        - "0" = text entry
+                        - "1" = integer entry
+                        - "2" = comboboxs
+        :param:`combobox_list:` list of combobox values
         """
-
-        # Check precondition
-        if len(label_list) != len(int_entry_list) or not all(isinstance(x, int) for x in int_entry_list):
-            MessageBox("ERREUR Manipulation", "[ERREUR] Mauvaise manipulation des UserEntryPopUp.").mainloop()
-            return
 
         # Parent constructor
         super().__init__()
@@ -44,6 +41,7 @@ class UserEntryPopUp(tk.Tk):
         # Variables that stores the value given by the user
         self.user_entries = []
         self.nb_entries = len(label_list)
+        self.nb_combobox = 0
 
         # Configuring the placement of interface objects
         self.columnconfigure(0, weight=1)
@@ -51,15 +49,19 @@ class UserEntryPopUp(tk.Tk):
         self.columnconfigure(2, weight=1)
 
         # Adds interface objects to the interface
-        self.__implementation(label_list, int_entry_list)
+        self.__implementation(label_list, widget_list, combobox_list)
 
 
-    def __implementation(self, label_list: list, int_entry_list: list):
+    def __implementation(self, label_list: list[str], widget_list: list[int], combobox_list: list[list[str]]):
         """ `-`
         `Type:` Procedure
         `Description:` adds interface objects to the interface
         :param:`label_list:` explanations of what is required of the user
-        :param:`int_entry_list:` integer list that has a 1 at location i where i is the index of the input that will hold only integers 
+        :param:`widget_list:` list of integers with a number between 0 and 2 at index i where i is the index of the label associated with the future widget to create
+                        - "0" = text entry
+                        - "1" = integer entry
+                        - "2" = comboboxs
+        :param:`combobox_list:` list of combobox values
         """
 
         # Canvas
@@ -71,18 +73,18 @@ class UserEntryPopUp(tk.Tk):
         # Label and Entry
         for i in range(0, self.nb_entries):
             # Label
-            text_label = ttk.Label(entry_frame, text=label_list[i])   # Creation of the label
-            text_label.pack(side=tk.TOP, pady=2)                # Object position
-
-            # Variable that stores the value given by the user
-            self.user_entries.append(tk.StringVar())
+            text_label = ttk.Label(entry_frame, text=label_list[i]) # Creation of the label
+            text_label.pack(side=tk.TOP, pady=2)                    # Object position
 
             # Entry
-            if int_entry_list == []: 
-                self.__create_text_entry(entry_frame, self.user_entries[i])
-            elif int_entry_list[i] == 1:
+            if widget_list[i] == 1:
+                self.user_entries.append(tk.StringVar()) # Variable that stores the value given by the user
                 self.__create_int_entry(entry_frame, self.user_entries[i])
+            elif self.int_entry_list[i] == 2:
+                self.__create_combobox(entry_frame, combobox_list[self.nb_combobox])
+                self.nb_combobox = self.nb_combobox + 1
             else:
+                self.user_entries.append(tk.StringVar()) # Variable that stores the value given by the user
                 self.__create_text_entry(entry_frame, self.user_entries[i])
 
         # Button
@@ -122,25 +124,43 @@ class UserEntryPopUp(tk.Tk):
         self.resizable(width=0, height=0)                                               # Prevents any modification of window size
 
 
-    def __create_text_entry(self, frame: ttk.Frame, var: tk.StringVar):
+    def __create_text_entry(self, frame: ttk.Frame, val: tk.StringVar):
         """ `-`
         `Type:` Procedure
-        `Description:`
+        `Description:` creates a text entry for the user
+        :param:`frame:` frame of the interface where the entry is displayed
+        :param:`val:` input value
         """
 
-        text_entry = ttk.Entry(frame, textvariable=var, justify='center')   # Creation of the entry
+        text_entry = ttk.Entry(frame, textvariable=val, justify='center')   # Creation of the entry
         text_entry.pack(side=tk.TOP, pady=2)                                # Object position
 
 
-    def __create_int_entry(self, frame: ttk.Frame, var: tk.StringVar):
+    def __create_int_entry(self, frame: ttk.Frame, val: tk.StringVar):
         """ `-`
         `Type:` Procedure
-        `Description:`
+        `Description:` creates a text entry that takes only integers for the user
+        :param:`frame:` frame of the interface where the entry is displayed
+        :param:`val:` input value
         """
 
-        int_entry = ttk.Entry(frame, textvariable=var, justify='center') # Creation of the entry
+        int_entry = ttk.Entry(frame, textvariable=val, justify='center') # Creation of the entry
         int_entry.config(validate='key', validatecommand=(int_entry.register(validate_int), '%P'))
         int_entry.pack(side=tk.TOP, pady=2)  # Object position
+
+
+    def __create_combobox(self, frame: ttk.Frame, val: list[str]):
+        """ `-`
+        `Type:` Procedure
+        `Definition:` creates a combobox for the user
+        :param:`frame:` frame of the interface where the combobox is displayed
+        :param:`val:` combobox values
+        """
+
+        combobox = ttk.Combobox(frame, values=val)
+        combobox.pack(side=tk.TOP, pady=2)
+
+        self.user_entries.append(combobox) # Add a combobox instead of a StringVar in the list to retrieve more easily this value later
 
 
     def __close_pop_up(self):
@@ -164,7 +184,7 @@ class UserEntryPopUp(tk.Tk):
         """ `+`
         `Type:` Function
         `Description:` getter that returns the variable user_entries
-        `Return:` user_entries
+        `Return:` user entries in string
         """
 
         return self.user_entries

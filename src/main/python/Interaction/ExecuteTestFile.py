@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : Object that executes the tests made by the user
+# Description   : Object that executes a test file
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
@@ -23,9 +23,9 @@ from UsefulFunction.UsefulFunction import starts_with
 
 #-----------------------------------------------------------------------------------------------------
 
-class ExecuteTest(object):
+class ExecuteTestFile(object):
     """ `+`
-    :class:`ExecuteTest` runs the tests made by the user
+    :class:`ExecuteTestFile` runs a test file
     """
 
     def __init__(self):
@@ -62,7 +62,7 @@ class ExecuteTest(object):
 
             before_word_list = first_word_list # We store the line before to know the waiting time between each instruction
 
-            time.sleep(0.5)
+            time.sleep(0.1)
 
             # We do the same for all the lines of the file
             for line in test_file:
