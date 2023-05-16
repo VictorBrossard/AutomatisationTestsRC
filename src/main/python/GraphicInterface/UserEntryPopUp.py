@@ -27,6 +27,7 @@ class UserEntryPopUp(tk.Tk):
                         - "0" = text entry
                         - "1" = integer entry
                         - "2" = comboboxs
+                        - "3" = limited text entry
         :param:`combobox_list:` list of combobox values
         """
 
@@ -61,6 +62,7 @@ class UserEntryPopUp(tk.Tk):
                         - "0" = text entry
                         - "1" = integer entry
                         - "2" = comboboxs
+                        - "3" = limited text entry
         :param:`combobox_list:` list of combobox values
         """
 
@@ -83,6 +85,9 @@ class UserEntryPopUp(tk.Tk):
             elif widget_list[i] == 2:
                 self.__create_combobox(entry_frame, combobox_list[self.nb_combobox])
                 self.nb_combobox = self.nb_combobox + 1
+            elif widget_list[i] == 3:
+                self.user_entries.append(tk.StringVar()) # Variable that stores the value given by the user
+                self.__create_limited_entry(entry_frame, self.user_entries[i])
             else:
                 self.user_entries.append(tk.StringVar()) # Variable that stores the value given by the user
                 self.__create_text_entry(entry_frame, self.user_entries[i])
@@ -157,10 +162,34 @@ class UserEntryPopUp(tk.Tk):
         :param:`val:` combobox values
         """
 
-        combobox = ttk.Combobox(frame, values=val)
-        combobox.pack(side=tk.TOP, pady=2)
+        combobox = ttk.Combobox(frame, values=val, justify='center')    # Creation of the combobox
+        combobox.pack(side=tk.TOP, pady=2)                              # Object position
 
         self.user_entries.append(combobox) # Add a combobox instead of a StringVar in the list to retrieve more easily this value later
+
+
+    def __create_limited_entry(self, frame: ttk.Frame, val: tk.StringVar):
+        """ `-`
+        `Type:` Procedure
+        `Description:` creates a limited text entry
+        :param:`frame:` frame of the interface where the entry is displayed
+        :param:`val:` input value
+        """
+
+        val.trace('w', lambda *args, var=val: self.__validate_input(var))
+
+        entry = ttk.Entry(frame, textvariable=val, justify='center') # Creation of the entry
+        entry.pack(side=tk.TOP, pady=2)                             # Object position
+
+
+    def __validate_input(self, var):
+        """
+        """
+
+        max_char = 11
+        current_text = var.get()
+        if len(current_text) > max_char:
+            var.set(current_text[:max_char])
 
 
     def __close_pop_up(self):

@@ -62,7 +62,7 @@ class ExecuteTestFile(object):
 
             before_word_list = first_word_list # We store the line before to know the waiting time between each instruction
 
-            time.sleep(0.1)
+            time.sleep(0.3)
 
             # We do the same for all the lines of the file
             for line in test_file:

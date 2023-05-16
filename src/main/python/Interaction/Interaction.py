@@ -55,7 +55,7 @@ class Interaction(object):
         pop_up = UserEntryPopUp(
             "Create Tests", 
             ["Entrez le nom du test :", "Nombre de cartes à produire :", "Initialisation de la machine :", "Programme :"], 
-            [0, 1, 2, 2], 
+            [3, 1, 2, 2], 
             [["Complète", "Partielle"], prg_list]
         )
         pop_up.mainloop()
@@ -82,7 +82,7 @@ class Interaction(object):
         new_file.create_execution_file(test_folder_path, "name.txt", user_entry_list[0])
         new_file.create_execution_file(test_folder_path, "card_to_make.txt", user_entry_list[1])
         new_file.create_execution_file(test_folder_path, "card_make.txt", "0")
-        new_file.create_execution_file(test_folder_path, "program.txt", user_entry_list[3])
+        new_file.create_execution_file(test_folder_path, "program_name.txt", user_entry_list[3])
             
         # creation of the only file that the user can select to run the tests
         new_file.create_file(CONSTANT_TEST_AVAILABLE_FOLDER_PATH, f"{user_entry_list[0]}.txt", [test_folder_path])

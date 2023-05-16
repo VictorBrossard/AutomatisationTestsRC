@@ -63,7 +63,7 @@ class ReadTraceFile(object):
         `Return:` time at which the production is started
         """
 
-        partial_prod_file = f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod.txt"
+        """partial_prod_file = f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod.txt"
         name_file = ""
 
         if os.path.exists(partial_prod_file):
@@ -72,7 +72,17 @@ class ReadTraceFile(object):
         # execution of all files
         while name_file != CONSTANT_START_PROD_FILE:
             name_file = self.__find_trace()
-            self.__launch_test_file(name_file)
+            self.__launch_test_file(name_file)"""
+        
+        self.__launch_test_file("prod_program.txt")
+        self.__launch_test_file("program_name.txt")
+        self.__launch_test_file("validate_prog.txt")
+        self.__launch_test_file("partial_prod.txt")
+        self.__launch_test_file("program_change.txt")
+        self.__launch_test_file("local_list_boxes.txt")
+        self.__launch_test_file("name_prod.txt")
+        self.__launch_test_file("card_recalibration.txt")
+        self.__launch_test_file(CONSTANT_START_PROD_FILE)
 
         return self.start_time
 
@@ -174,8 +184,8 @@ class ReadTraceFile(object):
             return
         elif name_file == CONSTANT_START_PROD_FILE:
             # execution of the file start_prod.txt
-            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
             self.start_time = datetime.datetime.now()
+            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
             self.__prod_waiting_time()
         elif name_file == "name_prod.txt":
             # execution of the file name_prod.txt
@@ -192,7 +202,14 @@ class ReadTraceFile(object):
 
             for fil in file_list:
                 ExecuteTestFile().read_test_file(fil)
-                time.sleep(0.1)
+                time.sleep(0.2)
+        elif name_file == "program_name.txt":
+            ExecuteTestFile().read_test_file(f"{self.test_folder_path}\\program_name.txt")
+            time.sleep(0.5)
+        elif name_file == "card_recalibration.txt":
+            time.sleep(1)
+            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\card_recalibration.txt")
+            time.sleep(0.5)
         else:
             ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
             time.sleep(0.5)
@@ -204,7 +221,7 @@ class ReadTraceFile(object):
         `Description:` makes the software wait for the production time
         """
 
-        time.sleep(2) # pause to let the database refresh
+        time.sleep(3) # pause to let the database refresh
 
         # get the production time of the card and the number of cards to make in the database
         max_time_tuple = self.database.get_tuples(
@@ -220,7 +237,7 @@ class ReadTraceFile(object):
         unit_time = float(max_time_tuple[0][0])
         nb_cards_to_made = int(max_time_tuple[0][1])
         time_for_a_card = unit_time/1000
-        time_for_cards = time_for_a_card * nb_cards_to_made
+        time_for_cards = time_for_a_card * nb_cards_to_made - 3 # the 3 corresponds to the waiting time for the start of the function
 
         card_made = 0
 
