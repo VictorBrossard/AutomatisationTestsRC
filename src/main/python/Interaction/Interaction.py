@@ -5,7 +5,6 @@
 # Import of files useful for code execution
 import os
 import time
-import datetime
 
 from GraphicInterface.MessageBox import MessageBox
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp

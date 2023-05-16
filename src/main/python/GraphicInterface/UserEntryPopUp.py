@@ -80,7 +80,7 @@ class UserEntryPopUp(tk.Tk):
             if widget_list[i] == 1:
                 self.user_entries.append(tk.StringVar()) # Variable that stores the value given by the user
                 self.__create_int_entry(entry_frame, self.user_entries[i])
-            elif self.int_entry_list[i] == 2:
+            elif widget_list[i] == 2:
                 self.__create_combobox(entry_frame, combobox_list[self.nb_combobox])
                 self.nb_combobox = self.nb_combobox + 1
             else:

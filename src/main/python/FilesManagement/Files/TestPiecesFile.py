@@ -27,6 +27,12 @@ class TestPiecesFile(ManageAnyFile):
         self.__validate_prod()
         self.__start_prod()
         self.__stop_prod()
+        self.__prod_parameter()
+        self.__prod_program()
+        self.__validate_prog()
+        self.__local_list_boxes()
+        self.__program_change()
+        self.__card_recalibration()
 
 
     def __partial_prod(self):
@@ -51,7 +57,6 @@ class TestPiecesFile(ManageAnyFile):
         """ `-`
         `Type:` Function
         `Description:` creates the file to turn on the machine in complete mode
-        `Return:` file path
         """
 
         execute_list = [
@@ -65,12 +70,9 @@ class TestPiecesFile(ManageAnyFile):
         """ `-`
         `Type:` Function
         `Description:` deletes the name of the production
-        `Return:` file path
         """
 
         execute_list = [
-            "Click;left;0.359375;0.21296296296296297;1683187807.883292",
-            "Release;left;0.359375;0.21296296296296297;1683187808.0112479",
             "Key;delete;1683187809.2044904"
         ]
 
@@ -81,7 +83,6 @@ class TestPiecesFile(ManageAnyFile):
         """ `-`
         `Type:` Function
         `Description:` removes the number of cards to be made
-        `Return:` file path
         """
 
         execute_list = [
@@ -96,7 +97,6 @@ class TestPiecesFile(ManageAnyFile):
         """ `-`
         `Type:` Function
         `Description:` removes the number of cards made
-        `Return:` file path
         """
 
         execute_list = [
@@ -111,7 +111,6 @@ class TestPiecesFile(ManageAnyFile):
         """ `-`
         `Type:` Function
         `Description:` validate production
-        `Return:` file path
         """
 
         execute_list = [
@@ -127,7 +126,6 @@ class TestPiecesFile(ManageAnyFile):
         """ `-`
         `Type:` Function
         `Description:` starts production
-        `Return:` file path
         """
 
         execute_list = [
@@ -143,7 +141,6 @@ class TestPiecesFile(ManageAnyFile):
         """ `-`
         `Type:` Function
         `Description:` ends production
-        `Return:` file path
         """
 
         execute_list = [
@@ -153,3 +150,104 @@ class TestPiecesFile(ManageAnyFile):
         ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "stop_prod.txt", execute_list)
+
+
+    def __prod_parameter(self):
+        """ `-`
+        `Type:` Function
+        `Description:` click on production parameter
+        """
+
+        execute_list = [
+            "Click;left;0.3541666666666667;0.21666666666666667;1684219771.4711187",
+            "Release;left;0.3541666666666667;0.21666666666666667;1684219771.5595381",
+            "Key;tab;1684219771.857579"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "prod_parameter.txt", execute_list)
+
+
+    def __prod_program(self):
+        """ `-`
+        `Type:` Function
+        `Description:` opening of the program selection interface
+        """
+
+        execute_list = [
+            "Click;left;0.7578125;0.14074074074074075;1684220137.8726277",
+            "Release;left;0.7578125;0.14074074074074075;1684220137.9526374",
+            "Key;tab;1684220139.721512"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "prod_program.txt", execute_list)
+
+
+    def __validate_prog(self):
+        """ `-`
+        `Type:` Function
+        `Description:` opening of the program selection interface by validating
+        """
+
+        execute_list = [
+            "Key;enter;1684220446.9851022",
+            "Key;tab;1684220448.2568731"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "validate_prog.txt", execute_list)
+
+
+    def __local_list_boxes(self):
+        """ `-`
+        `Type:` Function
+        `Description:` output of the local list interface for the boxes
+        """
+
+        execute_list = [
+            "Click;left;0.7359375;0.8101851851851852;1684220772.2257774",
+            "Release;left;0.7359375;0.8101851851851852;1684220772.2976933",
+            "Key;tab;1684220774.4833186"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "local_list_boxes.txt", execute_list)
+
+
+    def __program_change(self):
+        """ `-`
+        `Type:` Function
+        `Description:` production launch with the new program
+        """
+
+        execute_list = [
+            "Click;left;0.5802083333333333;0.5675925925925925;1684220730.1616962",
+            "Release;left;0.5802083333333333;0.5675925925925925;1684220730.2657285",
+            "Key;tab;1684220732.682872"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "program_change.txt", execute_list)
+
+
+    def __card_recalibration(self):
+        """ `-`
+        `Type:` Function
+        `Description:` 
+        """
+
+        execute_list = [
+            "Click;left;0.029166666666666667;0.03333333333333333;1684221946.3073158",
+            "Release;left;0.029166666666666667;0.03333333333333333;1684221946.3795009",
+            "Click;left;0.051041666666666666;0.07407407407407407;1684221947.3393285",
+            "Release;left;0.051041666666666666;0.07407407407407407;1684221947.4199312",
+            "Click;left;0.22708333333333333;0.5944444444444444;1684221948.9477534",
+            "Release;left;0.22708333333333333;0.5944444444444444;1684221949.0194428",
+            "Click;left;0.9255208333333333;0.4601851851851852;1684221950.3313127",
+            "Release;left;0.9255208333333333;0.4601851851851852;1684221950.4431388",
+            "Click;left;0.3734375;0.29074074074074074;1684221951.947336",
+            "Release;left;0.3734375;0.29074074074074074;1684221952.0039098",
+            "Click;left;0.6276041666666666;0.3509259259259259;1684221953.3557854",
+            "Release;left;0.6276041666666666;0.3509259259259259;1684221953.45133",
+            "Click;left;0.409375;0.7111111111111111;1684221954.7718697",
+            "Release;left;0.409375;0.7111111111111111;1684221954.8193321",
+            "Key;tab;1684221955.9157202"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "card_recalibration.txt", execute_list)
