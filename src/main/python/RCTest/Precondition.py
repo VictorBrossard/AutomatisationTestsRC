@@ -49,7 +49,7 @@ class Precondition(object):
         return prg
 
 
-    def __get_loaded_program(self):
+    def __get_loaded_program(self) -> str:
         """ `-`
         `Type:` Function
         `Description:` Get the name of the last program loaded in RC
@@ -57,9 +57,12 @@ class Precondition(object):
         """
 
         # get the value in the database
-        prg = self.database.get_tuples(
-            "SELECT RecipeName FROM workorderrecipemachines ORDER BY IdWorkOrderRecipeMachine DESC LIMIT 1;",
-            []
-        )
+        try:
+            prg = self.database.get_tuples(
+                "SELECT RecipeName FROM workorderrecipemachines ORDER BY IdWorkOrderRecipeMachine DESC LIMIT 1;",
+                []
+            )
 
-        return prg[0][0]
+            return prg[0][0]
+        except Exception:
+            return ""

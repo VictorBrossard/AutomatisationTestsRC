@@ -176,14 +176,17 @@ class UserEntryPopUp(tk.Tk):
         :param:`val:` input value
         """
 
-        val.trace('w', lambda *args, var=val: self.__validate_input(var))
+        val.trace('w', lambda *args, var=val: self.__validate_input(var))   # limitation of the number of characters
 
-        entry = ttk.Entry(frame, textvariable=val, justify='center') # Creation of the entry
-        entry.pack(side=tk.TOP, pady=2)                             # Object position
+        entry = ttk.Entry(frame, textvariable=val, justify='center')        # Creation of the entry
+        entry.pack(side=tk.TOP, pady=2)                                     # Object position
 
 
-    def __validate_input(self, var):
-        """
+    def __validate_input(self, var: tk.StringVar):
+        """ `-`
+        `Type:` Procedure
+        `Description:` checks that a certain number of characters cannot be exceeded
+        :param:`var:` stringvar associated with the entry
         """
 
         max_char = 11

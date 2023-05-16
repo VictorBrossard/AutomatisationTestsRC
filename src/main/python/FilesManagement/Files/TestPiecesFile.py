@@ -19,7 +19,8 @@ class TestPiecesFile(ManageAnyFile):
         `Type:` Constructor
         """
 
-        self.__partial_prod()
+        self.__partial_prod_no_prg_change()
+        self.__partial_prod_prg_change()
         self.__complete_prod()
         self.__name_prod()
         self.__nb_card_to_make_prod()
@@ -35,7 +36,7 @@ class TestPiecesFile(ManageAnyFile):
         self.__card_recalibration()
 
 
-    def __partial_prod(self):
+    def __partial_prod_no_prg_change(self):
         """ `-`
         `Type:` Function
         `Description:` creates the file to turn on the machine in partial mode
@@ -50,7 +51,25 @@ class TestPiecesFile(ManageAnyFile):
             "Key;tab;1683117226.0307345"
         ]
 
-        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "partial_prod.txt", execute_list)
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "partial_prod_no_prg_change.txt", execute_list)
+
+
+    def __partial_prod_prg_change(self):
+        """ `-`
+        `Type:` Function
+        `Description:` creates the file to turn on the machine in partial mode
+        `Return:` file path
+        """
+
+        execute_list = [
+            "Click;left;0.7453125;0.7638888888888888;1684230931.7980804",
+            "Release;left;0.7453125;0.7638888888888888;1684230931.8852599",
+            "Click;left;0.5135416666666667;0.5703703703703704;1684230933.116967",
+            "Release;left;0.5135416666666667;0.5703703703703704;1684230933.2136316",
+            "Key;tab;1684230935.143767"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "partial_prod_prg_change.txt", execute_list)
 
 
     def __complete_prod(self):

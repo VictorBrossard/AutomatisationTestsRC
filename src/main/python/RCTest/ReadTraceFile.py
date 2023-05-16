@@ -63,18 +63,16 @@ class ReadTraceFile(object):
         `Return:` time at which the production is started
         """
 
-        """partial_prod_file = f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod.txt"
         name_file = ""
 
-        if os.path.exists(partial_prod_file):
-            ExecuteTestFile().read_test_file(partial_prod_file)
+        self.__launch_test_file("prod_program.txt")
 
         # execution of all files
         while name_file != CONSTANT_START_PROD_FILE:
             name_file = self.__find_trace()
-            self.__launch_test_file(name_file)"""
+            self.__launch_test_file(name_file)
         
-        self.__launch_test_file("prod_program.txt")
+        """self.__launch_test_file("prod_program.txt")
         self.__launch_test_file("program_name.txt")
         self.__launch_test_file("validate_prog.txt")
         self.__launch_test_file("partial_prod.txt")
@@ -82,7 +80,7 @@ class ReadTraceFile(object):
         self.__launch_test_file("local_list_boxes.txt")
         self.__launch_test_file("name_prod.txt")
         self.__launch_test_file("card_recalibration.txt")
-        self.__launch_test_file(CONSTANT_START_PROD_FILE)
+        self.__launch_test_file(CONSTANT_START_PROD_FILE)"""
 
         return self.start_time
 
@@ -160,8 +158,11 @@ class ReadTraceFile(object):
 
         # line of the trace file that we want to find to be able to execute certain files
         file_name_dictionary = {
-            "RC : ClgMyMDIChildWnd::OnCreate() : PRD_IDR_PRODUCTION_DOCUMENT" : "name_prod.txt",
-            "PRDBD_IDD_SUIVI_LOT" : CONSTANT_START_PROD_FILE
+            "ClgMyDialog::OnInitDialog() : PRDBD_IDD_SUIVI_LOT" : "name_prod.txt",
+            "ClgMyMDIChildWnd::OnCreate() : PRD_IDR_PRODUCTION_DOCUMENT" : CONSTANT_START_PROD_FILE,
+            "ClgMyDialog::OnInitDialog() : PRG_IDD_SELECTION" : "program_name.txt",
+            "ClgMyDialog::OnDestroy() : PRG_IDD_SELECTION" : "partial_prod_no_prg_change.txt",
+            "ClgMyDialog::OnInitDialog() : RC_IDD_LOCAL_LIST" : "local_list_boxes.txt"
         }
 
         for key in file_name_dictionary:
@@ -182,11 +183,13 @@ class ReadTraceFile(object):
         if name_file == "":
             # case of error
             return
+        
         elif name_file == CONSTANT_START_PROD_FILE:
             # execution of the file start_prod.txt
             self.start_time = datetime.datetime.now()
             ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
             self.__prod_waiting_time()
+
         elif name_file == "name_prod.txt":
             # execution of the file name_prod.txt
             file_list = [
@@ -203,13 +206,30 @@ class ReadTraceFile(object):
             for fil in file_list:
                 ExecuteTestFile().read_test_file(fil)
                 time.sleep(0.2)
-        elif name_file == "program_name.txt":
-            ExecuteTestFile().read_test_file(f"{self.test_folder_path}\\program_name.txt")
-            time.sleep(0.5)
-        elif name_file == "card_recalibration.txt":
-            time.sleep(1)
+
+            time.sleep(3)
             ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\card_recalibration.txt")
-            time.sleep(0.5)
+
+        elif name_file == "program_name.txt":
+            file_list = [
+                f"{self.test_folder_path}\\program_name.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\validate_prog.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod_prg_change.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\program_change.txt"
+            ]
+
+            for fil in file_list:
+                ExecuteTestFile().read_test_file(fil)
+                time.sleep(0.2)
+
+        elif name_file == "card_recalibration.txt":
+            time.sleep(3)
+            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\card_recalibration.txt")
+
+        elif name_file == "partial_prod_no_prg_change.txt":
+            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod_no_prg_change.txt")
+            time.sleep(0.2)
+
         else:
             ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
             time.sleep(0.5)
