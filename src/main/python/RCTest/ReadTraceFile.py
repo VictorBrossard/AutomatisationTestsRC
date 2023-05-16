@@ -20,6 +20,10 @@ from Interaction.ExecuteTestFile import ExecuteTestFile
 from Database.Database import Database
 
 #-----------------------------------------------------------------------------------------------------
+# Initialization of constants
+CONSTANT_START_PROD_FILE = "start_prod.txt"
+
+#-----------------------------------------------------------------------------------------------------
 
 class ReadTraceFile(object):
     """ `+`
@@ -65,7 +69,8 @@ class ReadTraceFile(object):
         if os.path.exists(partial_prod_file):
             ExecuteTestFile().read_test_file(partial_prod_file)
 
-        while name_file != "start_prod.txt":
+        # execution of all files
+        while name_file != CONSTANT_START_PROD_FILE:
             name_file = self.__find_trace()
             self.__launch_test_file(name_file)
 
@@ -83,39 +88,39 @@ class ReadTraceFile(object):
         path_copy_trace_file = f"{CONSTANT_TESTS_FOLDER_PATH}\\ieee001.TRC"
         name_file = ""
 
-        shutil.copy(path_trace_file, CONSTANT_TESTS_FOLDER_PATH)
+        shutil.copy(path_trace_file, CONSTANT_TESTS_FOLDER_PATH) # copy the file to be able to manipulate it
 
-        # CHERCHE ENCODAGE
+        # seeks file encoding
         trace_file = open(path_copy_trace_file, "rb")
         result = chardet.detect(trace_file.read())
         trace_file.close()
 
-        #
+        # open the file starting from the end
         trace_file = open(path_copy_trace_file, 'r', encoding=result['encoding'])
-        trace_file.seek(0, 2) # se positionner à la fin du fichier
-        pos = trace_file.tell() # obtenir la position courante dans le fichier
+        trace_file.seek(0, 2) 
+        pos = trace_file.tell()
 
-        # parcourir le fichier ligne par ligne en remontant
+        # browse the file line by line upwards
         while pos >= 0:
-            trace_file.seek(pos) # se positionner à la position courante
+            trace_file.seek(pos) # move to the current position
             try:
-                next_char = trace_file.read(1) # lire le caractère suivant
-                if next_char == "\n": # si on a atteint une nouvelle ligne
-                    line = trace_file.readline().rstrip() # lire la ligne et enlever les espaces blancs
+                next_char = trace_file.read(1) # read the following character
 
-                    boolean, name_file = self.__find_file_to_execute(line)
+                if next_char == "\n":
+                    line = trace_file.readline().rstrip()
+                    boolean, name_file = self.__find_file_to_execute(line) # search for the next file to run
 
                     if boolean:
                         break
                     else:
-                        pos -= len(line) + 1 # mettre à jour la position pour pointer sur la ligne précédente
+                        pos -= len(line) + 1 # update the position to point to the previous line
                 else:
-                    pos -= 1 # avancer le curseur d'un caractère si on n'a pas atteint une nouvelle ligne
+                    pos -= 1 # move the cursor forward by one character if you have not reached a new line
             except Exception:
                 pos -= 1
 
-        trace_file.close()
-        os.remove(path_copy_trace_file)
+        trace_file.close()              # close the file
+        os.remove(path_copy_trace_file) # deleting the file that has been copied
 
         return name_file
 
@@ -143,9 +148,10 @@ class ReadTraceFile(object):
         `Return:` a bool and the name of the file to be executed
         """
 
+        # line of the trace file that we want to find to be able to execute certain files
         file_name_dictionary = {
             "RC : ClgMyMDIChildWnd::OnCreate() : PRD_IDR_PRODUCTION_DOCUMENT" : "name_prod.txt",
-            "PRDBD_IDD_SUIVI_LOT" : "start_prod.txt"
+            "PRDBD_IDD_SUIVI_LOT" : CONSTANT_START_PROD_FILE
         }
 
         for key in file_name_dictionary:
@@ -158,17 +164,21 @@ class ReadTraceFile(object):
 
     def __launch_test_file(self, name_file: str):
         """ `-`
-        `Type:`
-        `Description:`
+        `Type:` Procedure
+        `Description:` execute the right files according to the name given in parameter
+        :param:`name_file:` name of the file to be executed
         """
 
         if name_file == "":
+            # case of error
             return
-        elif name_file == "start_prod.txt":
+        elif name_file == CONSTANT_START_PROD_FILE:
+            # execution of the file start_prod.txt
             ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
             self.start_time = datetime.datetime.now()
             self.__prod_waiting_time()
         elif name_file == "name_prod.txt":
+            # execution of the file name_prod.txt
             file_list = [
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\name_prod.txt",
                 f"{self.test_folder_path}\\name.txt",
