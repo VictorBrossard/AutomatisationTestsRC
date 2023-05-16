@@ -52,6 +52,8 @@ class ReadTraceFile(object):
         except Exception:
             return
         
+        self.has_prg_changed = self.__program_changed()
+        
         # execution file to write the date after the test name
         ManageSpecificFiles().create_execution_file(self.test_folder_path, "last_execution.txt", f"_{create_folder_time}")
         
@@ -65,7 +67,10 @@ class ReadTraceFile(object):
 
         name_file = ""
 
-        self.__launch_test_file("prod_program.txt")
+        if self.has_prg_changed:
+            self.__launch_test_file("prod_program.txt")
+        else:
+            self.__launch_test_file("partial_prod_no_prg_change.txt")
 
         # execution of all files
         while name_file != CONSTANT_START_PROD_FILE:
@@ -159,9 +164,9 @@ class ReadTraceFile(object):
         # line of the trace file that we want to find to be able to execute certain files
         file_name_dictionary = {
             "ClgMyDialog::OnInitDialog() : PRDBD_IDD_SUIVI_LOT" : "name_prod.txt",
-            "ClgMyMDIChildWnd::OnCreate() : PRD_IDR_PRODUCTION_DOCUMENT" : CONSTANT_START_PROD_FILE,
+            "CFX Trace : CTrSui::RecipeActivated" : CONSTANT_START_PROD_FILE,
             "ClgMyDialog::OnInitDialog() : PRG_IDD_SELECTION" : "program_name.txt",
-            "ClgMyDialog::OnDestroy() : PRG_IDD_SELECTION" : "partial_prod_no_prg_change.txt",
+            #"ClgMyDialog::OnDestroy() : PRG_IDD_SELECTION" : "partial_prod_prg_change.txt",
             "ClgMyDialog::OnInitDialog() : RC_IDD_LOCAL_LIST" : "local_list_boxes.txt"
         }
 
@@ -185,6 +190,12 @@ class ReadTraceFile(object):
             return
         
         elif name_file == CONSTANT_START_PROD_FILE:
+            if self.has_prg_changed:
+                time.sleep(3)
+                ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\card_recalibration.txt")
+                
+            time.sleep(3)
+
             # execution of the file start_prod.txt
             self.start_time = datetime.datetime.now()
             ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
@@ -207,10 +218,8 @@ class ReadTraceFile(object):
                 ExecuteTestFile().read_test_file(fil)
                 time.sleep(0.2)
 
-            time.sleep(3)
-            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\card_recalibration.txt")
-
         elif name_file == "program_name.txt":
+            # execution of the file program_name.txt
             file_list = [
                 f"{self.test_folder_path}\\program_name.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\validate_prog.txt",
@@ -222,13 +231,16 @@ class ReadTraceFile(object):
                 ExecuteTestFile().read_test_file(fil)
                 time.sleep(0.2)
 
-        elif name_file == "card_recalibration.txt":
-            time.sleep(3)
-            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\card_recalibration.txt")
-
         elif name_file == "partial_prod_no_prg_change.txt":
-            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod_no_prg_change.txt")
-            time.sleep(0.2)
+            # execution of the file partial_prod_no_prg_change.txt
+            file_list = [
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod_no_prg_change.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\prod_parameter.txt"
+            ]
+
+            for fil in file_list:
+                ExecuteTestFile().read_test_file(fil)
+                time.sleep(0.2)
 
         else:
             ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
@@ -279,3 +291,26 @@ class ReadTraceFile(object):
                 # if we are in this case then there was surely a problem
                 time.sleep(2)
                 time_for_cards = time_for_cards - 2
+
+
+    def __program_changed(self):
+        """ `-`
+        `Type:` Function
+        `Description:` check if the previously used program is the same as the one you want 
+        `Return:` bool
+        """
+
+        test_name = os.path.basename(self.test_folder_path)
+        setting_file_path = f"{self.test_folder_path}\\{test_name}_settings.txt"
+
+        try:
+            fil = open(setting_file_path, 'r')
+            program_name = fil.readlines()[3].rstrip()
+            fil.close()
+        except Exception:
+            return False
+        
+        if program_name == self.loaded_prg:
+            return False
+        else:
+            return True
