@@ -23,7 +23,7 @@ class UserEntryPopUp(tk.Tk):
         `Type:` Constructor
         :param:`name:` pop-up name
         :param:`label_list:` explanations of what is required of the user
-        :param:`widget_list:` list of integers with a number between 0 and 2 at index i where i is the index of the label associated with the future widget to create
+        :param:`widget_list:` list of integers with a number between 0 and 3 at index i where i is the index of the label associated with the future widget to create
                         - "0" = text entry
                         - "1" = integer entry
                         - "2" = comboboxs
@@ -58,7 +58,7 @@ class UserEntryPopUp(tk.Tk):
         `Type:` Procedure
         `Description:` adds interface objects to the interface
         :param:`label_list:` explanations of what is required of the user
-        :param:`widget_list:` list of integers with a number between 0 and 2 at index i where i is the index of the label associated with the future widget to create
+        :param:`widget_list:` list of integers with a number between 0 and 3 at index i where i is the index of the label associated with the future widget to create
                         - "0" = text entry
                         - "1" = integer entry
                         - "2" = comboboxs

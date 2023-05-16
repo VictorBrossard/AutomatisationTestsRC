@@ -6,6 +6,7 @@
 import mariadb
 import sys
 import os
+import subprocess
 
 from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
 from FilesManagement.Files.ManageSpecificFiles import CONSTANT_NAME_DATABASE_FILE
@@ -32,13 +33,18 @@ class Database(object):
 
         settings_database = self.manage_file.get_database_lines()
 
+        self.username = settings_database[0]
+        self.password = settings_database[1]
+        self.host = settings_database[2]
+        self.port = int(settings_database[3])
         self.name_database = settings_database[4]
+
         self.cursor = self.__connect(
-            settings_database[0],       # Username
-            settings_database[1],       # Password
-            settings_database[2],       # Host
-            int(settings_database[3]),  # Port
-            self.name_database          # Database
+            self.username,      # Username
+            self.password,      # Password
+            self.host,          # Host
+            self.port,          # Port
+            self.name_database  # Database
         )
 
 
@@ -163,35 +169,50 @@ class Database(object):
 
         for row in rows:
             str_row = str(",".join([str(x) for x in row]))
-            self.__save_table_tuples(str_row, path)
+
+            # command to get the data from the tables and put them in a SQL file
+            subprocess.run(
+                [
+                    "C:\\EUROPLACER\\MariaDB\\bin\\mariadb-dump.exe", 
+                    "--databases", 
+                    f"{self.name_database}", 
+                    "--tables", 
+                    f"{str_row}",
+                    "--insert-ignore",
+                    "--single-transaction", 
+                    "--quick",
+                    "--no-create-info",
+                    "--skip-add-drop-table", 
+                    f"--user={self.username}", 
+                    f"--password={self.password}", 
+                    ">", 
+                    f"{path}\\{str_row}-data.sql"
+                ], 
+                shell=True
+            )
+            
+            # command to retrieve the structure of tables in a SQL file
+            subprocess.run(
+                [
+                    "C:\\EUROPLACER\\MariaDB\\bin\\mariadb-dump.exe",
+                    "--databases",
+                    f"{self.name_database}", 
+                    "--tables", 
+                    f"{str_row}",
+                    "--insert-ignore", 
+                    "--single-transaction",
+                    "--quick", 
+                    "--no-data", 
+                    "--skip-add-drop-table",
+                    f"--user={self.username}", 
+                    f"--password={self.password}",
+                    ">", 
+                    f"{path}\\{str_row}-create.sql"
+                ],
+                shell=True
+            )
 
         self.connector.commit()
-
-
-    def __save_table_tuples(self, table_name: str, path: str):
-        """ `-`
-        `Type:` Procedure
-        `Description:` saves in a file all the tuples of a table
-        :param:`table_name:` name of the table of tuples to retrieve
-        :param:`path:` path to save the file
-        """
-
-        # selection of the tuples of the table
-        self.cursor.execute(
-            f"SELECT * FROM {table_name}",
-            ()
-        )
-
-        rows = self.cursor.fetchall()
-        str_rows_list = []
-
-        for row in rows:
-            str_row = ",".join([str(x) for x in row])
-            str_rows_list.append(str_row)
-
-        self.connector.commit()
-
-        self.manage_file.create_file(path, f"{table_name}.txt", str_rows_list)
 
 
     def get_tuples(self, command: str, variable_list: list) -> list:

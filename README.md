@@ -40,5 +40,6 @@ Les entiers dans la liste widget_list devront respecté ce format:
 - "0" = entrée de texte
 - "1" = entrée d'entier
 - "2" = comboboxs
+- "3" = limited text entry
 
 La liste combobox_list contient juste les valeurs des comboboxs. Elle n'est utilisé que dans le cas où il y a un "2" dans le liste widget_list.

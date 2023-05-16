@@ -7,7 +7,7 @@ import os
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants
-CONSTANT_INIT_PATH = "C:\\Program Files"
+CONSTANT_INIT_PATH = f"C:\\Users\\{os.getlogin()}\\Documents"
 
 CONSTANT_MAIN_FOLDER_PATH = CONSTANT_INIT_PATH + "\\AutomatisationRC"
 
