@@ -81,6 +81,9 @@ class Interaction(object):
         :param:`file_paths_list:` list of file paths that store the paths to the test folders
         """
 
+        if file_paths_list == []:
+            return
+
         # execution of each file in the list
         for i, fil in enumerate(file_paths_list):
             # retrieve the path of the test folder

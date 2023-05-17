@@ -70,3 +70,8 @@ CONSTANT_SHORT_FORMAT_DATES_DATABASE = "%Y-%m-%d %H:%M:%S"
 
 # InputRecorder
 CONSTANT_KEYBOARD_SHORTCUTS = ["ctrl", "ctrl_l", "ctrl_r", "alt", "alt_r", "alt_l", "cmd", "cmd_l", "cmd_r"]
+
+#######################################################################################################
+
+# Command
+CONSTANT_USER_COMMAND = ["-start", "-help"]

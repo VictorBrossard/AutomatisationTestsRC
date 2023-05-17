@@ -26,7 +26,7 @@ def main(args):
     `Description:` main function that executes all useful parts of the code
     """
 
-    run_as_admin()
+    #run_as_admin()
     ManageFolders().create_soft_folders()
     ManageSpecificFiles().create_soft_settings_file()
     TestPiecesFile()
@@ -36,7 +36,7 @@ def main(args):
         test = MainInterface(database)
         test.mainloop()
     else:
-        Command().translations_args(args)
+        Command(database).translations_args(args)
 
     
 # Execution of the main function
