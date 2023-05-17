@@ -8,10 +8,8 @@ from Database.Database import Database
 from datetime import timedelta
 from datetime import datetime
 
-#-----------------------------------------------------------------------------------------------------
-# Initialization of constants
-CONSTANT_FORMAT_DATES_DATABASE = "%Y-%m-%d %H:%M:%S.%f"
-CONSTANT_SHORT_FORMAT_DATES_DATABASE = "%Y-%m-%d %H:%M:%S"
+from Useful.AllConstant import CONSTANT_FORMAT_DATES_DATABASE
+from Useful.AllConstant import CONSTANT_SHORT_FORMAT_DATES_DATABASE
 
 #-----------------------------------------------------------------------------------------------------
 

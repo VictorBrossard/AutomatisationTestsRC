@@ -8,7 +8,7 @@ import ctypes
 
 from tkinter import ttk
 
-from UsefulFunction.UsefulFunction import cant_close
+from Useful.UsefulFunction import cant_close
 
 #-----------------------------------------------------------------------------------------------------
 

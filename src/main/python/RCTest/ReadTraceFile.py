@@ -12,16 +12,13 @@ import datetime
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
 
-from FilesManagement.Folders.ManageFolders import CONSTANT_TESTS_FOLDER_PATH
-from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_PIECES_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_TESTS_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_START_PROD_FILE
 
 from Interaction.ExecuteTestFile import ExecuteTestFile
 
 from Database.Database import Database
-
-#-----------------------------------------------------------------------------------------------------
-# Initialization of constants
-CONSTANT_START_PROD_FILE = "start_prod.txt"
 
 #-----------------------------------------------------------------------------------------------------
 

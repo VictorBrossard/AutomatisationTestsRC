@@ -5,10 +5,10 @@
 # Import of files useful for code execution 
 import subprocess
 import os
+import sys
 
-from FilesManagement.Folders.ManageFolders import CONSTANT_SETTINGS_FOLDER_PATH  # path where we store the settings file
-
-from FilesManagement.Files.ManageSpecificFiles import CONSTANT_NAME_SETTINGS_FILE
+from Useful.AllConstant import CONSTANT_NAME_SETTINGS_FILE
+from Useful.AllConstant import CONSTANT_SETTINGS_FOLDER_PATH # path where we store the settings file
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -46,8 +46,9 @@ class ManipulationSettingsFile(object):
             file_path.close()
 
             return line
-        except Exception:
-            return ""
+        except Exception as e:
+            print("[ERREUR]", e)
+            sys.exit(1)
     
 
     def manage_file(self, settings_list: list):

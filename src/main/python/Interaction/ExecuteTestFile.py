@@ -19,7 +19,7 @@ from Interaction.Screenshot import Screenshot
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
-from UsefulFunction.UsefulFunction import starts_with
+from Useful.UsefulFunction import starts_with
 
 #-----------------------------------------------------------------------------------------------------
 

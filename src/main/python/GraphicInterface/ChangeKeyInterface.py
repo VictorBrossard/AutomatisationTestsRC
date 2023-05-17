@@ -8,7 +8,7 @@ import ctypes
 
 from GraphicInterface.MessageBox import MessageBox
 
-from UsefulFunction.UsefulFunction import cant_close
+from Useful.UsefulFunction import cant_close
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 

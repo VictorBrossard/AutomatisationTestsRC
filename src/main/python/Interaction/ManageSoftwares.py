@@ -11,7 +11,7 @@ from GraphicInterface.MessageBox import MessageBox
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
-from UsefulFunction.UsefulFunction import is_soft_open
+from Useful.UsefulFunction import is_soft_open
 
 #-----------------------------------------------------------------------------------------------------
 

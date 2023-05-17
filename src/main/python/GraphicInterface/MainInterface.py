@@ -17,15 +17,19 @@ from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
 from GraphicInterface.LoopTestInterface import LoopTestInterface
 from GraphicInterface.SettingsInterface import SettingsInterface
 from GraphicInterface.MessageBox import MessageBox
+from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 
-from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 from FilesManagement.Folders.ManageFolders import ManageFolders
 
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
+from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
 
-from UsefulFunction.UsefulFunction import cant_close
+from Useful.UsefulFunction import cant_close
+from Useful.UsefulFunction import get_program_list
 
 from Database.Database import Database
+
+from Useful.AllConstant import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -112,7 +116,19 @@ class MainInterface(tk.Tk):
         """
 
         self.destroy()
-        Interaction().create_test()
+
+        # pop-up asking for the name of the file we are going to create to save the test
+        pop_up = UserEntryPopUp(
+            "Create Tests", 
+            ["Entrez le nom du test :", "Type du test"], 
+            [3, 2], 
+            [["production", "optimisation"]]
+        )
+        pop_up.mainloop()
+
+        if pop_up.get_user_entries() != []:
+            Interaction().create_test(is_command=False, user_entry_list=pop_up.get_user_entries())
+
         self.__init__(self.data) # Opening the interface
         self.mainloop()
 
@@ -206,12 +222,35 @@ class MainInterface(tk.Tk):
                 loop.mainloop()
 
                 # new test list that has n times the test in the list, where n is the number entered as parameter by the user
-                new_list = loop.get_new_test_list()
+                file_paths_list = loop.get_new_test_list()
+            
+            prg_list = get_program_list()
 
-                if new_list != []:
-                    Interaction().execute_test(self.data, new_list)
-            else:
-                Interaction().execute_test(self.data, file_paths_list)
+            for i, fil in enumerate(file_paths_list):
+                test_file = open(fil, 'r')
+                test_folder_path = test_file.readlines()[0].rstrip()
+                test_file.close()
+
+                fil_name = os.path.basename(fil)
+
+                pop_up = UserEntryPopUp(
+                    f"{fil_name}",
+                    ["Nombre de cartes à produire :", "Nombre de cartes faites :", "Initialisation de la machine :", "Programme :"],
+                    [1, 1, 2, 2],
+                    [["Partielle"], prg_list]
+                )
+
+                pop_up.mainloop()
+                user_entry_list = pop_up.get_user_entries()
+
+                if user_entry_list == []:
+                    return
+
+                new_file = ManageSpecificFiles()
+                new_file.create_file(test_folder_path, f"test_{i}.txt", user_entry_list)
+
+            """if file_paths_list != []:
+                Interaction().execute_test(self.data, file_paths_list)"""
 
             self.__init__(self.data)
             self.mainloop()

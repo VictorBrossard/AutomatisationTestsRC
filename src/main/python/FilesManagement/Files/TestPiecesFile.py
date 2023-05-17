@@ -5,7 +5,7 @@
 # Import of files useful for code execution 
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
-from FilesManagement.Folders.ManageFolders import CONSTANT_TEST_PIECES_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 

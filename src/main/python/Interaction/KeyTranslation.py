@@ -6,7 +6,7 @@
 from pynput.keyboard import Key
 from pynput.keyboard import KeyCode
 
-from UsefulFunction.UsefulFunction import starts_with
+from Useful.UsefulFunction import starts_with
 
 #-----------------------------------------------------------------------------------------------------
 

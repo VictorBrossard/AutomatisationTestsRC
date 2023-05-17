@@ -10,19 +10,16 @@ import hashlib
 
 from cryptography.fernet import Fernet
 
-from FilesManagement.Folders.ManageFolders import CONSTANT_SETTINGS_FOLDER_PATH  # path where we store the settings file
-from FilesManagement.Folders.ManageFolders import CONSTANT_INIT_PATH
+from Useful.AllConstant import CONSTANT_SETTINGS_FOLDER_PATH # path where we store the settings file
+from Useful.AllConstant import CONSTANT_INIT_PATH
+from Useful.AllConstant import CONSTANT_NAME_SETTINGS_FILE
+from Useful.AllConstant import CONSTANT_NAME_DATABASE_FILE
+from Useful.AllConstant import CONSTANT_ENCRYPTION_KEY
 
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
 from GraphicInterface.MessageBox import MessageBox
-
-#-----------------------------------------------------------------------------------------------------
-# Initialization of constants
-CONSTANT_NAME_SETTINGS_FILE = "settings.txt"
-CONSTANT_NAME_DATABASE_FILE = "database_settings.txt"
-CONSTANT_ENCRYPTION_KEY = "GEJvRguUGA1y8cPK"
 
 #-----------------------------------------------------------------------------------------------------
 

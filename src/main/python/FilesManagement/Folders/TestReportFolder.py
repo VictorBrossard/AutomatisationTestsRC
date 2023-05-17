@@ -6,7 +6,8 @@
 import datetime
 
 from FilesManagement.Folders.ManageFolders import ManageFolders
-from FilesManagement.Folders.ManageFolders import CONSTANT_REPORTS_FOLDER_PATH
+
+from Useful.AllConstant import CONSTANT_REPORTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 

@@ -12,7 +12,7 @@ from FilesManagement.Files.TestPiecesFile import TestPiecesFile
 
 from FilesManagement.Folders.ManageFolders import ManageFolders
 
-from UsefulFunction.UsefulFunction import run_as_admin
+from Useful.UsefulFunction import run_as_admin
 
 from Database.Database import Database
 

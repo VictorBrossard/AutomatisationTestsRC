@@ -9,12 +9,12 @@ import os
 import subprocess
 
 from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
-from FilesManagement.Files.ManageSpecificFiles import CONSTANT_NAME_DATABASE_FILE
-
-from FilesManagement.Folders.ManageFolders import CONSTANT_SETTINGS_FOLDER_PATH
 
 from GraphicInterface.MessageBox import MessageBox
 from GraphicInterface.SimpleQuestionInterface import SimpleQuestionInterface
+
+from Useful.AllConstant import CONSTANT_NAME_DATABASE_FILE
+from Useful.AllConstant import CONSTANT_SETTINGS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 

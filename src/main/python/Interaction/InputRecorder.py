@@ -15,9 +15,7 @@ from Interaction.KeyTranslation import KeyTranslation
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
-#-----------------------------------------------------------------------------------------------------
-# Initialization of constants
-CONSTANT_KEYBOARD_SHORTCUTS = ["ctrl", "ctrl_l", "ctrl_r", "alt", "alt_r", "alt_l", "cmd", "cmd_l", "cmd_r"]
+from Useful.AllConstant import CONSTANT_KEYBOARD_SHORTCUTS
 
 #-----------------------------------------------------------------------------------------------------
 

@@ -8,35 +8,29 @@ import ctypes
 
 from tkinter import ttk
 
-from UsefulFunction.UsefulFunction import cant_close
+from Useful.UsefulFunction import cant_close
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
 from GraphicInterface.ChangeKeyInterface import ChangeKeyInterface
 
-#-----------------------------------------------------------------------------------------------------
-# Initialization of constants
-# Column
-_CONSTANT_LABEL_COLUMN = int(0)
-_CONSTANT_ENTRY_COLUMN = int(2)
-_CONSTANT_TITLE_COLUMN = int(1)
-_CONSTANT_BUTTON_COLUMN = int(1)
+from Useful.AllConstant import CONSTANT_LABEL_COLUMN
+from Useful.AllConstant import CONSTANT_ENTRY_COLUMN
+from Useful.AllConstant import CONSTANT_TITLE_COLUMN
+from Useful.AllConstant import CONSTANT_BUTTON_COLUMN
 
-# Title
-_CONSTANT_SETTINGS_TITLE_LINE = int(0)
-_CONSTANT_TEST_TITLE_LINE = int(7)
+from Useful.AllConstant import CONSTANT_SETTINGS_TITLE_LINE
+from Useful.AllConstant import CONSTANT_TEST_TITLE_LINE
 
-# Line
-_CONSTANT_SIMU_EXE_LINE = _CONSTANT_SETTINGS_TITLE_LINE + 1
-_CONSTANT_RC_EXE_LINE = _CONSTANT_SIMU_EXE_LINE + 1
-_CONSTANT_SIMU_PATH_LINE = _CONSTANT_RC_EXE_LINE + 1
-_CONSTANT_RC_PATH_LINE = _CONSTANT_SIMU_PATH_LINE + 1
-_CONSTANT_FOLDER_PATH_LINE = _CONSTANT_RC_PATH_LINE + 1
-_CONSTANT_RC_WINDOW_NAME_LINE = _CONSTANT_FOLDER_PATH_LINE + 1
-_CONSTANT_STOP_KEY_LINE = _CONSTANT_TEST_TITLE_LINE + 1
+from Useful.AllConstant import CONSTANT_SIMU_EXE_LINE
+from Useful.AllConstant import CONSTANT_RC_EXE_LINE
+from Useful.AllConstant import CONSTANT_SIMU_PATH_LINE
+from Useful.AllConstant import CONSTANT_RC_PATH_LINE
+from Useful.AllConstant import CONSTANT_FOLDER_PATH_LINE
+from Useful.AllConstant import CONSTANT_RC_WINDOW_NAME_LINE
+from Useful.AllConstant import CONSTANT_STOP_KEY_LINE
 
-# Button
-_CONSTANT_BUTTON_LINE = _CONSTANT_STOP_KEY_LINE + 1
+from Useful.AllConstant import CONSTANT_BUTTON_LINE
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -97,63 +91,63 @@ class SettingsInterface(tk.Tk):
 
         # Button
         exit_button = ttk.Button(self, text='Exit', command=self.__close_interface)                 # Creation of the button
-        exit_button.grid(column= _CONSTANT_BUTTON_COLUMN, row= _CONSTANT_BUTTON_LINE, **padding)    # Object position
+        exit_button.grid(column= CONSTANT_BUTTON_COLUMN, row= CONSTANT_BUTTON_LINE, **padding)    # Object position
 
         stop_key_button = ttk.Button(self, text='Change Key', command=self.__change_test_stop_key)
-        stop_key_button.grid(column= _CONSTANT_BUTTON_COLUMN, row= _CONSTANT_STOP_KEY_LINE, **padding)   
+        stop_key_button.grid(column= CONSTANT_BUTTON_COLUMN, row= CONSTANT_STOP_KEY_LINE, **padding)   
 
         # Label
         # Title
         settings_title_label = ttk.Label(self, text="General Settings")                                             # Creation of the label
-        settings_title_label.grid(column= _CONSTANT_TITLE_COLUMN, row= _CONSTANT_SETTINGS_TITLE_LINE, **padding)    # Object position
+        settings_title_label.grid(column= CONSTANT_TITLE_COLUMN, row= CONSTANT_SETTINGS_TITLE_LINE, **padding)    # Object position
 
         test_title_label = ttk.Label(self, text="Test Settings")              
-        test_title_label.grid(column= _CONSTANT_TITLE_COLUMN, row= _CONSTANT_TEST_TITLE_LINE, **padding)
+        test_title_label.grid(column= CONSTANT_TITLE_COLUMN, row= CONSTANT_TEST_TITLE_LINE, **padding)
 
         # Description
         simu_exe_label = ttk.Label(self, text="simu_exe")              
-        simu_exe_label.grid(column= _CONSTANT_LABEL_COLUMN, row= _CONSTANT_SIMU_EXE_LINE, **padding)
+        simu_exe_label.grid(column= CONSTANT_LABEL_COLUMN, row= CONSTANT_SIMU_EXE_LINE, **padding)
 
         rc_exe_label = ttk.Label(self, text="rc_exe")              
-        rc_exe_label.grid(column= _CONSTANT_LABEL_COLUMN, row= _CONSTANT_RC_EXE_LINE, **padding)
+        rc_exe_label.grid(column= CONSTANT_LABEL_COLUMN, row= CONSTANT_RC_EXE_LINE, **padding)
 
         simu_path_label = ttk.Label(self, text="simu_path")              
-        simu_path_label.grid(column= _CONSTANT_LABEL_COLUMN, row= _CONSTANT_SIMU_PATH_LINE, **padding)
+        simu_path_label.grid(column= CONSTANT_LABEL_COLUMN, row= CONSTANT_SIMU_PATH_LINE, **padding)
 
         rc_path_label = ttk.Label(self, text="rc_path")              
-        rc_path_label.grid(column= _CONSTANT_LABEL_COLUMN, row= _CONSTANT_RC_PATH_LINE, **padding)
+        rc_path_label.grid(column= CONSTANT_LABEL_COLUMN, row= CONSTANT_RC_PATH_LINE, **padding)
 
         folder_path_label = ttk.Label(self, text="folder_path")              
-        folder_path_label.grid(column= _CONSTANT_LABEL_COLUMN, row= _CONSTANT_FOLDER_PATH_LINE, **padding)
+        folder_path_label.grid(column= CONSTANT_LABEL_COLUMN, row= CONSTANT_FOLDER_PATH_LINE, **padding)
 
         rc_window_name_label = ttk.Label(self, text="rc window")              
-        rc_window_name_label.grid(column= _CONSTANT_LABEL_COLUMN, row= _CONSTANT_RC_WINDOW_NAME_LINE, **padding)
+        rc_window_name_label.grid(column= CONSTANT_LABEL_COLUMN, row= CONSTANT_RC_WINDOW_NAME_LINE, **padding)
 
         stop_key_label = ttk.Label(self, text="stop key")              
-        stop_key_label.grid(column= _CONSTANT_LABEL_COLUMN, row= _CONSTANT_STOP_KEY_LINE, **padding)         
+        stop_key_label.grid(column= CONSTANT_LABEL_COLUMN, row= CONSTANT_STOP_KEY_LINE, **padding)         
 
         # Entry 
         simu_exe_entry = ttk.Entry(self, textvariable=self.var_list[0])                                    # Creation of the entry
-        simu_exe_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_SIMU_EXE_LINE, **padding)    # Object position
+        simu_exe_entry.grid(column= CONSTANT_ENTRY_COLUMN, row= CONSTANT_SIMU_EXE_LINE, **padding)    # Object position
 
         rc_exe_entry = ttk.Entry(self, textvariable=self.var_list[1])  
-        rc_exe_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_RC_EXE_LINE, **padding)
+        rc_exe_entry.grid(column= CONSTANT_ENTRY_COLUMN, row= CONSTANT_RC_EXE_LINE, **padding)
 
         simu_path_entry = ttk.Entry(self, textvariable=self.var_list[2])  
-        simu_path_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_SIMU_PATH_LINE, **padding)
+        simu_path_entry.grid(column= CONSTANT_ENTRY_COLUMN, row= CONSTANT_SIMU_PATH_LINE, **padding)
 
         rc_path_entry = ttk.Entry(self, textvariable=self.var_list[3])  
-        rc_path_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_RC_PATH_LINE, **padding)
+        rc_path_entry.grid(column= CONSTANT_ENTRY_COLUMN, row= CONSTANT_RC_PATH_LINE, **padding)
 
         folder_path_entry = ttk.Entry(self, textvariable=self.var_list[4])  
-        folder_path_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_FOLDER_PATH_LINE, **padding)
+        folder_path_entry.grid(column= CONSTANT_ENTRY_COLUMN, row= CONSTANT_FOLDER_PATH_LINE, **padding)
         folder_path_entry.config(state="disabled")     
 
         rc_window_name_entry = ttk.Entry(self, textvariable=self.var_list[5])  
-        rc_window_name_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_RC_WINDOW_NAME_LINE, **padding) 
+        rc_window_name_entry.grid(column= CONSTANT_ENTRY_COLUMN, row= CONSTANT_RC_WINDOW_NAME_LINE, **padding) 
 
         test_stop_key_entry = ttk.Entry(self, textvariable=self.var_list[6])  
-        test_stop_key_entry.grid(column= _CONSTANT_ENTRY_COLUMN, row= _CONSTANT_STOP_KEY_LINE, **padding)  
+        test_stop_key_entry.grid(column= CONSTANT_ENTRY_COLUMN, row= CONSTANT_STOP_KEY_LINE, **padding)  
         test_stop_key_entry.config(state="disabled")              
         
 

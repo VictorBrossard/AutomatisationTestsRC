@@ -5,21 +5,11 @@
 # Import of files useful for code execution
 import os
 
-#-----------------------------------------------------------------------------------------------------
-# Initialization of constants
-CONSTANT_INIT_PATH = f"C:\\Users\\{os.getlogin()}\\Documents"
-
-CONSTANT_MAIN_FOLDER_PATH = CONSTANT_INIT_PATH + "\\AutomatisationRC"
-
-CONSTANT_FILES_FOLDER_PATH = CONSTANT_MAIN_FOLDER_PATH + "\\Files"
-
-CONSTANT_TESTS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\tests" 
-CONSTANT_SETTINGS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\settings"
-
-CONSTANT_REPORTS_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\reports"
-CONSTANT_EXCUTABLE_TESTS_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\executable_tests"
-CONSTANT_TEST_PIECES_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\test_pieces"
-CONSTANT_TEST_AVAILABLE_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\test_available"
+from Useful.AllConstant import CONSTANT_EXCUTABLE_TESTS_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_INIT_PATH
+from Useful.AllConstant import CONSTANT_MAIN_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_FILES_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_TESTS_FOLDER_PATH
 
 #-----------------------------------------------------------------------------------------------------
 

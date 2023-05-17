@@ -9,9 +9,9 @@ import os
 
 from tkinter import ttk
 
-from UsefulFunction.UsefulFunction import cant_close
-from UsefulFunction.UsefulFunction import str_list_to_int_list
-from UsefulFunction.UsefulFunction import validate_int
+from Useful.UsefulFunction import cant_close
+from Useful.UsefulFunction import str_list_to_int_list
+from Useful.UsefulFunction import validate_int
 
 #-----------------------------------------------------------------------------------------------------
 

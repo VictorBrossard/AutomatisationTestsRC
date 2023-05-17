@@ -7,8 +7,11 @@ import ctypes
 import sys
 import subprocess
 import win32gui
+import os
 
 from GraphicInterface.MessageBox import MessageBox
+
+from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -131,3 +134,23 @@ def rc_window_foreground(window_name: str):
         """settings = SettingsInterface()
         settings.mainloop()
         rc_window_foreground(ManipulationSettingsFile().get_line(4))"""
+
+
+def get_program_list():
+        """ `+`
+        `Type:` Function
+        `Description:` will fetch the list of programs locally
+        `Return:` list of programs
+        """
+
+        # path of the folder where the programs are
+        folder_path = ManipulationSettingsFile().get_line(8)
+        files_with_dp_extension = []
+
+        # recovery of the list of program names 
+        for file_name_with_extension in os.listdir(folder_path):
+            if file_name_with_extension.endswith(".dp"):
+                file_name, extension = os.path.splitext(os.path.basename(file_name_with_extension))
+                files_with_dp_extension.append(file_name)
+
+        return files_with_dp_extension

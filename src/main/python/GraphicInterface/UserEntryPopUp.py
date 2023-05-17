@@ -8,8 +8,10 @@ import ctypes
 
 from tkinter import ttk
 
-from UsefulFunction.UsefulFunction import cant_close
-from UsefulFunction.UsefulFunction import validate_int
+from GraphicInterface.MessageBox import MessageBox
+
+from Useful.UsefulFunction import cant_close
+from Useful.UsefulFunction import validate_int
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -198,15 +200,22 @@ class UserEntryPopUp(tk.Tk):
     def __close_pop_up(self):
         """ `-`
         `Type:` Porcedure
-        `Description:` close the interface
+        `Description:` close the interface and check that all input fields are not empty
         """
 
         new_user_entries = []
 
         # retrieves the values of the StringVar
         for i in range(0, self.nb_entries):
-            new_user_entries.append(self.user_entries[i].get())
+            value = self.user_entries[i].get()
+            if value == "":
+                MessageBox("ERREUR Manque d'information", "[ERREUR] Vous n'avez pas remplis toutes les cases.").mainloop()
+                self.user_entries = []
+                self.destroy()
+                return
 
+            new_user_entries.append(value)
+        
         self.user_entries = new_user_entries
 
         self.destroy() # Closing the interface
