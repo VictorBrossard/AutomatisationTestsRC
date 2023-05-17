@@ -204,21 +204,25 @@ class UserEntryPopUp(tk.Tk):
         """
 
         new_user_entries = []
+        was_break = False
 
         # retrieves the values of the StringVar
         for i in range(0, self.nb_entries):
             value = self.user_entries[i].get()
             if value == "":
-                MessageBox("ERREUR Manque d'information", "[ERREUR] Vous n'avez pas remplis toutes les cases.").mainloop()
-                self.user_entries = []
-                self.destroy()
-                return
+                was_break = True
+                break
 
             new_user_entries.append(value)
         
         self.user_entries = new_user_entries
 
         self.destroy() # Closing the interface
+
+        # information to the user that he has not filled in all the boxes
+        if was_break:
+            MessageBox("ERREUR Manque d'information", "[ERREUR] Vous n'avez pas remplis toutes les cases.").mainloop()
+            self.user_entries = []
 
     
     def get_user_entries(self):

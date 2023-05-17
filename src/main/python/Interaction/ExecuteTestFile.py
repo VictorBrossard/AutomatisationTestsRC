@@ -5,6 +5,7 @@
 # Import of files useful for code execution
 import time
 import pyautogui
+import sys
 
 from pynput import keyboard
 from pynput.mouse import Button
@@ -16,6 +17,7 @@ from pynput.keyboard import Controller as KeyboardController
 
 from Interaction.KeyTranslation import KeyTranslation
 from Interaction.Screenshot import Screenshot
+from Interaction.ManageSoftwares import ManageSoftwares
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
@@ -52,11 +54,11 @@ class ExecuteTestFile(object):
         """
 
         try:
-            test_file = open(file_path, "r")
+            self.test_file = open(file_path, "r")
             self.keyboard_listener.start()
 
             # Read the first line by itself because there are no prior instructions to know the waiting time
-            first_line = test_file.readline()
+            first_line = self.test_file.readline()
             first_word_list = first_line.split(";") # Split the sentence for easier manipulation
             self.__find_action(first_word_list, []) 
 
@@ -65,18 +67,13 @@ class ExecuteTestFile(object):
             time.sleep(0.3)
 
             # We do the same for all the lines of the file
-            for line in test_file:
-                if self.does_want_stop:
-                    self.keyboard_listener.stop()
-                    test_file.close()
-                    return
-                
+            for line in self.test_file:
                 now_word_list = line.split(";")
                 self.__find_action(now_word_list, before_word_list)
                 before_word_list = now_word_list
 
             self.keyboard_listener.stop()
-            test_file.close()
+            self.test_file.close()
         except Exception:
             pass
 
@@ -179,10 +176,6 @@ class ExecuteTestFile(object):
                     self.keyboard.release(k)
             else:
                 key = KeyTranslation().find_correct_key(key_char) # translate string to Key or KeyCode
-
-                """if key == Key.print_screen:
-                    Screenshot()
-                else:"""
                 self.keyboard.press(key)
                 time.sleep(0.1)
                 self.keyboard.release(key)
@@ -293,4 +286,10 @@ class ExecuteTestFile(object):
             key_name = key.name
 
         if key_name == self.settings.get_line(5): # key that stops recording
-            self.does_want_stop = True
+            self.keyboard_listener.stop()
+            self.test_file.close()
+            ManageSoftwares().close_soft()
+            sys.exit()
+
+        """elif key == Key.print_screen:
+            Screenshot()"""

@@ -28,6 +28,7 @@ from Database.Database import Database
 
 from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_SHORT_FORMAT_DATES_DATABASE
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -48,17 +49,9 @@ class Interaction(object):
         """ `+`
         `Type:` Procedure
         `Description:` creates an entire test
-        :param:`is_command:`
-        :param:`user_entry_list:`
+        :param:`is_command:` boolean to know if we use a command to execute this function
+        :param:`user_entry_list:` information input by the user
         """
-
-        """# verification that the user has given us all the values
-        if user_entry_list == []:
-            if is_command:
-                print("[ERREUR] Vous n'avez pas donné toutes les informations nécessaire")
-                return
-            else: 
-                return"""
             
         # creation of the file that stores the test pieces
         test_folder_path = ManageFolders().create_test_folder(user_entry_list[0])
@@ -75,9 +68,6 @@ class Interaction(object):
         new_file = ManageSpecificFiles()
         new_file.create_file(test_folder_path, f"{user_entry_list[0]}_settings.txt", user_entry_list)
         new_file.create_execution_file(test_folder_path, "name.txt", user_entry_list[0])
-        #new_file.create_execution_file(test_folder_path, "card_to_make.txt", user_entry_list[1])
-        #new_file.create_execution_file(test_folder_path, "card_make.txt", "0")
-        #new_file.create_execution_file(test_folder_path, "program_name.txt", user_entry_list[3])
             
         # creation of the only file that the user can select to run the tests
         new_file.create_file(CONSTANT_TEST_AVAILABLE_FOLDER_PATH, f"{user_entry_list[0]}.txt", [test_folder_path])
@@ -92,25 +82,38 @@ class Interaction(object):
         """
 
         # execution of each file in the list
-        for fil in file_paths_list:
-            # creation of a file for the test report
-            file_name, extension = os.path.splitext(os.path.basename(fil))
+        for i, fil in enumerate(file_paths_list):
+            # retrieve the path of the test folder
+            test_file = open(fil, 'r')
+            test_folder_path = test_file.readlines()[0].rstrip()
+            test_file.close()
+
+            # creation of a folder for the test report
+            file_name = os.path.basename(test_folder_path)
             folder = TestReportFolder(file_name)
 
+            # creation of test items depending on each test
+            manage_files = ManageSpecificFiles()
+            test_type, wanted_prg= manage_files.create_temp_test_pieces_file(test_folder_path, i, folder.get_now())
+
             # launches the general precondition for launching a test
-            prg = Precondition(database).start_precondition()
+            loaded_prg = Precondition(database).start_precondition()
             time.sleep(6.5)
 
-            start_time = ReadTraceFile(fil, database, folder.get_folder_name(), folder.get_now(), prg).launch()
+            # test execution
+            start_time = ReadTraceFile(test_folder_path, database, folder.get_folder_name(), loaded_prg, wanted_prg).launch()
 
             # take a screenshot
             Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
 
             # create report
-            ManageReportFile(database, folder.get_folder_path(), fil, folder.get_now(), start_time.strftime('%Y-%m-%d %H:%M:%S')).create_report_file()
+            ManageReportFile(database, folder.get_folder_path(), test_folder_path, folder.get_now(), start_time.strftime(CONSTANT_SHORT_FORMAT_DATES_DATABASE), i).create_report_file()
 
             # launches the general postcondition to stop a test
             PostCondition().start_postcondition(database, folder.get_folder_path())
+
+            # deletion of the test pieces
+            manage_files.delete_temp_test_pieces_file(test_folder_path, i)
 
 
     def test_pieces(self):

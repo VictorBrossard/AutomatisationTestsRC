@@ -147,7 +147,7 @@ class ManageSpecificFiles(ManageAnyFile):
             fil.close()
         except Exception:
             MessageBox("ERREUR", "[ERREUR] Problème avec le fichier database.").mainloop()
-            sys.exit(1)
+            sys.exit()
 
         # recovery of all the lines of the file without the \n and modification of the line of the password
         for i, line in enumerate(lines):
@@ -202,3 +202,45 @@ class ManageSpecificFiles(ManageAnyFile):
 
         # returns the decrypted key in string and not in byte
         return decoded_sentence_bytes.decode("utf-8")
+    
+
+    def create_temp_test_pieces_file(self, test_folder_path: str, index: str, create_folder_time: str) -> tuple[str, str]:
+        """ `+`
+        `Type:` Function
+        `Description:` create all the test tips that vary according to the tests ( so temporary)
+        :param:`test_folder_path:` folder where the files will be
+        :param:`index:` test index to find the right file test_"index".txt
+        :param:`create_folder_time:` date and time of folder creation
+        `Return:` the type of initialization of the machine and the program executed
+        """
+
+        try:
+            fil = open(f"{test_folder_path}\\test_{index}.txt", 'r')
+            lines = fil.readlines()
+            fil.close()
+        
+            # creation of test piece files
+            self.create_execution_file(test_folder_path, "card_to_make.txt", lines[0].rstrip())
+            self.create_execution_file(test_folder_path, "card_make.txt", lines[1].rstrip())
+            self.create_execution_file(test_folder_path, "program_name.txt", lines[3].rstrip())
+            self.create_execution_file(test_folder_path, "last_execution.txt", f"_{create_folder_time}") # execution file to write the date after the test name
+
+            return (lines[2].rstrip(), lines[3].rstrip())
+        except Exception as e:
+            print("[ERREUR]", e)
+            return ("", "")
+        
+
+    def delete_temp_test_pieces_file(self, test_folder_path: str, index: str):
+        """ `+`
+        `Type:` Procedure
+        `Description:` deletes all temporary test pieces
+        :param:`test_folder_path:` folder where the files are
+        :param:`index:` test index to find the right file test_"index".txt
+        """
+
+        os.remove(f"{test_folder_path}\\test_{index}.txt")
+        os.remove(f"{test_folder_path}\\card_make.txt")
+        os.remove(f"{test_folder_path}\\card_to_make.txt")
+        os.remove(f"{test_folder_path}\\program_name.txt")
+        os.remove(f"{test_folder_path}\\last_execution.txt")

@@ -27,32 +27,21 @@ class ReadTraceFile(object):
     :class:`ReadTraceFile` reads the trace file and launches the right files for the test
     """
 
-    def __init__(self, test_available: str, database: Database, folder_name: str, create_folder_time: str, loaded_prg: str):
+    def __init__(self, test_folder_path: str, database: Database, folder_name: str, loaded_prg: str, wanted_prg: str):
         """ `-`
         `Type:` Constructor
-        :param:`test_available:` test file name
+        :param:`test_folder_path:` test folder path
         :param:`database:` object that manages the interaction with the database
         :param:`folder_name:` name of the folder which is equivalent to the name of the test in the database
-        :param:`create_folder_time:` date of creation of the report folder
         :param:`loaded_prg:` name of the last program loaded in RC
+        :param:`wanted_prg:` program desired by the user
         """
 
         self.trace_file_path = ManipulationSettingsFile().get_line(7)
         self.database = database
         self.folder_name = folder_name
-        self.loaded_prg = loaded_prg
-
-        try:
-            fil = open(test_available, 'r')
-            self.test_folder_path = fil.readlines()[0].rstrip()
-            fil.close()
-        except Exception:
-            return
-        
-        self.has_prg_changed = self.__program_changed()
-        
-        # execution file to write the date after the test name
-        ManageSpecificFiles().create_execution_file(self.test_folder_path, "last_execution.txt", f"_{create_folder_time}")
+        self.test_folder_path = test_folder_path
+        self.has_prg_changed = (loaded_prg != wanted_prg)
         
     
     def launch(self):
@@ -73,16 +62,6 @@ class ReadTraceFile(object):
         while name_file != CONSTANT_START_PROD_FILE:
             name_file = self.__find_trace()
             self.__launch_test_file(name_file)
-        
-        """self.__launch_test_file("prod_program.txt")
-        self.__launch_test_file("program_name.txt")
-        self.__launch_test_file("validate_prog.txt")
-        self.__launch_test_file("partial_prod.txt")
-        self.__launch_test_file("program_change.txt")
-        self.__launch_test_file("local_list_boxes.txt")
-        self.__launch_test_file("name_prod.txt")
-        self.__launch_test_file("card_recalibration.txt")
-        self.__launch_test_file(CONSTANT_START_PROD_FILE)"""
 
         return self.start_time
 
@@ -288,26 +267,3 @@ class ReadTraceFile(object):
                 # if we are in this case then there was surely a problem
                 time.sleep(2)
                 time_for_cards = time_for_cards - 2
-
-
-    def __program_changed(self):
-        """ `-`
-        `Type:` Function
-        `Description:` check if the previously used program is the same as the one you want 
-        `Return:` bool
-        """
-
-        test_name = os.path.basename(self.test_folder_path)
-        setting_file_path = f"{self.test_folder_path}\\{test_name}_settings.txt"
-
-        try:
-            fil = open(setting_file_path, 'r')
-            program_name = fil.readlines()[3].rstrip()
-            fil.close()
-        except Exception:
-            return False
-        
-        if program_name == self.loaded_prg:
-            return False
-        else:
-            return True

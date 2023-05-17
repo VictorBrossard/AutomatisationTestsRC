@@ -48,7 +48,7 @@ class ManipulationSettingsFile(object):
             return line
         except Exception as e:
             print("[ERREUR]", e)
-            sys.exit(1)
+            sys.exit()
     
 
     def manage_file(self, settings_list: list):

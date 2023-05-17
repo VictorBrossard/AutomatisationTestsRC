@@ -80,7 +80,7 @@ class Database(object):
                 return
             else:
                 os.remove(f"{CONSTANT_SETTINGS_FOLDER_PATH}\\{CONSTANT_NAME_DATABASE_FILE}")
-                sys.exit(1)
+                sys.exit()
 
         return self.connector.cursor()
     

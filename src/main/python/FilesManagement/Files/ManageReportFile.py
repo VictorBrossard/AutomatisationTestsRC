@@ -9,8 +9,6 @@ from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
 from Database.Database import Database
 
-from GraphicInterface.MessageBox import MessageBox
-
 from RCTest.CheckTest import CheckTest
 
 #-----------------------------------------------------------------------------------------------------
@@ -20,22 +18,25 @@ class ManageReportFile(ManageAnyFile):
     :class:`ManageReportFile` manages report file
     """
     
-    def __init__(self, database: Database, folder_path: str, file_with_path: str, folder_creation_time: str, start_test_time: str):
+    def __init__(self, database: Database, report_folder_path: str, test_folder_path: str, time_create_folder: str, start_test_time: str, index: str):
         """ `-`
         `Type:` Constructor
         :param:`database:` object that manages the interaction with the database
-        :param:`path:` path where you save the file
-        :param:`file_with_path:` file that stores the path to the settings
-        :param:`folder_creation_time:` time the file is created
+        :param:`report_folder_path:` path where you save the file
+        :param:`test_folder_path:` path of the test file to be analyzed
+        :param:`time_create_folder:` time the folder is created
         :param:`start_time:` time when you press start
+        :param:`index:` test index
         """
 
         self.data = database
-        self.folder_path = folder_path
-        self.file_with_path = file_with_path
-        self.folder_creation_time = folder_creation_time
+        self.report_folder_path = report_folder_path
+        self.test_folder_path = test_folder_path
+        self.time_create_folder = time_create_folder
         self.start_time = start_test_time
-        self.test_name = os.path.basename(folder_path) # name of the file which is also the name of the test
+        self.index = index
+        
+        self.test_name = os.path.basename(report_folder_path) # name of the file which is also the name of the test
         self.check_test = CheckTest(self.data, self.test_name)
         self.content_list = [] # future file content
 
@@ -46,64 +47,35 @@ class ManageReportFile(ManageAnyFile):
         `Description:` execute the private function __create_report_file
         """
 
-        self.__create_report_file(self.folder_path, self.file_with_path)
+        self.__create_report_file(self.report_folder_path, self.test_folder_path)
 
 
-    def __create_report_file(self, folder_path: str, file_with_path: str):
+    def __create_report_file(self, report_folder_path: str, test_folder_path: str):
         """ `-`
         `Type:` Procedure
         `Description:` creates a txt file
-        :param:`path:` path where you save the file
-        :param:`file_with_path:` file that stores the path to the settings
+        :param:`report_folder_path:` path where you save the file
+        :param:`test_folder_path:` path of the test file to be analyzed
         """
 
         # will retrieve the values of the settings used for the report
-        settings = self.__get_settings_values(file_with_path)
+        settings_file_name = f"{os.path.basename(self.test_folder_path)}_settings.txt"
+        settings = self.get_file_lines(f"{test_folder_path}\\{settings_file_name}")
+        temp_test_settings = self.get_file_lines(f"{test_folder_path}\\test_{self.index}.txt")
 
         if settings == []: return
 
         self.content_list.append(f"Nom : {settings[0]}\n")
+        self.content_list.append(f"Type de test : {settings[1]}\n")
+        self.content_list.append(f"Initialisation de la machine : {temp_test_settings[2]}\n")
+        self.content_list.append(f"Programme : {temp_test_settings[3]}\n")
 
-        self.__create_card_section(settings[1])
+        self.__create_card_section(temp_test_settings[0])
         self.__create_date_section()
         self.__create_component_section()
         
         # report creation
-        self.create_file(folder_path, "report.txt", self.content_list)
-
-
-    def __get_settings_values(self, file_with_path: str):
-        """ `-`
-        `Type:` Function
-        `Description:` retrieves the values from the settings file
-        :param:`file_with_path:` file that stores the path to the settings
-        `Return:` settings values list
-        """
-
-        # get the path in the file
-        try:
-            fil = open(file_with_path, 'r')
-            path_line = fil.readlines()[0].rstrip()
-            fil.close()
-        except Exception as e:
-            MessageBox("ERREUR Fichier", f"[ERREUR] {e}").mainloop()
-            return []
-        
-        # name of the folder where it is
-        test_name = os.path.basename(path_line)
-        
-        # content recovery
-        try:
-            fil = open(f"{path_line}\\{test_name}_settings.txt", 'r')
-            settings_values = fil.readlines()
-            fil.close()
-        except Exception as e:
-            MessageBox("ERREUR Fichier", f"[ERREUR] {e}").mainloop()
-            return []
-        
-        settings_values = [s.strip() for s in settings_values]
-
-        return settings_values
+        self.create_file(report_folder_path, "report.txt", self.content_list)
     
 
     def __create_card_section(self, card_to_make: str):
@@ -137,10 +109,10 @@ class ManageReportFile(ManageAnyFile):
         self.content_list.append("------------------------------------------------------------ Date ------------------------------------------------------------\n")
 
         # verification of the consistency of the creation date
-        self.check_test.creation_date_constency(self.content_list, self.folder_creation_time)
+        self.check_test.creation_date_constency(self.content_list, self.time_create_folder)
 
         # verification of the consistency of the begin date in workorderactivationhistory
-        self.check_test.test_begin_date_constency(self.content_list, self.folder_creation_time)
+        self.check_test.test_begin_date_constency(self.content_list, self.time_create_folder)
 
         #
         self.check_test.check_date_begin_equal_start(self.content_list, self.start_time)

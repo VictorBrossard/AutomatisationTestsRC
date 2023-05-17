@@ -56,3 +56,24 @@ class ManageAnyFile(object):
         """
 
         os.remove(path)
+
+    
+    def get_file_lines(self, file_path: str):
+        """ `+`
+        `Type:` Function
+        `Description:` retrieves the values from the file
+        :param:`file_path:` file path
+        `Return:` lines of the files
+        """
+
+        try:
+            fil = open(file_path, 'r')
+            lines = fil.readlines()
+            fil.close()
+        except Exception as e:
+            print(f"[ERREUR] {e}")
+            return []
+        
+        lines_without_whitespace = [s.strip() for s in lines]
+        
+        return lines_without_whitespace

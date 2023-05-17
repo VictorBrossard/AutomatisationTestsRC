@@ -122,7 +122,7 @@ class MainInterface(tk.Tk):
             "Create Tests", 
             ["Entrez le nom du test :", "Type du test"], 
             [3, 2], 
-            [["production", "optimisation"]]
+            [["production"]]
         )
         pop_up.mainloop()
 
@@ -226,7 +226,7 @@ class MainInterface(tk.Tk):
             
             prg_list = get_program_list()
 
-            for i, fil in enumerate(file_paths_list):
+            for i, fil in enumerate(file_paths_list):                
                 test_file = open(fil, 'r')
                 test_folder_path = test_file.readlines()[0].rstrip()
                 test_file.close()
@@ -249,8 +249,8 @@ class MainInterface(tk.Tk):
                 new_file = ManageSpecificFiles()
                 new_file.create_file(test_folder_path, f"test_{i}.txt", user_entry_list)
 
-            """if file_paths_list != []:
-                Interaction().execute_test(self.data, file_paths_list)"""
+            # Launch of all tests
+            Interaction().execute_test(self.data, file_paths_list)
 
             self.__init__(self.data)
             self.mainloop()

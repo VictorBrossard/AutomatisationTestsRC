@@ -34,7 +34,7 @@ def run_as_admin():
         return
     else:
         ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-        sys.exit(0)
+        sys.exit()
 
 
 def do_nothing():
