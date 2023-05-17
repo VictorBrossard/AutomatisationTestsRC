@@ -39,5 +39,5 @@ class PostCondition(object):
 
         database.save_all_tuples(f"{folder_path}\\database")
 
-        tmp_path = self.settings.get_line(8)
+        tmp_path = self.settings.get_line(7)
         shutil.copytree(tmp_path, f"{folder_path}\\traces")

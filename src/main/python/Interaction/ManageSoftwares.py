@@ -93,7 +93,7 @@ class ManageSoftwares(object):
 
         simu_exe = self.settings.get_line(0)
         rc_exe = self.settings.get_line(1)
-        file_to_delete = self.settings.get_line(7) # file that asks you to make a report when you kill RC
+        file_to_delete = self.settings.get_line(6) # file that asks you to make a report when you kill RC
 
         # Close softwares
         try:

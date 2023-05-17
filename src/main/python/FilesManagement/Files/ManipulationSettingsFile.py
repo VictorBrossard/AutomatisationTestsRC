@@ -38,13 +38,16 @@ class ManipulationSettingsFile(object):
         `Return:` line nb_line of the file
         """
 
-        # get line nb_line of file
-        os.chdir(path)
-        file_path = open(file_name, 'r')                    # Opening the file in read mode ('r')
-        line = file_path.readlines()[nb_line].rstrip()      # rstrip removes the line break which is automatically taken into account with the readlines function
-        file_path.close()
+        try:
+            # get line nb_line of file
+            os.chdir(path)
+            file_path = open(file_name, 'r')                    # Opening the file in read mode ('r')
+            line = file_path.readlines()[nb_line].rstrip()      # rstrip removes the line break which is automatically taken into account with the readlines function
+            file_path.close()
 
-        return line
+            return line
+        except Exception:
+            return ""
     
 
     def manage_file(self, settings_list: list):

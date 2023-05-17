@@ -37,7 +37,7 @@ class Precondition(object):
 
         prg = self.__get_loaded_program()
 
-        tmp_path = self.settings.get_line(8)
+        tmp_path = self.settings.get_line(7)
 
         self.softwares.close_soft()
 

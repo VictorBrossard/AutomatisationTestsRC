@@ -165,7 +165,7 @@ class ExecuteTestFile(object):
 
         key_char = now_word_list[1]
 
-        if key_char != "None" and key_char != self.settings.get_line(6):
+        if key_char != "None" and key_char != self.settings.get_line(5):
             # the key combinations all start with < so we check if our action is a combination or not
             if starts_with(key_char, "<"):
                 hotkeys = HotKey.parse(key_char)
@@ -292,5 +292,5 @@ class ExecuteTestFile(object):
         except AttributeError:
             key_name = key.name
 
-        if key_name == self.settings.get_line(6): # key that stops recording
+        if key_name == self.settings.get_line(5): # key that stops recording
             self.does_want_stop = True

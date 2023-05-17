@@ -169,7 +169,7 @@ class Interaction(object):
         """
 
         # path of the folder where the programs are
-        folder_path = self.line_settings_file.get_line(9)
+        folder_path = self.line_settings_file.get_line(8)
         files_with_dp_extension = []
 
         # recovery of the list of program names 

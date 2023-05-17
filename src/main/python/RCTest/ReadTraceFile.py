@@ -40,7 +40,7 @@ class ReadTraceFile(object):
         :param:`loaded_prg:` name of the last program loaded in RC
         """
 
-        self.trace_file_path = ManipulationSettingsFile().get_line(8)
+        self.trace_file_path = ManipulationSettingsFile().get_line(7)
         self.database = database
         self.folder_name = folder_name
         self.loaded_prg = loaded_prg

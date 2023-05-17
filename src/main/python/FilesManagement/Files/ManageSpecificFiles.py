@@ -92,7 +92,6 @@ class ManageSpecificFiles(ManageAnyFile):
             f"{user_entry_list[0]}",                        # Simulator Path
             f"{user_entry_list[1]}",                        # RC Path
             f"{CONSTANT_INIT_PATH}",                        # Init Folder Path
-            "Menu général",                                 # RC window name
             "tab",                                          # Key to end test recording
             "C:\\EUROPLACER\\ep\\epi\\RCARRETPROPRE.txt",   # file that asks you to make a report when you kill RC
             "C:\\EUROPLACER\\ep\\tmp",                      # folder where there are traces of RC

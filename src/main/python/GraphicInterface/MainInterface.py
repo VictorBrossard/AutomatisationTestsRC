@@ -81,9 +81,6 @@ class MainInterface(tk.Tk):
         exit_button = ttk.Button(self, text='Exit', command=self.__close)   # Creation of the button
         exit_button.grid(column=2, row=2, **padding)                        # Object position
 
-        settings_button = ttk.Button(self, text='Settings', command=self.__settings)
-        settings_button.grid(column=0, row=2, **padding)
-
         create_test_button = ttk.Button(self, text='Create Test', command=self.__create_test)
         create_test_button.grid(column=1, row=1, **padding)
 
@@ -106,18 +103,6 @@ class MainInterface(tk.Tk):
         ManageSoftwares().close_soft()
         self.data.close_connection()
         self.destroy()
-
-
-    def __settings(self):
-        """ `-`
-        `Type:` Procedure
-        `Description:` open the settings interface
-        """
-
-        self.destroy()
-        SettingsInterface().mainloop()
-        self.__init__(self.data)
-        self.mainloop()
 
     
     def __create_test(self):
