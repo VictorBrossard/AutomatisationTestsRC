@@ -28,7 +28,7 @@ class Precondition(object):
         self.database = database
 
 
-    def start_precondition(self):
+    def start_precondition(self) -> str:
         """ `+`
         `Type:` Function
         `Description:` launches the selected precondition

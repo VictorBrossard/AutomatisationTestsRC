@@ -132,7 +132,7 @@ class ManageSpecificFiles(ManageAnyFile):
         self.create_file(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_DATABASE_FILE, settings_list)
 
 
-    def get_database_lines(self) -> list:
+    def get_database_lines(self) -> list[str]:
         """ `+`
         `Type:` Function
         `Description:` get all the lines of the database file 

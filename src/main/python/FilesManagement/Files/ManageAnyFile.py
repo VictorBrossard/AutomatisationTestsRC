@@ -58,7 +58,7 @@ class ManageAnyFile(object):
         os.remove(path)
 
     
-    def get_file_lines(self, file_path: str):
+    def get_file_lines(self, file_path: str) -> list[str]:
         """ `+`
         `Type:` Function
         `Description:` retrieves the values from the file

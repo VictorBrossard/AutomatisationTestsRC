@@ -29,7 +29,7 @@ class PostCondition(object):
 
     def start_postcondition(self, database: Database, folder_path: str):
         """ `+`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` launches the selected postcondition
         :param:`database:` object that manages the interaction with the database
         :param:`copy_traces_path:` path where we copy the trace folder

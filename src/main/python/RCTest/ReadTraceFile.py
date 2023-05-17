@@ -44,7 +44,7 @@ class ReadTraceFile(object):
         self.has_prg_changed = (loaded_prg != wanted_prg)
         
     
-    def launch(self):
+    def launch(self) -> datetime:
         """ `+`
         `Type:` Function
         `Definition:` starts the execution of the complete test
@@ -66,7 +66,7 @@ class ReadTraceFile(object):
         return self.start_time
 
 
-    def __find_trace(self):
+    def __find_trace(self) -> str:
         """ `-`
         `Type:` Function
         `Description:` digs into the traces to find out which file is to be executed

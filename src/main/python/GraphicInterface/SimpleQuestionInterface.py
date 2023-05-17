@@ -95,7 +95,7 @@ class SimpleQuestionInterface(tk.Tk):
         self.destroy()
 
 
-    def get_is_yes(self):
+    def get_is_yes(self) -> bool:
         """ `+`
         `Type:` Function
         `Description:` getter that returns the variable is_yes

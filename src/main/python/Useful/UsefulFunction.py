@@ -101,7 +101,7 @@ def str_list_to_int_list(str_list: list) -> list:
 
 
 def validate_int(value: str) -> bool:
-    """ `-`
+    """ `+`
     `Type:` Function
     `Description:` checks if the input value is an int
     :param:`value:` string to check
@@ -136,21 +136,21 @@ def rc_window_foreground(window_name: str):
         rc_window_foreground(ManipulationSettingsFile().get_line(4))"""
 
 
-def get_program_list():
-        """ `+`
-        `Type:` Function
-        `Description:` will fetch the list of programs locally
-        `Return:` list of programs
-        """
+def get_program_list() -> list[str]:
+    """ `+`
+    `Type:` Function
+    `Description:` will fetch the list of programs locally
+    `Return:` list of programs
+    """
 
-        # path of the folder where the programs are
-        folder_path = ManipulationSettingsFile().get_line(8)
-        files_with_dp_extension = []
+    # path of the folder where the programs are
+    folder_path = ManipulationSettingsFile().get_line(8)
+    files_with_dp_extension = []
 
-        # recovery of the list of program names 
-        for file_name_with_extension in os.listdir(folder_path):
-            if file_name_with_extension.endswith(".dp"):
-                file_name, extension = os.path.splitext(os.path.basename(file_name_with_extension))
-                files_with_dp_extension.append(file_name)
+    # recovery of the list of program names 
+    for file_name_with_extension in os.listdir(folder_path):
+        if file_name_with_extension.endswith(".dp"):
+            file_name, extension = os.path.splitext(os.path.basename(file_name_with_extension))
+            files_with_dp_extension.append(file_name)
 
-        return files_with_dp_extension
+    return files_with_dp_extension

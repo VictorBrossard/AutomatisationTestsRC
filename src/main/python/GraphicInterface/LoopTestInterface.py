@@ -142,7 +142,7 @@ class LoopTestInterface(tk.Tk):
         self.destroy()
 
 
-    def get_new_test_list(self):
+    def get_new_test_list(self) -> list[str]:
         """ `+`
         `Type:` Function
         `Description:` getter that returns the variable new_test_list

@@ -38,7 +38,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __partial_prod_no_prg_change(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` creates the file to turn on the machine in partial mode
         `Return:` file path
         """
@@ -56,7 +56,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __partial_prod_prg_change(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` creates the file to turn on the machine in partial mode
         `Return:` file path
         """
@@ -74,7 +74,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __complete_prod(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` creates the file to turn on the machine in complete mode
         """
 
@@ -87,7 +87,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __name_prod(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` deletes the name of the production
         """
 
@@ -100,7 +100,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __nb_card_to_make_prod(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` removes the number of cards to be made
         """
 
@@ -114,7 +114,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __nb_card_make_prod(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` removes the number of cards made
         """
 
@@ -128,7 +128,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __validate_prod(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` validate production
         """
 
@@ -143,7 +143,7 @@ class TestPiecesFile(ManageAnyFile):
     
     def __start_prod(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` starts production
         """
 
@@ -158,7 +158,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __stop_prod(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` ends production
         """
 
@@ -173,7 +173,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __prod_parameter(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` click on production parameter
         """
 
@@ -188,7 +188,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __prod_program(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` opening of the program selection interface
         """
 
@@ -203,7 +203,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __validate_prog(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` opening of the program selection interface by validating
         """
 
@@ -217,7 +217,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __local_list_boxes(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` output of the local list interface for the boxes
         """
 
@@ -232,7 +232,7 @@ class TestPiecesFile(ManageAnyFile):
 
     def __program_change(self):
         """ `-`
-        `Type:` Function
+        `Type:` Procedure
         `Description:` production launch with the new program
         """
 
@@ -247,8 +247,8 @@ class TestPiecesFile(ManageAnyFile):
 
     def __card_recalibration(self):
         """ `-`
-        `Type:` Function
-        `Description:` 
+        `Type:` Procedure
+        `Description:` removes the recalibration of the cards otherwise impossible to launch the production if you have changed the program
         """
 
         execute_list = [

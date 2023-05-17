@@ -46,7 +46,7 @@ class TestReportFolder(ManageFolders):
         return new_name
     
 
-    def get_folder_name(self):
+    def get_folder_name(self) -> str:
         """ `+`
         `Type:` Function
         `Description:` getter that returns the variable name
@@ -56,7 +56,7 @@ class TestReportFolder(ManageFolders):
         return self.name
     
 
-    def get_folder_path(self):
+    def get_folder_path(self) -> str:
         """ `+`
         `Type:` Function
         `Description:` getter that returns the variable folder_path
@@ -66,7 +66,7 @@ class TestReportFolder(ManageFolders):
         return self.folder_path
     
 
-    def get_screenshot_folder_path(self):
+    def get_screenshot_folder_path(self) -> str:
         """ `+`
         `Type:` Function
         `Description:` getter that returns the variable screenshot
@@ -76,7 +76,7 @@ class TestReportFolder(ManageFolders):
         return self.screenshot
     
 
-    def get_database_folder_path(self):
+    def get_database_folder_path(self) -> str:
         """ `+`
         `Type:` Function
         `Description:` getter that returns the variable database
@@ -86,7 +86,7 @@ class TestReportFolder(ManageFolders):
         return self.database
     
 
-    def get_now(self):
+    def get_now(self) -> str:
         """ `+`
         `Type:` Function
         `Description:` getter that returns the variable now

@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : 
+# Description   : File that stores all the constants of the software
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution

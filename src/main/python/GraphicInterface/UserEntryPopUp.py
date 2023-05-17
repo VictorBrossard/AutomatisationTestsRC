@@ -164,8 +164,8 @@ class UserEntryPopUp(tk.Tk):
         :param:`val:` combobox values
         """
 
-        combobox = ttk.Combobox(frame, values=val, justify='center')    # Creation of the combobox
-        combobox.pack(side=tk.TOP, pady=2)                              # Object position
+        combobox = ttk.Combobox(frame, values=val, justify='center', state="readonly")  # Creation of the combobox
+        combobox.pack(side=tk.TOP, pady=2)                                              # Object position
 
         self.user_entries.append(combobox) # Add a combobox instead of a StringVar in the list to retrieve more easily this value later
 
@@ -225,7 +225,7 @@ class UserEntryPopUp(tk.Tk):
             self.user_entries = []
 
     
-    def get_user_entries(self):
+    def get_user_entries(self) -> list[str]:
         """ `+`
         `Type:` Function
         `Description:` getter that returns the variable user_entries
