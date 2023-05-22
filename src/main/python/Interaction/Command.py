@@ -133,8 +133,7 @@ class Command(object):
                 and line[5] in get_program_list()                                       # program to run
             )
             
-        except Exception as e:
-            print("[ERREUR] Fichier mal rempli :", e)
+        except Exception:
             return False
 
     
