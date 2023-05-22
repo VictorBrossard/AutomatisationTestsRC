@@ -42,7 +42,7 @@ class Command(object):
         """
 
         if args[0] not in CONSTANT_USER_COMMAND:
-            print("[ERREUR] La commande n'est pas bonne.")
+            print("[ERREUR] La commande n'est pas bonne. [-help]")
             return
         
         # help command
@@ -52,6 +52,10 @@ class Command(object):
         # start command
         if args[0] == "-start":
             self.__start_command(args)
+        
+        # prg command
+        if args[0] == "-prg":
+            self.__prg_command()
 
 
     def __start_command(self, args: list[str]):
@@ -66,7 +70,7 @@ class Command(object):
 
         # verification of the number of arguments
         if len(args) > 2:
-            print("[ERREUR] Il y a trop d'arguments.")
+            print("[ERREUR] Il y a trop d'arguments. [-help]")
             return
         
         # recovery of the lines of the file of the tests that we want to make
@@ -143,4 +147,27 @@ class Command(object):
 
         """
 
-        print(CONSTANT_USER_COMMAND)
+        print("Commande disponible :")
+
+        for command in CONSTANT_USER_COMMAND:
+            if command == "-start":
+                print(". -start [chemin du fichier qui contient les instructions d'exécution des tests]")
+            elif command == "-prg":
+                print(". -prg")
+
+
+    def __prg_command(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` displays all available programs in RC
+
+        `Command:` py main.py -prg
+        
+        """
+
+        prg_list = get_program_list()
+
+        print("Programme disponible :")
+
+        for prg in prg_list:
+            print(f". {prg}")

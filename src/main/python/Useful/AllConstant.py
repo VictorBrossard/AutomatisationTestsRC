@@ -74,4 +74,4 @@ CONSTANT_KEYBOARD_SHORTCUTS = ["ctrl", "ctrl_l", "ctrl_r", "alt", "alt_r", "alt_
 #######################################################################################################
 
 # Command
-CONSTANT_USER_COMMAND = ["-start", "-help"]
+CONSTANT_USER_COMMAND = ["-start", "-help", "-prg"]
