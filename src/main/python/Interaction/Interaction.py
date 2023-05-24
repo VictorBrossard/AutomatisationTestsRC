@@ -5,6 +5,7 @@
 # Import of files useful for code execution
 import os
 import time
+import win32gui
 
 from GraphicInterface.MessageBox import MessageBox
 from GraphicInterface.UserEntryPopUp import UserEntryPopUp
@@ -101,7 +102,9 @@ class Interaction(object):
 
             # launches the general precondition for launching a test
             loaded_prg = Precondition(database).start_precondition()
-            time.sleep(6.5)
+            time.sleep(6)
+            self.__rc_window_foreground("Menu Général")
+            time.sleep(1)
 
             # test execution
             start_time = ReadTraceFile(test_folder_path, database, folder.get_folder_name(), loaded_prg, wanted_prg).launch()
@@ -160,3 +163,19 @@ class Interaction(object):
 
         # software closure
         soft.close_soft()
+
+
+    def __rc_window_foreground(self, window_name: str):
+        """ `+`
+        `Type:` Procedure
+        `Description:` puts the RC window in the foreground to be sure that we are handling the right software
+        :param:`window_name:` RC window name
+        """
+
+        # window to search
+        hwnd = win32gui.FindWindow(None, window_name)
+
+        try :
+            win32gui.SetForegroundWindow(hwnd)  # Bringing RC to the fore
+        except Exception as e:
+            print(f"[ERREUR] {e}")              # Displaying the error message for the user

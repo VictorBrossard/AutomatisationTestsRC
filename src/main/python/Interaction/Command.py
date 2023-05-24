@@ -114,6 +114,8 @@ class Command(object):
                 new_file.create_file(test_folder_path, f"test_{j}.txt", user_entry_list)
 
         self.interaction.execute_test(self.database, file_paths_list)
+
+        self.database.close_connection()
             
 
     def __check_informations_file(self, line: list[str]) -> bool:
