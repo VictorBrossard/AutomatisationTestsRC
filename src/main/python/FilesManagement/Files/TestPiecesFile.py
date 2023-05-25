@@ -21,7 +21,6 @@ class TestPiecesFile(ManageAnyFile):
 
         self.__partial_prod_no_prg_change()
         self.__partial_prod_prg_change()
-        self.__complete_prod()
         self.__name_prod()
         self.__nb_card_to_make_prod()
         self.__nb_card_make_prod()
@@ -70,19 +69,6 @@ class TestPiecesFile(ManageAnyFile):
         ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "partial_prod_prg_change.txt", execute_list)
-
-
-    def __complete_prod(self):
-        """ `-`
-        `Type:` Procedure
-        `Description:` creates the file to turn on the machine in complete mode
-        """
-
-        execute_list = [
-
-        ]
-
-        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "complete_prod.txt", execute_list)
     
 
     def __name_prod(self):

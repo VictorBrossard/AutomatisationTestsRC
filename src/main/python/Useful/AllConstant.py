@@ -75,3 +75,8 @@ CONSTANT_KEYBOARD_SHORTCUTS = ["ctrl", "ctrl_l", "ctrl_r", "alt", "alt_r", "alt_
 
 # Command
 CONSTANT_USER_COMMAND = ["-start", "-help", "-prg"]
+
+#######################################################################################################
+
+# Interaction
+CONSTANT_RC_WINDOW_NAME = "Menu Général"

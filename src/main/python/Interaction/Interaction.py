@@ -30,6 +30,7 @@ from Database.Database import Database
 from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_SHORT_FORMAT_DATES_DATABASE
+from Useful.AllConstant import CONSTANT_RC_WINDOW_NAME
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -103,7 +104,7 @@ class Interaction(object):
             # launches the general precondition for launching a test
             loaded_prg = Precondition(database).start_precondition()
             time.sleep(6)
-            self.__rc_window_foreground("Menu Général")
+            self.__rc_window_foreground(CONSTANT_RC_WINDOW_NAME)
             time.sleep(1)
 
             # test execution

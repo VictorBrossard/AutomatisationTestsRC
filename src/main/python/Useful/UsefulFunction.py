@@ -130,7 +130,7 @@ def get_program_list() -> list[str]:
     # recovery of the list of program names 
     for file_name_with_extension in os.listdir(folder_path):
         if file_name_with_extension.endswith(".dp"):
-            file_name, extension = os.path.splitext(os.path.basename(file_name_with_extension))
+            file_name, _ = os.path.splitext(os.path.basename(file_name_with_extension))
             files_with_dp_extension.append(file_name)
 
     return files_with_dp_extension

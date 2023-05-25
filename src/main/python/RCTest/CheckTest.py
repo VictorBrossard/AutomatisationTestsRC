@@ -32,12 +32,13 @@ class CheckTest(object):
     ################################################################ Card section ################################################################
 
 
-    def nb_cards_to_be_produced(self, content_list: list, card_to_make: str):
+    def nb_cards_to_be_produced(self, content_list: list, card_to_make: str) -> bool:
         """ `+`
         `Type:` Procedure
         `Description:` verification of the number of cards to be produced
         :param:`content_list:` file content
         :param:`card_to_made:` card to make
+        `Return:` status of the entire test
         """
 
         try:
@@ -55,22 +56,31 @@ class CheckTest(object):
                 content_list.append("-> Nombre de cartes à produire => OK")
                 content_list.append(f"   - Valeur obtenue : {result}")
                 content_list.append(f"   - Valeur expectée : {card_to_make}")
+
+                is_okay = True # status of the test
             else:
                 content_list.append("-> Nombre de cartes à produire => NOK")
                 content_list.append(f"   - Valeur obtenue : {result}")
                 content_list.append(f"   - Valeur expectée : {card_to_make}")
+
+                is_okay = False # status of the test
         except Exception as e:
             content_list.append(f"==> [ERREUR] Nombre de cartes à produire => {e}")
 
+            is_okay = False # status of the test
+
         content_list.append(" ")
 
+        return is_okay
 
-    def nb_cards_passed_machine(self, content_list: list, card_to_make: str):
+
+    def nb_cards_passed_machine(self, content_list: list, card_to_make: str) -> bool:
         """ `+`
         `Type:` Procedure
         `Description:` verification of the number of cards passed through the machine
         :param:`content_list:` file content
         :param:`card_to_made:` card to make
+        `Return:` status of the entire test
         """
 
         try:
@@ -89,22 +99,31 @@ class CheckTest(object):
                 content_list.append("-> Nombre de cartes passées dans la machine => OK")
                 content_list.append(f"   - Valeur obtenue : {result}")
                 content_list.append(f"   - Valeur expectée : {card_to_make}")
+
+                is_okay = True # status of the test
             else:
                 content_list.append("-> Nombre de cartes passées dans la machine => NOK")
                 content_list.append(f"   - Valeur obtenue : {result}")
                 content_list.append(f"   - Valeur expectée : {card_to_make}")
+
+                is_okay = False # status of the test
         except Exception as e:
             content_list.append(f"==> [ERREUR] Nombre de cartes passées dans la machine => {e}")
 
+            is_okay = False # status of the test
+
         content_list.append(" ")
 
+        return is_okay
 
-    def nb_produced_cards(self, content_list: list, card_to_make: str):
+
+    def nb_produced_cards(self, content_list: list, card_to_make: str) -> bool:
         """ `+`
         `Type:` Procedure
         `Description:` verification of the number of fully produced cards
         :param:`content_list:` file content
         :param:`card_to_made:` card to make
+        `Return:` status of the entire test
         """
 
         try:
@@ -123,22 +142,33 @@ class CheckTest(object):
                 content_list.append("-> Nombre de cartes produites entièrement => OK")
                 content_list.append(f"   - Valeur obtenue : {result}")
                 content_list.append(f"   - Valeur expectée : {card_to_make}")
+
+                is_okay = True # status of the test
             else:
                 content_list.append("-> Nombre de cartes produites entièrement => NOK")
                 content_list.append(f"   - Valeur obtenue : {result}")
                 content_list.append(f"   - Valeur expectée : {card_to_make}")
+
+                is_okay = False # status of the test
         except Exception as e:
             content_list.append(f"==> [ERREUR] Nombre de cartes produites entièrement => {e}")
 
+            is_okay = False # status of the test
+
         content_list.append(" ")
 
+        return is_okay
 
-    def cards_result_status(self, content_list: list):
+
+    def cards_result_status(self, content_list: list) -> bool:
         """ `+`
         `Type:` Procedure
         `Description:` verification of the result status of the cards
         :param:`content_list:` file content
+        `Return:` status of the entire test
         """
+
+        is_okay = True # supposition
 
         try:
             # get the value in the database
@@ -151,7 +181,7 @@ class CheckTest(object):
                 [self.test_name]
             )
 
-            content_list.append("-> Status Result")
+            content_list.append("-> Statut de 'result'")
             expected_value = "0"
             
             # for each card we look at its status
@@ -162,28 +192,37 @@ class CheckTest(object):
                 content_list.append(f"  => Carte N°{i+1}")
 
                 if value == expected_value:
-                    content_list.append("       -> Status Result => OK")
+                    content_list.append("       -> Statut de 'result' => OK")
                     content_list.append(f"          - Valeur obtenue : {value}")
                     content_list.append(f"          - Valeur expectée : {expected_value}")
+
+                    is_okay = is_okay == True # status of the test
                 else:
-                    content_list.append("       -> Status Result => NOK")
+                    content_list.append("       -> Statut de 'result' => NOK")
                     content_list.append(f"          - Valeur obtenue : {value}")
                     content_list.append(f"          - Valeur expectée : {expected_value}")
+
+                    is_okay = False # status of the test
         except Exception as e:
-            content_list.append(f"==> [ERREUR] Status Result => {e}")
+            content_list.append(f"==> [ERREUR] Statut de 'result' => {e}")
+
+            is_okay = False # status of the test
 
         content_list.append(" ")
+
+        return is_okay
 
 
     ################################################################ Date section ################################################################
 
 
-    def creation_date_constency(self, content_list : list, folder_creation_time: str):
+    def creation_date_constency(self, content_list : list, folder_creation_time: str) -> bool:
         """ `+`
         `Type:` Procedure
         `Description:` verification of the consistency of the creation date
         :param:`content_list:` file content
         :param:`folder_creation_time:` time the file is created
+        `Return:` status of the entire test
         """
 
         try:
@@ -210,25 +249,36 @@ class CheckTest(object):
             tolerance = timedelta(minutes=1)
 
             if diff <= tolerance:
-                content_list.append("-> Date de création du test => OK")
+                content_list.append("-> Date de création de l'OF => OK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
                 content_list.append(f"   - Valeur expectée : {date2}")
+
+                is_okay = True # status of the test
             else:
-                content_list.append("-> Date de création du test => NOK")
+                content_list.append("-> Date de création de l'OF => NOK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
                 content_list.append(f"   - Valeur expectée : {date2}")
+
+                is_okay = False # status of the test
         except Exception as e:
-            content_list.append(f"==> [ERREUR] Date de création du test => {e}")
+            content_list.append(f"==> [ERREUR] Date de création de l'OF => {e}")
+
+            is_okay = False # status of the test
 
         content_list.append(" ")
 
+        return is_okay
 
-    def check_start_end_date_card(self, content_list: list):
+
+    def check_start_end_date_card(self, content_list: list) -> bool:
         """ `+`
         `Type:` Procedure
         `Description:` checking the consistency of the start and end dates of a card
         :param:`content_list:` file content
+        `Return:` status of the entire test
         """
+
+        is_okay = True # supposition
 
         # verification of start date and end date
         try:
@@ -276,52 +326,106 @@ class CheckTest(object):
                 max_end_date = begin_date + timedelta(seconds=time_for_cards)
 
                 # consistency test of start and end dates
-                if i != 0:
-                    try:
-                        before_begin_date = datetime.strptime(date_tuples[i-1][0], CONSTANT_FORMAT_DATES_DATABASE)
-                    except Exception:
-                        before_begin_date = datetime.strptime(date_tuples[i-1][0], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
-
-                    try:
-                        before_end_date = datetime.strptime(date_tuples[i][1], CONSTANT_FORMAT_DATES_DATABASE)
-                    except Exception:
-                        before_end_date = datetime.strptime(date_tuples[i][1], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
-
-                    # test of the start date of the card between start and end of the card before
-                    if before_begin_date < begin_date and begin_date < before_end_date:
-                        content_list.append("       -> Date de début de la carte comprise entre début et fin de la carte d'avant => OK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de début de la carte d'avant : {before_begin_date}")
-                        content_list.append(f"          - Date de fin de la carte d'avant : {before_end_date}")
-                    else:
-                        content_list.append("       -> Date de début de la carte comprise entre début et fin de la carte d'avant => NOK")
-                        content_list.append(f"          - Date de début : {begin_date}")
-                        content_list.append(f"          - Date de début de la carte d'avant : {before_begin_date}")
-                        content_list.append(f"          - Date de fin de la carte d'avant : {before_end_date}")
-
-                # consistency test of start and end dates
                 if begin_date < end_date and end_date <= max_end_date:
                     content_list.append("       -> Cohérence des date de début et de fin d'une carte => OK")
                     content_list.append(f"          - Date de début : {begin_date}")
                     content_list.append(f"          - Date de fin : {end_date}")
                     content_list.append(f"          - Date de fin maximum : {max_end_date}")
+
+                    is_okay = is_okay == True # status of the test
                 else:
                     content_list.append("       -> Cohérence des date de début et de fin d'une carte => NOK")
                     content_list.append(f"          - Date de début : {begin_date}")
                     content_list.append(f"          - Date de fin : {end_date}")
                     content_list.append(f"          - Date de fin maximum : {max_end_date}")
+
+                    is_okay = False # status of the test
         except Exception as e:
             content_list.append(f"==> [ERREUR] Cohérence des dates de début et de fin de la production d'une carte => {e}")
 
+            is_okay = False # status of the test
+
         content_list.append(" ")
 
+        return is_okay
 
-    def check_date_begin_equal_start(self, content_list: list, start_time: str):
+
+    def beginning_card_before_end_previous_card(self, content_list: list) -> bool:
         """ `+`
         `Type:` Procedure
-        `Description:` 
+        `Description:` test of the start date of the card between start and end of the card before
+        :param:`content_list:` file content
+        `Return:` status of the entire test
+        """
+
+        is_okay = True # supposition
+
+        try:
+            # get the value in the database
+            date_tuples = self.data.get_tuples(
+                """SELECT w.DateBegin, w.DateEnd 
+                FROM workorders wo 
+                JOIN workorderrecipemachines worm ON wo.IdWorkOrder = worm.IdWorkOrder 
+                JOIN works w ON worm.IdWorkOrderRecipeMachine = w.IdWorkOrderRecipeMachine 
+                WHERE wo.Name = ?""",
+                [self.test_name]
+            )
+
+            content_list.append("-> Date de début d'une carte comprise entre la date de début et de fin de la carte d'avant")
+        
+            for i in range(1, len(date_tuples)):
+                content_list.append(f"  => Carte N°{i+1}")
+
+                #
+                try:
+                    begin_date = datetime.strptime(date_tuples[i][0], CONSTANT_FORMAT_DATES_DATABASE)
+                except Exception:
+                    begin_date = datetime.strptime(date_tuples[i][0], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+
+                #
+                try:
+                    before_begin_date = datetime.strptime(date_tuples[i-1][0], CONSTANT_FORMAT_DATES_DATABASE)
+                except Exception:
+                    before_begin_date = datetime.strptime(date_tuples[i-1][0], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+
+                #
+                try:
+                    before_end_date = datetime.strptime(date_tuples[i][1], CONSTANT_FORMAT_DATES_DATABASE)
+                except Exception:
+                    before_end_date = datetime.strptime(date_tuples[i][1], CONSTANT_SHORT_FORMAT_DATES_DATABASE)
+
+                # test of the start date of the card between start and end of the card before
+                if before_begin_date < begin_date and begin_date < before_end_date:
+                    content_list.append("       -> Date de début de la carte comprise entre début et fin de la carte d'avant => OK")
+                    content_list.append(f"          - Date de début : {begin_date}")
+                    content_list.append(f"          - Date de début de la carte d'avant : {before_begin_date}")
+                    content_list.append(f"          - Date de fin de la carte d'avant : {before_end_date}")
+
+                    is_okay = is_okay == True # status of the test
+                else:
+                    content_list.append("       -> Date de début de la carte comprise entre début et fin de la carte d'avant => NOK")
+                    content_list.append(f"          - Date de début : {begin_date}")
+                    content_list.append(f"          - Date de début de la carte d'avant : {before_begin_date}")
+                    content_list.append(f"          - Date de fin de la carte d'avant : {before_end_date}")
+
+                    is_okay = False # status of the test
+        except Exception as e:
+            content_list.append(f"==> [ERREUR] Cohérence des dates de début et de fin de la production d'une carte => {e}")
+
+            is_okay = False # status of the test
+
+        content_list.append(" ")
+
+        return is_okay
+
+
+    def check_date_begin_equal_start_prod(self, content_list: list, start_time: str) -> bool:
+        """ `+`
+        `Type:` Procedure
+        `Description:` check that the production start date is equal to the time when you press the start button
         :param:`content_list:` file content
         :param:`start_time:` time when you press start
+        `Return:` status of the entire test
         """
 
         try:
@@ -351,25 +455,34 @@ class CheckTest(object):
             tolerance = timedelta(minutes=1)
 
             if diff <= tolerance:
-                content_list.append("-> Date de mise en marche du test => OK")
+                content_list.append("-> Date de mise en marche de la production => OK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
                 content_list.append(f"   - Valeur expectée : {date2}")
+
+                is_okay = True # status of the test
             else:
-                content_list.append("-> Date de mise en marche du test => NOK")
+                content_list.append("-> Date de mise en marche de la production => NOK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
                 content_list.append(f"   - Valeur expectée : {date2}")
+
+                is_okay = False # status of the test
         except Exception as e:
-            content_list.append(f"==> [ERREUR] Date de mise en marche du test => {e}")
+            content_list.append(f"==> [ERREUR] Date de mise en marche de la production => {e}")
+
+            is_okay = False # status of the test
 
         content_list.append(" ")
 
+        return is_okay
 
-    def test_begin_date_constency(self, content_list : list, folder_creation_time: str):
+
+    def test_begin_date_constency(self, content_list : list, folder_creation_time: str) -> bool:
         """ `+`
         `Type:` Procedure
         `Description:` verification of the consistency of the begin date in workorderactivationhistory
         :param:`content_list:` file content
         :param:`folder_creation_time:` time the file is created
+        `Return:` status of the entire test
         """
 
         try:
@@ -398,28 +511,39 @@ class CheckTest(object):
             tolerance = timedelta(minutes=1)
 
             if diff <= tolerance:
-                content_list.append("-> Date de validation du test => OK")
+                content_list.append("-> Date de validation de l'OF => OK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
                 content_list.append(f"   - Valeur expectée : {date2}")
+
+                is_okay = True # status of the test
             else:
-                content_list.append("-> Date de validation du test => NOK")
+                content_list.append("-> Date de validation de l'OF => NOK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
                 content_list.append(f"   - Valeur expectée : {date2}")
+
+                is_okay = False # status of the test
         except Exception as e:
-            content_list.append(f"==> [ERREUR] Date de validation du test => {e}")
+            content_list.append(f"==> [ERREUR] Date de validation de l'OF => {e}")
+
+            is_okay = False # status of the test
 
         content_list.append(" ")
+
+        return is_okay
 
 
     ################################################################ Component section ################################################################
 
 
-    def nb_components_installed(self, content_list: list):
+    def nb_components_installed(self, content_list: list) -> bool:
         """ `+`
         `Type:` Procedure
         `Description:` verification of the number of components installed per card
         :param:`content_list:` file content
+        `Return:` status of the entire test
         """
+
+        is_okay = True # supposition
 
         try:
             # get the values in the database
@@ -432,9 +556,9 @@ class CheckTest(object):
                 [self.test_name]
             )
             
-            nb_unit_per_work = nb_components_tuples[0][0]
-            nb_components_per_unit = nb_components_tuples[0][1]
-            nb_components_per_card_expected = int(nb_unit_per_work) * int(nb_components_per_unit)
+            nb_unit_per_work = nb_components_tuples[0][0]                                           # number of units per work
+            nb_components_per_unit = nb_components_tuples[0][1]                                     # number of components per work
+            nb_components_per_card_expected = int(nb_unit_per_work) * int(nb_components_per_unit)   # number of components per card
 
             # id of the cards
             id_work_tuples = self.data.get_tuples(
@@ -473,11 +597,18 @@ class CheckTest(object):
                     content_list.append("       -> Nombre de composants posés par carte => OK")
                     content_list.append(f"          - Valeur obtenue : {installed_components}")
                     content_list.append(f"          - Valeur expectée : {nb_components_per_card_expected}")
+
+                    is_okay = is_okay == True # status of the test
                 else:
                     content_list.append("       -> Nombre de composants posés par carte => NOK")
                     content_list.append(f"          - Valeur obtenue : {installed_components}")
                     content_list.append(f"          - Valeur expectée : {nb_components_per_card_expected}")
+
+                    is_okay = False # status of the test
         except Exception as e:
             content_list.append(f"==> [ERREUR] Nombre de composants posés par carte => {e}")
 
+            is_okay = False # status of the test
+
         content_list.append(" ")
+        return is_okay
