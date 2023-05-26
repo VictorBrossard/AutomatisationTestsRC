@@ -35,7 +35,7 @@ class PostCondition(object):
         `Description:` launches the selected postcondition
         :param:`database:` object that manages the interaction with the database
         :param:`copy_traces_path:` path where we copy the trace folder
-        :param:`trace_file:`
+        :param:`trace_file:` access the trace file to close RC
         """
 
         # Close Softwares

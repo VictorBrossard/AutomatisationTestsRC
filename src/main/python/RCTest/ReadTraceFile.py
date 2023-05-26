@@ -272,7 +272,10 @@ class ReadTraceFile(object):
 
 
     def __execute_file_list(self, file_list: list[str]):
-        """
+        """ `-`
+        `Type:` Procedure
+        `Description:` executes all files in the list
+        :param:`file_list:` file to run
         """
 
         for fil in file_list:
