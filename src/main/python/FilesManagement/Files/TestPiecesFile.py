@@ -19,21 +19,28 @@ class TestPiecesFile(ManageAnyFile):
         `Type:` Constructor
         """
 
+        # specific action
         self.__partial_prod_no_prg_change()
         self.__partial_prod_prg_change()
         self.__placement_button()
-        self.__name_prod()
-        self.__nb_card_to_make_prod()
-        self.__nb_card_make_prod()
         self.__validate_prod()
         self.__start_prod()
-        self.__stop_prod()
         self.__prod_parameter()
         self.__prod_program()
-        self.__validate_prog()
         self.__local_list_boxes()
         self.__program_change()
         self.__card_recalibration()
+        self.__close_rc()
+
+        # global action
+        self.__down()
+        self.__delete()
+        self.__escape()
+        self.__f1()
+        self.__enter()
+
+
+    ###################################### Specific action ######################################
 
 
     def __partial_prod_no_prg_change(self):
@@ -69,7 +76,7 @@ class TestPiecesFile(ManageAnyFile):
     def __placement_button(self):
         """ `-`
         `Type:` Procedure
-        `Description:` 
+        `Description:` cick on the placement button
         """
 
         execute_list = [
@@ -79,47 +86,6 @@ class TestPiecesFile(ManageAnyFile):
         ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "placement_button.txt", execute_list)
-    
-
-    def __name_prod(self):
-        """ `-`
-        `Type:` Procedure
-        `Description:` deletes the name of the production
-        """
-
-        execute_list = [
-            "Key;delete;1683187809.2044904"
-        ]
-
-        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "name_prod.txt", execute_list)
-    
-
-    def __nb_card_to_make_prod(self):
-        """ `-`
-        `Type:` Procedure
-        `Description:` removes the number of cards to be made
-        """
-
-        execute_list = [
-            "Key;down;1683191945.778898",
-            "Key;delete;1683191946.6426668"
-        ]
-
-        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "nb_card_to_make_prod.txt", execute_list)
-    
-
-    def __nb_card_make_prod(self):
-        """ `-`
-        `Type:` Procedure
-        `Description:` removes the number of cards made
-        """
-
-        execute_list = [
-            "Key;down;1683191945.778898",
-            "Key;delete;1683191945.900000"
-        ]
-
-        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "nb_card_make_prod.txt", execute_list)
 
 
     def __validate_prod(self):
@@ -152,21 +118,6 @@ class TestPiecesFile(ManageAnyFile):
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "start_prod.txt", execute_list)
 
 
-    def __stop_prod(self):
-        """ `-`
-        `Type:` Procedure
-        `Description:` ends production
-        """
-
-        execute_list = [
-            "Click;left;0.9135416666666667;0.2101851851851852;1683268464.5933928",
-            "Release;left;0.9135416666666667;0.2101851851851852;1683268464.6497576",
-            "Key;tab;1683268467.7141564"
-        ]
-
-        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "stop_prod.txt", execute_list)
-
-
     def __prod_parameter(self):
         """ `-`
         `Type:` Procedure
@@ -195,20 +146,6 @@ class TestPiecesFile(ManageAnyFile):
         ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "prod_program.txt", execute_list)
-
-
-    def __validate_prog(self):
-        """ `-`
-        `Type:` Procedure
-        `Description:` opening of the program selection interface by validating
-        """
-
-        execute_list = [
-            "Key;enter;1684220446.9851022",
-            "Key;tab;1684220448.2568731"
-        ]
-
-        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "validate_prog.txt", execute_list)
 
 
     def __local_list_boxes(self):
@@ -266,3 +203,90 @@ class TestPiecesFile(ManageAnyFile):
         ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "card_recalibration.txt", execute_list)
+
+
+    def __close_rc(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` close rc
+        """
+
+        execute_list = [
+            "Click;left;0.9510416666666667;0.8981481481481481;1685093749.9030514",
+            "Release;left;0.9510416666666667;0.8981481481481481;1685093749.982205"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "close_rc.txt", execute_list)
+    
+
+    ###################################### Global action ######################################
+
+
+    def __delete(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` delete
+        """
+
+        execute_list = [
+            "Key;delete;0",
+            "Key;tab;0.500001"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "delete.txt", execute_list)
+
+
+    def __down(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` down
+        """
+
+        execute_list = [
+            "Key;down;0",
+            "Key;tab;0.500002"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "down.txt", execute_list)
+
+
+    def __escape(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` escape
+        """
+
+        execute_list = [
+            "Key;esc;0",
+            "Key;tab;0.500002"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "escape.txt", execute_list)
+
+
+    def __f1(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` f1
+        """
+
+        execute_list = [
+            "Key;f1;1685092271.6512675",
+            "Key;tab;1685092273.7469528"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "f1.txt", execute_list)
+
+
+    def __enter(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` enter
+        """
+
+        execute_list = [
+            "Key;enter;0",
+            "Key;tab;1"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "enter.txt", execute_list)

@@ -10,7 +10,6 @@ import time
 import datetime
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
-from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
 
 from Useful.AllConstant import CONSTANT_TESTS_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
@@ -44,7 +43,7 @@ class ReadTraceFile(object):
         self.has_prg_changed = (loaded_prg != wanted_prg)
         
     
-    def launch(self) -> datetime:
+    def launch_prod_test(self) -> datetime:
         """ `+`
         `Type:` Function
         `Definition:` starts the execution of the complete test
@@ -54,19 +53,19 @@ class ReadTraceFile(object):
         name_file = ""
 
         if self.has_prg_changed:
-            self.__launch_test_file("prod_program.txt")
+            self.launch_test_file("prod_program.txt")
         else:
-            self.__launch_test_file("placement_button.txt")
+            self.launch_test_file("placement_button.txt")
 
         # execution of all files
         while name_file != CONSTANT_START_PROD_FILE:
-            name_file = self.__find_trace()
-            self.__launch_test_file(name_file)
+            name_file = self.find_trace()
+            self.launch_test_file(name_file)
 
         return self.start_time
 
 
-    def __find_trace(self) -> str:
+    def find_trace(self) -> str:
         """ `-`
         `Type:` Function
         `Description:` digs into the traces to find out which file is to be executed
@@ -139,11 +138,12 @@ class ReadTraceFile(object):
 
         # line of the trace file that we want to find to be able to execute certain files
         file_name_dictionary = {
-            "ClgMyDialog::OnInitDialog() : PRDBD_IDD_SUIVI_LOT" : "name_prod.txt",
+            "ClgMyDialog::OnInitDialog() : PRDBD_IDD_SUIVI_LOT" : "name.txt",
             "CFX Trace : CTrSui::RecipeActivated" : CONSTANT_START_PROD_FILE,
             "ClgMyDialog::OnInitDialog() : PRG_IDD_SELECTION" : "program_name.txt",
             #"ClgMyDialog::OnDestroy() : PRG_IDD_SELECTION" : "partial_prod_prg_change.txt",
-            "ClgMyDialog::OnInitDialog() : RC_IDD_LOCAL_LIST" : "local_list_boxes.txt"
+            "ClgMyDialog::OnInitDialog() : RC_IDD_LOCAL_LIST" : "local_list_boxes.txt",
+            "ClgMyDialog::OnDestroy() : IU_IDD_MAINMENU_PROD" : "destroy"
         }
 
         for key in file_name_dictionary:
@@ -154,8 +154,8 @@ class ReadTraceFile(object):
         return False, ""
     
 
-    def __launch_test_file(self, name_file: str):
-        """ `-`
+    def launch_test_file(self, name_file: str):
+        """ `+`
         `Type:` Procedure
         `Description:` execute the right files according to the name given in parameter
         :param:`name_file:` name of the file to be executed
@@ -166,59 +166,59 @@ class ReadTraceFile(object):
             return
         
         elif name_file == CONSTANT_START_PROD_FILE:
+            # pattern execution to start production
             if self.has_prg_changed:
                 time.sleep(3)
                 ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\card_recalibration.txt")
                 
             time.sleep(3)
-
-            # execution of the file start_prod.txt
             self.start_time = datetime.datetime.now()
-            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
+            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{CONSTANT_START_PROD_FILE}")
             self.__prod_waiting_time()
+            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\escape.txt")
 
-        elif name_file == "name_prod.txt":
-            # execution of the file name_prod.txt
+        elif name_file == "name.txt":
+            # pattern execution to fill the OF
             file_list = [
-                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\name_prod.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\delete.txt",
                 f"{self.test_folder_path}\\name.txt",
                 f"{self.test_folder_path}\\last_execution.txt",
-                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_to_make_prod.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\down.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\delete.txt",
                 f"{self.test_folder_path}\\card_to_make.txt",
-                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\nb_card_make_prod.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\down.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\delete.txt",
                 f"{self.test_folder_path}\\card_make.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\validate_prod.txt"
             ]
 
-            for fil in file_list:
-                ExecuteTestFile().read_test_file(fil)
-                time.sleep(0.2)
+            self.__execute_file_list(file_list)
 
         elif name_file == "program_name.txt":
-            # execution of the file program_name.txt
+            # executes pattern to change program
             file_list = [
                 f"{self.test_folder_path}\\program_name.txt",
-                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\validate_prog.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\enter.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\placement_button.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod_prg_change.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\program_change.txt"
             ]
 
-            for fil in file_list:
-                ExecuteTestFile().read_test_file(fil)
-                time.sleep(0.2)
+            self.__execute_file_list(file_list)
 
         elif name_file == "placement_button.txt":
-            # execution of the file placement_button.txt
+            # execution of the pattern that partially starts the machine without changing the program
             file_list = [
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\placement_button.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod_no_prg_change.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\prod_parameter.txt"
             ]
 
-            for fil in file_list:
-                ExecuteTestFile().read_test_file(fil)
-                time.sleep(0.2)
+            self.__execute_file_list(file_list)
+
+        elif name_file == "close_rc.txt":
+            # execute pattern to close RC
+            ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\close_rc.txt")
 
         else:
             ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
@@ -269,3 +269,12 @@ class ReadTraceFile(object):
                 # if we are in this case then there was surely a problem
                 time.sleep(2)
                 time_for_cards = time_for_cards - 2
+
+
+    def __execute_file_list(self, file_list: list[str]):
+        """
+        """
+
+        for fil in file_list:
+            ExecuteTestFile().read_test_file(fil)
+            time.sleep(0.2)

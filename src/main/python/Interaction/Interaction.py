@@ -108,7 +108,8 @@ class Interaction(object):
             time.sleep(1)
 
             # test execution
-            start_time = ReadTraceFile(test_folder_path, database, folder.get_folder_name(), loaded_prg, wanted_prg).launch()
+            trace_file = ReadTraceFile(test_folder_path, database, folder.get_folder_name(), loaded_prg, wanted_prg)
+            start_time = trace_file.launch_prod_test()
 
             # take a screenshot
             Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
@@ -117,7 +118,7 @@ class Interaction(object):
             ManageReportFile(database, folder.get_folder_path(), test_folder_path, folder.get_now(), start_time.strftime(CONSTANT_SHORT_FORMAT_DATES_DATABASE), i).create_report_file()
 
             # launches the general postcondition to stop a test
-            PostCondition().start_postcondition(database, folder.get_folder_path())
+            PostCondition().start_postcondition(database, folder.get_folder_path(), trace_file)
 
             # deletion of the test pieces
             manage_files.delete_temp_test_pieces_file(test_folder_path, i)
@@ -136,9 +137,7 @@ class Interaction(object):
         # recovery of input values
         user_entry_list = pop_up.get_user_entries()
 
-        # verification that the user has given us a value
-        if user_entry_list[0] == "":
-            MessageBox("ERREUR Manque d'information", "[ERREUR] Vous n'avez pas remplis toutes les cases.").mainloop()
+        if user_entry_list == []:
             return
             
         # check that the name is not already taken
@@ -152,6 +151,7 @@ class Interaction(object):
         soft.open_soft()
 
         time.sleep(6) # we wait until the software is well opened
+        self.__rc_window_foreground(CONSTANT_RC_WINDOW_NAME)
         MessageBox("Enregistrement", "[INFO] L'enregistrement commence.").mainloop()
         
         # recording of user's actions
