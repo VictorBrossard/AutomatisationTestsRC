@@ -72,7 +72,7 @@ class ManageReportFile(ManageAnyFile):
         # file header
         self.content_list.append(f"Nom : {settings[0]}")
         self.content_list.append(f"Type de test : {settings[1]}")
-        self.content_list.append(f"Programme : {temp_test_settings[3]}\n")
+        self.content_list.append(f"Programme : {temp_test_settings[2]}\n")
 
         # contains tests that are stored in a temporary list because we have to write the general status of the tests to the file first
         test_status_list.append(self.__create_card_section(temp_test_settings[0]))

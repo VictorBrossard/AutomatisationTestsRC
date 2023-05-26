@@ -222,10 +222,10 @@ class ManageSpecificFiles(ManageAnyFile):
             # creation of test piece files
             self.create_execution_file(test_folder_path, "card_to_make.txt", lines[0].rstrip())
             self.create_execution_file(test_folder_path, "card_make.txt", lines[1].rstrip())
-            self.create_execution_file(test_folder_path, "program_name.txt", lines[3].rstrip())
+            self.create_execution_file(test_folder_path, "program_name.txt", lines[2].rstrip())
             self.create_execution_file(test_folder_path, "last_execution.txt", f"_{create_folder_time}") # execution file to write the date after the test name
 
-            return (lines[2].rstrip(), lines[3].rstrip())
+            return (lines[2].rstrip(), lines[2].rstrip())
         except Exception as e:
             print("[ERREUR]", e)
             return ("", "")

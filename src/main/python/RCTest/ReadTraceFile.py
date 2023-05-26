@@ -56,7 +56,7 @@ class ReadTraceFile(object):
         if self.has_prg_changed:
             self.__launch_test_file("prod_program.txt")
         else:
-            self.__launch_test_file("partial_prod_no_prg_change.txt")
+            self.__launch_test_file("placement_button.txt")
 
         # execution of all files
         while name_file != CONSTANT_START_PROD_FILE:
@@ -199,6 +199,7 @@ class ReadTraceFile(object):
             file_list = [
                 f"{self.test_folder_path}\\program_name.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\validate_prog.txt",
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\placement_button.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod_prg_change.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\program_change.txt"
             ]
@@ -207,9 +208,10 @@ class ReadTraceFile(object):
                 ExecuteTestFile().read_test_file(fil)
                 time.sleep(0.2)
 
-        elif name_file == "partial_prod_no_prg_change.txt":
-            # execution of the file partial_prod_no_prg_change.txt
+        elif name_file == "placement_button.txt":
+            # execution of the file placement_button.txt
             file_list = [
+                f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\placement_button.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\partial_prod_no_prg_change.txt",
                 f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\prod_parameter.txt"
             ]

@@ -235,9 +235,9 @@ class MainInterface(tk.Tk):
 
                 pop_up = UserEntryPopUp(
                     f"{fil_name}",
-                    ["Nombre de cartes à produire :", "Nombre de cartes faites :", "Initialisation de la machine :", "Programme :"],
-                    [1, 1, 2, 2],
-                    [["Partielle"], prg_list]
+                    ["Nombre de cartes à produire :", "Nombre de cartes faites :", "Programme :"],
+                    [1, 1, 2],
+                    [prg_list]
                 )
 
                 pop_up.mainloop()

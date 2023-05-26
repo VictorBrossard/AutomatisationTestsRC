@@ -21,6 +21,7 @@ class TestPiecesFile(ManageAnyFile):
 
         self.__partial_prod_no_prg_change()
         self.__partial_prod_prg_change()
+        self.__placement_button()
         self.__name_prod()
         self.__nb_card_to_make_prod()
         self.__nb_card_make_prod()
@@ -39,12 +40,9 @@ class TestPiecesFile(ManageAnyFile):
         """ `-`
         `Type:` Procedure
         `Description:` creates the file to turn on the machine in partial mode
-        `Return:` file path
         """
 
         execute_list = [
-            "Click;left;0.7770833333333333;0.7888888888888889;1683117215.4386811",
-            "Release;left;0.7770833333333333;0.7888888888888889;1683117215.502193",
             "Click;left;0.50625;0.5768518518518518;1683117217.0307155",
             "Release;left;0.50625;0.5768518518518518;1683117217.102244",
             "Key;tab;1683117226.0307345"
@@ -57,18 +55,30 @@ class TestPiecesFile(ManageAnyFile):
         """ `-`
         `Type:` Procedure
         `Description:` creates the file to turn on the machine in partial mode
-        `Return:` file path
         """
 
         execute_list = [
-            "Click;left;0.7453125;0.7638888888888888;1684230931.7980804",
-            "Release;left;0.7453125;0.7638888888888888;1684230931.8852599",
             "Click;left;0.5135416666666667;0.5703703703703704;1684230933.116967",
             "Release;left;0.5135416666666667;0.5703703703703704;1684230933.2136316",
             "Key;tab;1684230935.143767"
         ]
 
         self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "partial_prod_prg_change.txt", execute_list)
+
+
+    def __placement_button(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` 
+        """
+
+        execute_list = [
+            "Click;left;0.7453125;0.7638888888888888;1684230931.7980804",
+            "Release;left;0.7453125;0.7638888888888888;1684230931.8852599",
+            "Key;tab;1684230933.116967"
+        ]
+
+        self.create_file(CONSTANT_TEST_PIECES_FOLDER_PATH, "placement_button.txt", execute_list)
     
 
     def __name_prod(self):

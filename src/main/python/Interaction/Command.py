@@ -99,8 +99,7 @@ class Command(object):
             user_entry_list = [
                 decompose_line[2], # number of cards to produce
                 decompose_line[3], # number of cards made
-                decompose_line[4], # initialization of the machine
-                decompose_line[5]  # program to run
+                decompose_line[4] # program to run
             ]
 
             # test folder path
@@ -131,8 +130,7 @@ class Command(object):
                 and int(line[1]) > 0                                                    # number of test iterations
                 and int(line[2]) > 0                                                    # number of cards to produce
                 and int(line[3]) >= 0                                                   # number of cards made
-                and line[4] == "Partielle"                                              # initialization of the machine
-                and line[5] in get_program_list()                                       # program to run
+                and line[4] in get_program_list()                                       # program to run
             )
             
         except Exception:
