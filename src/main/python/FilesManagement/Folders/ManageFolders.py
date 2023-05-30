@@ -113,3 +113,19 @@ class ManageFolders(object):
         """
 
         os.rmdir(path)
+
+
+    def count_nb_files_in_folder(self, folder_path: str) -> int:
+        """ `+`
+        `Type:` Function
+        `Description:` calculates the number of files in a folder
+        :param:`folder_path:` folder _path
+        `Return:` number of files in folder
+        """
+
+        nb_file = 0
+
+        for _ in os.listdir(folder_path):
+            nb_file = nb_file + 1
+
+        return nb_file

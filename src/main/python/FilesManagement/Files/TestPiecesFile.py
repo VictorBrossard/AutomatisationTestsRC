@@ -2,10 +2,15 @@
 # Description   : Class that creates the useful test pieces to do the real tests
 
 #-----------------------------------------------------------------------------------------------------
-# Import of files useful for code execution 
+# Import of files useful for code execution
+import os
+
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
+from FilesManagement.Folders.ManageFolders import ManageFolders
+
 from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_NB_TEST_PIECES_FILES
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -17,6 +22,21 @@ class TestPiecesFile(ManageAnyFile):
     def __init__(self):
         """ `-`
         `Type:` Constructor
+        """
+
+        nb_files_in_folder = ManageFolders().count_nb_files_in_folder(CONSTANT_TEST_PIECES_FOLDER_PATH)
+
+        if nb_files_in_folder < CONSTANT_NB_TEST_PIECES_FILES:
+            self.__create_test_pieces_files()
+
+
+    ###################################### CREATE FILES ######################################
+
+
+    def __create_test_pieces_files(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` executes all functions that create test pieces files
         """
 
         # specific action

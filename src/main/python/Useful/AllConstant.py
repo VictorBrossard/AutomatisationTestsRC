@@ -81,3 +81,8 @@ CONSTANT_USER_COMMAND = ["-start", "-help", "-prg"]
 
 # Interaction
 CONSTANT_RC_WINDOW_NAME = "Menu Général"
+
+#######################################################################################################
+
+# TestPiecesFile
+CONSTANT_NB_TEST_PIECES_FILES = 16

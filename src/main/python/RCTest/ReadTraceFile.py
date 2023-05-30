@@ -298,7 +298,7 @@ class ReadTraceFile(object):
 
 
     def __find_last_modif_trace_file(self) -> (str | None):
-        """ ``
+        """ `-`
         `Type:` Function
         `Description:` find the last modified trace file to make sure you're on the right one
         `Return:` name of the trace file with its path or None if there is none
