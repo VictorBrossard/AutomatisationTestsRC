@@ -13,8 +13,6 @@ from Database.Database import Database
 
 from RCTest.ReadTraceFile import ReadTraceFile
 
-from Useful.AllConstant import CONSTANT_TEST_NAME
-
 #-----------------------------------------------------------------------------------------------------
 
 class PostCondition(object):

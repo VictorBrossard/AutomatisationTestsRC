@@ -10,8 +10,6 @@ from FilesManagement.Folders.ManageFolders import ManageFolders
 
 from Database.Database import Database
 
-from Useful.AllConstant import CONSTANT_TEST_NAME
-
 #-----------------------------------------------------------------------------------------------------
 
 class Precondition(object):
