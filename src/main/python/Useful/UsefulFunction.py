@@ -23,19 +23,6 @@ def cant_close():
     MessageBox("Fenêtre", "[INFO] Vous ne pouvez pas fermer la fenêtre de cette façon.").mainloop()
 
 
-def run_as_admin():
-    """ `+`
-    `Type:` Procedure
-    `Description:` ask for administrator permission if we don't have it and restart the script
-    """
-
-    if ctypes.windll.shell32.IsUserAnAdmin():
-        return
-    else:
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-        sys.exit()
-
-
 def do_nothing():
     """ `+`
     `Type:` Procedure

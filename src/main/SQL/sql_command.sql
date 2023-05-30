@@ -1,3 +1,9 @@
+/*
+    Author : Victor BROSSARD
+    Description : Ce fichier contient toutes les commandes SQL utilisées dans le projet
+
+*/
+
 SELECT IdWorkOrder, NbUnitsToDo 
 FROM promon.workorders 
 WHERE workorders.Name = "test_prod1_2023-05-05_10h07m14s";

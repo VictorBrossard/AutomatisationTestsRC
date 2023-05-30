@@ -12,8 +12,6 @@ from FilesManagement.Files.TestPiecesFile import TestPiecesFile
 
 from FilesManagement.Folders.ManageFolders import ManageFolders
 
-from Useful.UsefulFunction import run_as_admin
-
 from Database.Database import Database
 
 from Interaction.Command import Command
@@ -26,7 +24,6 @@ def main(args):
     `Description:` main function that executes all useful parts of the code
     """
 
-    #run_as_admin()
     ManageFolders().create_soft_folders()
     ManageSpecificFiles().create_soft_settings_file()
     TestPiecesFile()
