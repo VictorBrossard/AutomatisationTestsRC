@@ -6,7 +6,6 @@
 import subprocess
 import os
 
-from GraphicInterface.SettingsInterface import SettingsInterface
 from GraphicInterface.MessageBox import MessageBox
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
@@ -43,9 +42,7 @@ class ManageSoftwares(object):
             subprocess.run(['start', simu_exe], shell=True)                     # Open the software using the start command
         except Exception as e:
             MessageBox("ERREUR Chemin Simulateur", f"[ERREUR] {e}").mainloop()  # Displaying the error message for the user
-            settings = SettingsInterface()
-            settings.mainloop()
-            self.__start_simu()
+            #self.__start_simu()
             
     
     def __start_rc(self):
@@ -63,9 +60,7 @@ class ManageSoftwares(object):
             subprocess.run(['start', rc_exe], shell=True)               # Open the software using the start command
         except Exception as e:
             MessageBox("ERREUR Chemin RC", f"[ERREUR] {e}").mainloop()  # Displaying the error message for the user
-            settings = SettingsInterface()
-            settings.mainloop()
-            self.__start_rc()        
+            #self.__start_rc()        
 
 
     def open_soft(self):

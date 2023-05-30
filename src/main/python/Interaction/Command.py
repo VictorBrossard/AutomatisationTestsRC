@@ -7,7 +7,8 @@ import subprocess
 import os
 
 from Useful.AllConstant import CONSTANT_USER_COMMAND
-from Useful.AllConstant import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_EXECUTION_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_TEST_NAME
 
 from Database.Database import Database
 
@@ -15,7 +16,9 @@ from Interaction.Interaction import Interaction
 
 from Useful.UsefulFunction import get_program_list
 
-from FilesManagement.Files.ManageAnyFile import ManageAnyFile
+from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
+
+from FilesManagement.Folders.ManageFolders import ManageFolders
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -32,6 +35,9 @@ class Command(object):
 
         self.database = database
         self.interaction = Interaction()
+
+
+    ###################################### Command ######################################
 
 
     def translations_args(self, args: list[str]):
@@ -84,57 +90,40 @@ class Command(object):
         
         # initialization of variables 
         file_paths_list = []
-        new_file = ManageAnyFile()
+        manage_files = ManageSpecificFiles()
+        manage_folder = ManageFolders()
 
         # decomposition of each line of the file
         for i, line in enumerate(lines):
             decompose_line = line.split(";")
-            is_correct = self.__check_informations_file(decompose_line)
 
-            # guard that prevents errors
-            if not is_correct:
-                print(f"[ERREUR] Fichier mal rempli à la ligne {i}.")
+            # protects line breaks
+            if decompose_line[0] == "\n":
+                print(f"[ERREUR] Espace à la ligne {i+1}.")
                 return
 
-            user_entry_list = [
-                decompose_line[2], # number of cards to produce
-                decompose_line[3], # number of cards made
-                decompose_line[4] # program to run
-            ]
+            user_entry_list, is_correct = self.__check_line_informations(decompose_line)
 
-            # test folder path
-            test_file = open(f"{CONSTANT_TEST_AVAILABLE_FOLDER_PATH}\\{decompose_line[0]}.txt", 'r')
-            test_folder_path = test_file.readlines()[0].rstrip()
-            test_file.close()
+            # guard that prevents errors
+            if not is_correct or user_entry_list == []:
+                print(f"[ERREUR] Fichier mal rempli à la ligne {i+1}.")
+                return
+            
+            #
+            new_path_folder = manage_folder.create_folder(f"{user_entry_list[0]}", CONSTANT_EXECUTION_FOLDER_PATH)
+
+            manage_files.create_file(new_path_folder, "test_settings.txt", user_entry_list)
 
             # insertion of the test in the list according to the number put in the file
-            for j in range(0, int(decompose_line[1])):
-                file_paths_list.append(f"{CONSTANT_TEST_AVAILABLE_FOLDER_PATH}\\{decompose_line[0]}.txt")
-                new_file.create_file(test_folder_path, f"test_{j}.txt", user_entry_list)
+            for _ in range(0, int(decompose_line[1])):
+                file_paths_list.append(new_path_folder)
 
-        self.interaction.execute_test(self.database, file_paths_list)
+            self.interaction.execute_test(self.database, file_paths_list)
+
+            manage_folder.delete_inside_folder(new_path_folder)
+            manage_folder.delete_folder(new_path_folder)
 
         self.database.close_connection()
-            
-
-    def __check_informations_file(self, line: list[str]) -> bool:
-        """ `-`
-        `Type:` Function
-        `Description:` checks that all the information in the given line is correct
-        `Return:` bool
-        """
-
-        try:
-            return (
-                os.path.exists(f"{CONSTANT_TEST_AVAILABLE_FOLDER_PATH}\\{line[0]}.txt") # name of the test file
-                and int(line[1]) > 0                                                    # number of test iterations
-                and int(line[2]) > 0                                                    # number of cards to produce
-                and int(line[3]) >= 0                                                   # number of cards made
-                and line[4] in get_program_list()                                       # program to run
-            )
-            
-        except Exception:
-            return False
 
     
     def __help_command(self):
@@ -170,3 +159,48 @@ class Command(object):
 
         for prg in prg_list:
             print(f". {prg}")
+
+
+    ###################################### Function to assist command execution ######################################
+
+
+    def __check_line_informations(self, line: list[str]) -> tuple[list[str], bool]:
+        """ `-`
+        `Type:` Function
+        `Description:` executes the correct function according to the test
+        `Return:` bool
+        """
+
+        if line[0] == CONSTANT_TEST_NAME[0]:
+            return self.__check_line_informations_prod_test(line)
+        
+        return ([], False)
+
+
+    def __check_line_informations_prod_test(self, line: list[str]) -> tuple[list[str], bool]:
+        """ `-`
+        `Type:` Function
+        `Description:` checks that all the information in the given line is correct
+        `Return:` bool
+        """
+
+        try:
+            user_entry_list = [
+                line[0], # test name
+                line[2], # number of cards to produce
+                line[3], # number of cards made
+                line[4]  # program to run
+            ]
+
+            is_correct = (
+                line[0] in CONSTANT_TEST_NAME               # name of the test file
+                and int(line[1]) > 0                        # number of test iterations
+                and int(line[2]) > 0                        # number of cards to produce
+                and int(line[3]) >= 0                       # number of cards made
+                and line[4].rstrip() in get_program_list()  # program to run
+            )
+
+            return (user_entry_list, is_correct)
+            
+        except Exception:
+            return ([], False)

@@ -15,6 +15,7 @@ from Useful.AllConstant import CONSTANT_TESTS_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_START_PROD_FILE
 from Useful.AllConstant import CONSTANT_TRACE_FILE_NAME
+from Useful.AllConstant import CONSTANT_TRACE_DICTIONNARY
 
 from Useful.UsefulFunction import starts_with
 
@@ -149,19 +150,9 @@ class ReadTraceFile(object):
         `Return:` a bool and the name of the file to be executed
         """
 
-        # line of the trace file that we want to find to be able to execute certain files
-        file_name_dictionary = {
-            "ClgMyDialog::OnInitDialog() : PRDBD_IDD_SUIVI_LOT" : "name.txt",
-            "CFX Trace : CTrSui::RecipeActivated" : CONSTANT_START_PROD_FILE,
-            "ClgMyDialog::OnInitDialog() : PRG_IDD_SELECTION" : "program_name.txt",
-            #"ClgMyDialog::OnDestroy() : PRG_IDD_SELECTION" : "partial_prod_prg_change.txt",
-            "ClgMyDialog::OnInitDialog() : RC_IDD_LOCAL_LIST" : "local_list_boxes.txt",
-            #"ClgMyDialog::OnDestroy() : IU_IDD_MAINMENU_PROD" : "destroy"
-        }
-
-        for key in file_name_dictionary:
+        for key in CONSTANT_TRACE_DICTIONNARY:
             if self.__find_word(key, line):
-                file_to_execute = file_name_dictionary[key]
+                file_to_execute = CONSTANT_TRACE_DICTIONNARY[key]
                 return True, file_to_execute
 
         return False, ""

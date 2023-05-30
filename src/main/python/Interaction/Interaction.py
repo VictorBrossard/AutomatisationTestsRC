@@ -28,7 +28,6 @@ from RCTest.ReadTraceFile import ReadTraceFile
 from Database.Database import Database
 
 from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
-from Useful.AllConstant import CONSTANT_TEST_AVAILABLE_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_SHORT_FORMAT_DATES_DATABASE
 from Useful.AllConstant import CONSTANT_RC_WINDOW_NAME
 
@@ -47,34 +46,6 @@ class Interaction(object):
         self.line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
 
 
-    def create_test(self, is_command: bool, user_entry_list: list[str]):
-        """ `+`
-        `Type:` Procedure
-        `Description:` creates an entire test
-        :param:`is_command:` boolean to know if we use a command to execute this function
-        :param:`user_entry_list:` information input by the user
-        """
-            
-        # creation of the file that stores the test pieces
-        test_folder_path = ManageFolders().create_test_folder(user_entry_list[0])
-
-        if test_folder_path == "":
-            if is_command:
-                print("[ERREUR] Ce nom existe déjà.")
-                return
-            else:
-                MessageBox("ERREUR Nom de test", "[ERREUR] Ce nom de test existe déjà.").mainloop()
-                return
-
-        # creation of test piece files
-        new_file = ManageSpecificFiles()
-        new_file.create_file(test_folder_path, f"{user_entry_list[0]}_settings.txt", user_entry_list)
-        new_file.create_execution_file(test_folder_path, "name.txt", user_entry_list[0])
-            
-        # creation of the only file that the user can select to run the tests
-        new_file.create_file(CONSTANT_TEST_AVAILABLE_FOLDER_PATH, f"{user_entry_list[0]}.txt", [test_folder_path])
-
-
     def execute_test(self, database: Database, file_paths_list: list[str]):
         """ `+`
         `Type:` Procedure
@@ -88,18 +59,18 @@ class Interaction(object):
 
         # execution of each file in the list
         for i, fil in enumerate(file_paths_list):
-            # retrieve the path of the test folder
+            """# retrieve the path of the test folder
             test_file = open(fil, 'r')
             test_folder_path = test_file.readlines()[0].rstrip()
-            test_file.close()
+            test_file.close()"""
 
             # creation of a folder for the test report
-            file_name = os.path.basename(test_folder_path)
+            file_name = os.path.basename(fil)
             folder = TestReportFolder(file_name)
 
             # creation of test items depending on each test
             manage_files = ManageSpecificFiles()
-            test_type, wanted_prg= manage_files.create_temp_test_pieces_file(test_folder_path, i, folder.get_now())
+            test_type, wanted_prg = manage_files.create_temp_test_pieces_file(fil, i, folder.get_now())
 
             # launches the general precondition for launching a test
             loaded_prg = Precondition(database).start_precondition()
@@ -108,7 +79,7 @@ class Interaction(object):
             time.sleep(1)
 
             # test execution
-            trace_file = ReadTraceFile(test_folder_path, database, folder.get_folder_name(), loaded_prg, wanted_prg)
+            trace_file = ReadTraceFile(fil, database, folder.get_folder_name(), loaded_prg, wanted_prg)
             start_time = trace_file.launch_prod_test()
 
             if start_time is not None:
@@ -116,13 +87,13 @@ class Interaction(object):
                 Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
 
                 # create report
-                ManageReportFile(database, folder.get_folder_path(), test_folder_path, folder.get_now(), start_time.strftime(CONSTANT_SHORT_FORMAT_DATES_DATABASE), i).create_report_file()
+                ManageReportFile(database, folder.get_folder_path(), fil, folder.get_now(), start_time.strftime(CONSTANT_SHORT_FORMAT_DATES_DATABASE), i).create_report_file()
 
             # launches the general postcondition to stop a test
             PostCondition().start_postcondition(database, folder.get_folder_path(), trace_file)
 
             # deletion of the test pieces
-            manage_files.delete_temp_test_pieces_file(test_folder_path, i)
+            manage_files.delete_temp_test_pieces_file(fil, i)
 
 
     def test_pieces(self):

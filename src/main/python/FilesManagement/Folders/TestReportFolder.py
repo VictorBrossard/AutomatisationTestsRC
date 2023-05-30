@@ -16,21 +16,27 @@ class TestReportFolder(ManageFolders):
     :class:`InitTestFolder` creates a folder to store the information of the test we just performed
     """
 
-    def __init__(self, name: str):
+    def __init__(self, test_type: str):
         """ `-`
         `Type:` Constructor
         """
 
         super().__init__()
 
+        if test_type == "Production":
+            self.prod_report_folder(test_type)
+
+
+    def prod_report_folder(self, test_type: str):
+
         self.now = ""
 
-        self.name = self.__find_folder_name(name)
+        self.name = self.__find_folder_name("prod")
         self.folder_path = f"{CONSTANT_REPORTS_FOLDER_PATH}\\{self.name}"
 
-        self.main = self._create_folder(self.name, CONSTANT_REPORTS_FOLDER_PATH)
-        self.screenshot = self._create_folder("screenshot", self.folder_path)
-        self.database = self._create_folder("database", self.folder_path)
+        self.main = self.create_folder(self.name, CONSTANT_REPORTS_FOLDER_PATH)
+        self.screenshot = self.create_folder("screenshot", self.folder_path)
+        self.database = self.create_folder("database", self.folder_path)
 
 
     def __find_folder_name(self, test_name: str) -> str:

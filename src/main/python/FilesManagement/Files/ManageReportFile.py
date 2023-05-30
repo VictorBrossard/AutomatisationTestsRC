@@ -60,9 +60,8 @@ class ManageReportFile(ManageAnyFile):
         """
 
         # will retrieve the values of the settings used for the report
-        settings_file_name = f"{os.path.basename(self.test_folder_path)}_settings.txt"
+        settings_file_name = "test_settings.txt"
         settings = self.get_file_lines(f"{test_folder_path}\\{settings_file_name}")
-        temp_test_settings = self.get_file_lines(f"{test_folder_path}\\test_{self.index}.txt")
 
         if settings == []: return
 
@@ -70,12 +69,11 @@ class ManageReportFile(ManageAnyFile):
         test_status_list = []
 
         # file header
-        self.content_list.append(f"Nom : {settings[0]}")
-        self.content_list.append(f"Type de test : {settings[1]}")
-        self.content_list.append(f"Programme : {temp_test_settings[2]}\n")
+        self.content_list.append(f"Type de test : {settings[0]}")
+        self.content_list.append(f"Programme : {settings[3]}\n")
 
         # contains tests that are stored in a temporary list because we have to write the general status of the tests to the file first
-        test_status_list.append(self.__create_card_section(temp_test_settings[0]))
+        test_status_list.append(self.__create_card_section(settings[1]))
         test_status_list.append(self.__create_date_section())
         test_status_list.append(self.__create_component_section())
 
@@ -94,7 +92,7 @@ class ManageReportFile(ManageAnyFile):
         """ `-`
         `Type:` Procedure
         `Description:` write in the report file the tests in the card section
-        :param:`card_to_made:` card to make
+        :param:`card_to_make:` card to make
         `Return:` status of the entire test
         """
 

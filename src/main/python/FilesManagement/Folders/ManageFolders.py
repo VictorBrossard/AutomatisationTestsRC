@@ -5,7 +5,6 @@
 # Import of files useful for code execution
 import os
 
-from Useful.AllConstant import CONSTANT_EXCUTABLE_TESTS_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_INIT_PATH
 from Useful.AllConstant import CONSTANT_MAIN_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_FILES_FOLDER_PATH
@@ -26,8 +25,8 @@ class ManageFolders(object):
         pass
 
 
-    def _create_folder(self, name_folder: str, path: str) -> str:
-        """ `#`
+    def create_folder(self, name_folder: str, path: str) -> str:
+        """ `+`
         `Type:` Function
         `Description:` create a folder with its name and path
         :param:`name_folder:` name of the folder to be created
@@ -44,17 +43,6 @@ class ManageFolders(object):
             return full_path
         else:
             return ""
-
-
-    def create_test_folder(self, name: str) -> str:
-        """ `+`
-        `Type:` Function
-        `Description:` creates a folder to store all test information
-        :param:`name:` test name
-        `Return:` test folder path
-        """
-
-        return self._create_folder(name, CONSTANT_EXCUTABLE_TESTS_FOLDER_PATH)
     
 
     def create_soft_folders(self):
@@ -63,17 +51,16 @@ class ManageFolders(object):
         `Description:` creates all the folders where we will store our files
         """
 
-        self._create_folder("AutomatisationRC", CONSTANT_INIT_PATH)
+        self.create_folder("AutomatisationRC", CONSTANT_INIT_PATH)
 
-        self._create_folder("Files", CONSTANT_MAIN_FOLDER_PATH)
+        self.create_folder("Files", CONSTANT_MAIN_FOLDER_PATH)
 
-        self._create_folder("tests", CONSTANT_FILES_FOLDER_PATH)
-        self._create_folder("settings", CONSTANT_FILES_FOLDER_PATH)
+        self.create_folder("tests", CONSTANT_FILES_FOLDER_PATH)
+        self.create_folder("settings", CONSTANT_FILES_FOLDER_PATH)
 
-        self._create_folder("reports", CONSTANT_TESTS_FOLDER_PATH)
-        self._create_folder("executable_tests", CONSTANT_TESTS_FOLDER_PATH)
-        self._create_folder("test_pieces", CONSTANT_TESTS_FOLDER_PATH)
-        self._create_folder("test_available", CONSTANT_TESTS_FOLDER_PATH)
+        self.create_folder("reports", CONSTANT_TESTS_FOLDER_PATH)
+        self.create_folder("test_pieces", CONSTANT_TESTS_FOLDER_PATH)
+        self.create_folder("execution", CONSTANT_TESTS_FOLDER_PATH)
 
 
     def delete_inside_folder(self, path: str):

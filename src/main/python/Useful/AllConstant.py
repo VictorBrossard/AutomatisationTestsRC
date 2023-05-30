@@ -32,34 +32,8 @@ CONSTANT_TESTS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\tests"
 CONSTANT_SETTINGS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\settings"
 
 CONSTANT_REPORTS_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\reports"
-CONSTANT_EXCUTABLE_TESTS_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\executable_tests"
 CONSTANT_TEST_PIECES_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\test_pieces"
-CONSTANT_TEST_AVAILABLE_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\test_available"
-
-#######################################################################################################
-
-# SettingsInterface
-    # Column
-CONSTANT_LABEL_COLUMN = int(0)
-CONSTANT_ENTRY_COLUMN = int(2)
-CONSTANT_TITLE_COLUMN = int(1)
-CONSTANT_BUTTON_COLUMN = int(1)
-
-    # Title
-CONSTANT_SETTINGS_TITLE_LINE = int(0)
-CONSTANT_TEST_TITLE_LINE = int(7)
-
-    # Line
-CONSTANT_SIMU_EXE_LINE = CONSTANT_SETTINGS_TITLE_LINE + 1
-CONSTANT_RC_EXE_LINE = CONSTANT_SIMU_EXE_LINE + 1
-CONSTANT_SIMU_PATH_LINE = CONSTANT_RC_EXE_LINE + 1
-CONSTANT_RC_PATH_LINE = CONSTANT_SIMU_PATH_LINE + 1
-CONSTANT_FOLDER_PATH_LINE = CONSTANT_RC_PATH_LINE + 1
-CONSTANT_RC_WINDOW_NAME_LINE = CONSTANT_FOLDER_PATH_LINE + 1
-CONSTANT_STOP_KEY_LINE = CONSTANT_TEST_TITLE_LINE + 1
-
-    # Button
-CONSTANT_BUTTON_LINE = CONSTANT_STOP_KEY_LINE + 1
+CONSTANT_EXECUTION_FOLDER_PATH = CONSTANT_TESTS_FOLDER_PATH + "\\execution"
 
 #######################################################################################################
 
@@ -86,3 +60,23 @@ CONSTANT_RC_WINDOW_NAME = "Menu Général"
 
 # TestPiecesFile
 CONSTANT_NB_TEST_PIECES_FILES = 16
+
+#######################################################################################################
+
+# Test name
+CONSTANT_TEST_NAME = [
+    "Production"
+]
+
+#######################################################################################################
+
+# ReadTraceFile
+
+# line of the trace file that we want to find to be able to execute certain files
+CONSTANT_TRACE_DICTIONNARY = {
+    "ClgMyDialog::OnInitDialog() : PRDBD_IDD_SUIVI_LOT" : "name.txt",                   # "ouverture de l'interface de saisie de lot"
+    "CFX Trace : CTrSui::RecipeActivated" : CONSTANT_START_PROD_FILE,                   # "validation de l'interface de saisie de lot"
+    "ClgMyDialog::OnInitDialog() : PRG_IDD_SELECTION" : "program_name.txt",             # "ouverture de l'interface de changement de programme"
+    "ClgMyDialog::OnInitDialog() : RC_IDD_LOCAL_LIST" : "local_list_boxes.txt",         # "ouvrir l'interface de liste locale pour les boîtes"
+    #"ClgMyDialog::OnDestroy() : IU_IDD_MAINMENU_PROD" : "destroy"                      # "fermeture de RC"
+}

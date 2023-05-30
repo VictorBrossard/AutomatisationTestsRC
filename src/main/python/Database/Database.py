@@ -91,8 +91,11 @@ class Database(object):
         `Description:` close the connection with the database
         """
 
-        self.connector.commit()
-        self.connector.close()
+        try:
+            self.connector.commit()
+            self.connector.close()
+        except Exception:
+            return
 
 
     def reconnect(self):
