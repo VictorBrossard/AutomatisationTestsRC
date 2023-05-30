@@ -14,6 +14,9 @@ from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsF
 from Useful.AllConstant import CONSTANT_TESTS_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_START_PROD_FILE
+from Useful.AllConstant import CONSTANT_TRACE_FILE_NAME
+
+from Useful.UsefulFunction import starts_with
 
 from Interaction.ExecuteTestFile import ExecuteTestFile
 
@@ -41,9 +44,10 @@ class ReadTraceFile(object):
         self.folder_name = folder_name
         self.test_folder_path = test_folder_path
         self.has_prg_changed = (loaded_prg != wanted_prg)
+        self.start_time = None
         
     
-    def launch_prod_test(self) -> datetime:
+    def launch_prod_test(self) -> (datetime.datetime | None):
         """ `+`
         `Type:` Function
         `Definition:` starts the execution of the complete test
@@ -60,6 +64,10 @@ class ReadTraceFile(object):
         # execution of all files
         while name_file != CONSTANT_START_PROD_FILE:
             name_file = self.find_trace()
+
+            if name_file == "":
+                break
+
             self.launch_test_file(name_file)
 
         return self.start_time
@@ -72,9 +80,14 @@ class ReadTraceFile(object):
         `Return:` the file name to be executed
         """
 
-        path_trace_file = f"{self.trace_file_path}\\ieee001.TRC"
-        path_copy_trace_file = f"{CONSTANT_TESTS_FOLDER_PATH}\\ieee001.TRC"
-        name_file = ""
+        path_trace_file = self.__find_last_modif_trace_file()
+
+        # verifies that a trace file has been found
+        if path_trace_file is None:
+            return ""
+        
+        path_copy_trace_file = f"{CONSTANT_TESTS_FOLDER_PATH}\\{os.path.basename(path_trace_file)}"
+        file_to_run = ""
 
         shutil.copy(path_trace_file, CONSTANT_TESTS_FOLDER_PATH) # copy the file to be able to manipulate it
 
@@ -96,7 +109,7 @@ class ReadTraceFile(object):
 
                 if next_char == "\n":
                     line = trace_file.readline().rstrip()
-                    boolean, name_file = self.__find_file_to_execute(line) # search for the next file to run
+                    boolean, file_to_run = self.__find_file_to_execute(line) # search for the next file to run
 
                     if boolean:
                         break
@@ -110,7 +123,7 @@ class ReadTraceFile(object):
         trace_file.close()              # close the file
         os.remove(path_copy_trace_file) # deleting the file that has been copied
 
-        return name_file
+        return file_to_run
 
 
     def __find_word(self, word: str, string: str) -> bool:
@@ -143,7 +156,7 @@ class ReadTraceFile(object):
             "ClgMyDialog::OnInitDialog() : PRG_IDD_SELECTION" : "program_name.txt",
             #"ClgMyDialog::OnDestroy() : PRG_IDD_SELECTION" : "partial_prod_prg_change.txt",
             "ClgMyDialog::OnInitDialog() : RC_IDD_LOCAL_LIST" : "local_list_boxes.txt",
-            "ClgMyDialog::OnDestroy() : IU_IDD_MAINMENU_PROD" : "destroy"
+            #"ClgMyDialog::OnDestroy() : IU_IDD_MAINMENU_PROD" : "destroy"
         }
 
         for key in file_name_dictionary:
@@ -219,6 +232,7 @@ class ReadTraceFile(object):
         elif name_file == "close_rc.txt":
             # execute pattern to close RC
             ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\close_rc.txt")
+            time.sleep(1)
 
         else:
             ExecuteTestFile().read_test_file(f"{CONSTANT_TEST_PIECES_FOLDER_PATH}\\{name_file}")
@@ -281,3 +295,33 @@ class ReadTraceFile(object):
         for fil in file_list:
             ExecuteTestFile().read_test_file(fil)
             time.sleep(0.2)
+
+
+    def __find_last_modif_trace_file(self) -> (str | None):
+        """ ``
+        `Type:` Function
+        `Description:` find the last modified trace file to make sure you're on the right one
+        `Return:` name of the trace file with its path or None if there is none
+        """
+
+        last_modified_file = None
+        last_modification_date = None
+
+        # browse all folder file names
+        for file_name in os.listdir(self.trace_file_path):
+            # verifies that the file is an CONSTANT_TRACE_FILE_NAME file
+            if starts_with(file_name, CONSTANT_TRACE_FILE_NAME):
+                file_path = os.path.join(self.trace_file_path, file_name)
+                modification_date = os.path.getmtime(file_path)
+
+                # verifies that the file is the last one modified
+                if last_modification_date is None or modification_date > last_modification_date:
+                    last_modified_file = file_path
+                    last_modification_date = modification_date
+
+
+        if last_modified_file is not None:
+            return last_modified_file
+        else:
+            print(f"[ERREUR] Aucun fichier trace n'existe dans le dossier : {self.trace_file_path}")
+            return None

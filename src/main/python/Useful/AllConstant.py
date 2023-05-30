@@ -17,6 +17,7 @@ CONSTANT_ENCRYPTION_KEY = "GEJvRguUGA1y8cPK"
 
 # ReadTraceFile
 CONSTANT_START_PROD_FILE = "f1.txt"
+CONSTANT_TRACE_FILE_NAME = "ieee"
 
 #######################################################################################################
 

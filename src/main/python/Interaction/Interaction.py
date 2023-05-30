@@ -111,11 +111,12 @@ class Interaction(object):
             trace_file = ReadTraceFile(test_folder_path, database, folder.get_folder_name(), loaded_prg, wanted_prg)
             start_time = trace_file.launch_prod_test()
 
-            # take a screenshot
-            Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
+            if start_time is not None:
+                # take a screenshot
+                Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
 
-            # create report
-            ManageReportFile(database, folder.get_folder_path(), test_folder_path, folder.get_now(), start_time.strftime(CONSTANT_SHORT_FORMAT_DATES_DATABASE), i).create_report_file()
+                # create report
+                ManageReportFile(database, folder.get_folder_path(), test_folder_path, folder.get_now(), start_time.strftime(CONSTANT_SHORT_FORMAT_DATES_DATABASE), i).create_report_file()
 
             # launches the general postcondition to stop a test
             PostCondition().start_postcondition(database, folder.get_folder_path(), trace_file)
