@@ -19,19 +19,14 @@ class TestReportFolder(ManageFolders):
     def __init__(self, test_type: str):
         """ `-`
         `Type:` Constructor
+        :param:`test_type:` type of the test
         """
 
         super().__init__()
 
-        if test_type == "Production":
-            self.prod_report_folder(test_type)
-
-
-    def prod_report_folder(self, test_type: str):
-
         self.now = ""
 
-        self.name = self.__find_folder_name("prod")
+        self.name = self.__find_folder_name(test_type)
         self.folder_path = f"{CONSTANT_REPORTS_FOLDER_PATH}\\{self.name}"
 
         self.main = self.create_folder(self.name, CONSTANT_REPORTS_FOLDER_PATH)
@@ -46,6 +41,9 @@ class TestReportFolder(ManageFolders):
         :param:`test_name:` name of the test we have just performed
         `Return:` a new name
         """
+
+        if test_name == "Production":
+            test_name = "prod"
 
         self.now = datetime.datetime.now().strftime("%Y-%m-%d_%Hh%Mm%Ss")
         new_name = f"{test_name}_{self.now}"
