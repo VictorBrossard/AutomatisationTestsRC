@@ -11,6 +11,8 @@ from Database.Database import Database
 
 from RCTest.CheckTest import CheckTest
 
+from Useful.AllConstant import CONSTANT_TEST_SETTINGS_FILE_NAME
+
 #-----------------------------------------------------------------------------------------------------
 
 class ManageReportFile(ManageAnyFile):
@@ -18,23 +20,17 @@ class ManageReportFile(ManageAnyFile):
     :class:`ManageReportFile` manages report file
     """
     
-    def __init__(self, database: Database, report_folder_path: str, test_folder_path: str, time_create_folder: str, start_test_time: str, index: str):
+    def __init__(self, database: Database, report_folder_path: str, test_folder_path: str):
         """ `-`
         `Type:` Constructor
         :param:`database:` object that manages the interaction with the database
         :param:`report_folder_path:` path where you save the file
         :param:`test_folder_path:` path of the test file to be analyzed
-        :param:`time_create_folder:` time the folder is created
-        :param:`start_time:` time when you press start
-        :param:`index:` test index
         """
 
         self.data = database
         self.report_folder_path = report_folder_path
         self.test_folder_path = test_folder_path
-        self.time_create_folder = time_create_folder
-        self.start_time = start_test_time
-        self.index = index
         
         self.test_name = os.path.basename(report_folder_path) # name of the file which is also the name of the test
         self.check_test = CheckTest(self.data, self.test_name)
@@ -42,26 +38,16 @@ class ManageReportFile(ManageAnyFile):
         self.temp_content_list = []
 
 
-    def create_report_file(self):
+    def create_report_file_prod_test(self, time_create_folder: str, start_test_time: str):
         """ `+`
         `Type:` Procedure
-        `Description:` execute the private function __create_report_file
-        """
-
-        self.__create_report_file(self.report_folder_path, self.test_folder_path)
-
-
-    def __create_report_file(self, report_folder_path: str, test_folder_path: str):
-        """ `-`
-        `Type:` Procedure
-        `Description:` creates a txt file
-        :param:`report_folder_path:` path where you save the file
-        :param:`test_folder_path:` path of the test file to be analyzed
+        `Description:` creates a txt file for production test
+        :param:`start_time:` time when you press start
+        :param:`time_create_folder:` time the folder is created
         """
 
         # will retrieve the values of the settings used for the report
-        settings_file_name = "test_settings.txt"
-        settings = self.get_file_lines(f"{test_folder_path}\\{settings_file_name}")
+        settings = self.get_file_lines(f"{self.test_folder_path}\\{CONSTANT_TEST_SETTINGS_FILE_NAME}")
 
         if settings == []: return
 
@@ -74,7 +60,7 @@ class ManageReportFile(ManageAnyFile):
 
         # contains tests that are stored in a temporary list because we have to write the general status of the tests to the file first
         test_status_list.append(self.__create_card_section(settings[1]))
-        test_status_list.append(self.__create_date_section())
+        test_status_list.append(self.__create_date_section(time_create_folder, start_test_time))
         test_status_list.append(self.__create_component_section())
 
         # general status of the tests
@@ -85,7 +71,7 @@ class ManageReportFile(ManageAnyFile):
         self.content_list = self.content_list + self.temp_content_list
         
         # report creation
-        self.create_file(report_folder_path, "report.txt", self.content_list)
+        self.create_file(self.report_folder_path, "report.txt", self.content_list)
     
 
     def __create_card_section(self, card_to_make: str):
@@ -116,10 +102,12 @@ class ManageReportFile(ManageAnyFile):
         return True if all(test_status_list) else False
 
 
-    def __create_date_section(self):
+    def __create_date_section(self, time_create_folder: str, start_test_time: str):
         """ `-`
         `Type:` Procedure
         `Description:` write in the report file the tests in the date section
+        :param:`start_time:` time when you press start
+        :param:`time_create_folder:` time the folder is created
         `Return:` status of the entire test
         """
 
@@ -129,13 +117,13 @@ class ManageReportFile(ManageAnyFile):
         self.temp_content_list.append("------------------------------------------------------------ Date ------------------------------------------------------------\n")
 
         # verification of the consistency of the creation date
-        test_status_list.append(self.check_test.creation_date_constency(self.temp_content_list, self.time_create_folder))
+        test_status_list.append(self.check_test.creation_date_constency(self.temp_content_list, time_create_folder))
 
         # verification of the consistency of the begin date in workorderactivationhistory
-        test_status_list.append(self.check_test.test_begin_date_constency(self.temp_content_list, self.time_create_folder))
+        test_status_list.append(self.check_test.test_begin_date_constency(self.temp_content_list, time_create_folder))
 
         # check that the production start date is equal to the time when you press the start button
-        test_status_list.append(self.check_test.check_date_begin_equal_start_prod(self.temp_content_list, self.start_time))
+        test_status_list.append(self.check_test.check_date_begin_equal_start_prod(self.temp_content_list, start_test_time))
 
         # checking the consistency of the start and end dates of a card
         test_status_list.append(self.check_test.check_start_end_date_card(self.temp_content_list))

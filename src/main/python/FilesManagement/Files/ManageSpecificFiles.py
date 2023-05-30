@@ -15,6 +15,7 @@ from Useful.AllConstant import CONSTANT_INIT_PATH
 from Useful.AllConstant import CONSTANT_NAME_SETTINGS_FILE
 from Useful.AllConstant import CONSTANT_NAME_DATABASE_FILE
 from Useful.AllConstant import CONSTANT_ENCRYPTION_KEY
+from Useful.AllConstant import CONSTANT_TEST_SETTINGS_FILE_NAME
 
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
@@ -204,10 +205,10 @@ class ManageSpecificFiles(ManageAnyFile):
         return decoded_sentence_bytes.decode("utf-8")
     
 
-    def create_temp_test_pieces_file(self, test_folder_path: str, index: str, create_folder_time: str) -> tuple[str, str]:
+    def create_temp_test_pieces_file(self, test_folder_path: str, index: str, create_folder_time: str) -> str:
         """ `+`
         `Type:` Function
-        `Description:` create all the test tips that vary according to the tests ( so temporary)
+        `Description:` create all the test tips that vary according to the tests (so temporary)
         :param:`test_folder_path:` folder where the files will be
         :param:`index:` test index to find the right file test_"index".txt
         :param:`create_folder_time:` date and time of folder creation
@@ -215,7 +216,7 @@ class ManageSpecificFiles(ManageAnyFile):
         """
 
         try:
-            fil = open(f"{test_folder_path}\\test_settings.txt", 'r')
+            fil = open(f"{test_folder_path}\\{CONSTANT_TEST_SETTINGS_FILE_NAME}", 'r')
             lines = fil.readlines()
             fil.close()
         
@@ -226,10 +227,10 @@ class ManageSpecificFiles(ManageAnyFile):
             self.create_execution_file(test_folder_path, "program_name.txt", lines[3].rstrip())
             self.create_execution_file(test_folder_path, "last_execution.txt", f"_{create_folder_time}") # execution file to write the date after the test name
 
-            return (lines[3].rstrip(), lines[3].rstrip())
+            return lines[3].rstrip()
         except Exception as e:
             print("[ERREUR]", e)
-            return ("", "")
+            return ""
         
 
     def delete_temp_test_pieces_file(self, test_folder_path: str, index: str):
@@ -245,3 +246,6 @@ class ManageSpecificFiles(ManageAnyFile):
         os.remove(f"{test_folder_path}\\card_to_make.txt")
         os.remove(f"{test_folder_path}\\program_name.txt")
         os.remove(f"{test_folder_path}\\last_execution.txt")
+
+        for element in os.listdir(test_folder_path):
+            print(element)

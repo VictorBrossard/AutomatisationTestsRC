@@ -10,6 +10,8 @@ from FilesManagement.Folders.ManageFolders import ManageFolders
 
 from Database.Database import Database
 
+from Useful.AllConstant import CONSTANT_TEST_NAME
+
 #-----------------------------------------------------------------------------------------------------
 
 class Precondition(object):
@@ -28,7 +30,7 @@ class Precondition(object):
         self.database = database
 
 
-    def start_precondition(self) -> str:
+    def start_precondition_prod_test(self) -> str:
         """ `+`
         `Type:` Function
         `Description:` launches the selected precondition

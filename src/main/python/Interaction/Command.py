@@ -3,12 +3,10 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
-import subprocess
-import os
-
 from Useful.AllConstant import CONSTANT_USER_COMMAND
 from Useful.AllConstant import CONSTANT_EXECUTION_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_TEST_NAME
+from Useful.AllConstant import CONSTANT_TEST_SETTINGS_FILE_NAME
 
 from Database.Database import Database
 
@@ -109,16 +107,16 @@ class Command(object):
                 print(f"[ERREUR] Fichier mal rempli à la ligne {i+1}.")
                 return
             
-            #
+            # creates a temporary folder to store all test pieces 
             new_path_folder = manage_folder.create_folder(f"{user_entry_list[0]}", CONSTANT_EXECUTION_FOLDER_PATH)
 
-            manage_files.create_file(new_path_folder, "test_settings.txt", user_entry_list)
+            manage_files.create_file(new_path_folder, CONSTANT_TEST_SETTINGS_FILE_NAME, user_entry_list)
 
             # insertion of the test in the list according to the number put in the file
             for _ in range(0, int(decompose_line[1])):
                 file_paths_list.append(new_path_folder)
 
-            self.interaction.execute_test(self.database, file_paths_list)
+            self.interaction.execute_test(user_entry_list[0], self.database, file_paths_list)
 
             manage_folder.delete_inside_folder(new_path_folder)
             manage_folder.delete_folder(new_path_folder)

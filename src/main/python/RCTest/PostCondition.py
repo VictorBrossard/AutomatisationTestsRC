@@ -13,6 +13,8 @@ from Database.Database import Database
 
 from RCTest.ReadTraceFile import ReadTraceFile
 
+from Useful.AllConstant import CONSTANT_TEST_NAME
+
 #-----------------------------------------------------------------------------------------------------
 
 class PostCondition(object):
@@ -20,20 +22,21 @@ class PostCondition(object):
     :class:`PostCondition` manages the postconditions of the tests
     """
 
-    def __init__(self):
+    def __init__(self, database: Database):
         """ `-`
         `Type:` Constructor
+        :param:`database:` object that manages the interaction with the database
         """
 
+        self.data = database
         self.settings = ManipulationSettingsFile()
         self.softwares = ManageSoftwares()
 
 
-    def start_postcondition(self, database: Database, folder_path: str, trace_file: ReadTraceFile):
+    def start_postcondition_prod_test(self, folder_path: str, trace_file: ReadTraceFile):
         """ `+`
         `Type:` Procedure
         `Description:` launches the selected postcondition
-        :param:`database:` object that manages the interaction with the database
         :param:`copy_traces_path:` path where we copy the trace folder
         :param:`trace_file:` access the trace file to close RC
         """
@@ -42,7 +45,7 @@ class PostCondition(object):
         trace_file.launch_test_file("close_rc.txt")
         self.softwares.close_soft()
 
-        database.save_all_tuples(f"{folder_path}\\database")
+        self.data.save_all_tuples(f"{folder_path}\\database")
 
         tmp_path = self.settings.get_line(7)
         shutil.copytree(tmp_path, f"{folder_path}\\traces")

@@ -30,6 +30,7 @@ from Database.Database import Database
 from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_SHORT_FORMAT_DATES_DATABASE
 from Useful.AllConstant import CONSTANT_RC_WINDOW_NAME
+from Useful.AllConstant import CONSTANT_TEST_NAME
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -46,10 +47,24 @@ class Interaction(object):
         self.line_settings_file = ManipulationSettingsFile() # read the file that contains the parameters
 
 
-    def execute_test(self, database: Database, file_paths_list: list[str]):
+    def execute_test(self, test_type: str, database: Database, file_paths_list: list[str]):
         """ `+`
         `Type:` Procedure
-        `Description:` execute all the test files in the parameter list
+        `Description:` execute production test
+        :param:`test_type:` type of the test
+        :param:`database:` object that manages the interaction with the database
+        :param:`file_paths_list:` list of file paths that store the paths to the test folders
+        """
+
+        if test_type == CONSTANT_TEST_NAME[0]:
+            self.__execute_prod_test(database, file_paths_list)
+
+
+    def __execute_prod_test(self, database: Database, file_paths_list: list[str]):
+        """ `-`
+        `Type:` Procedure
+        `Description:` execute all the production test files in the parameter list
+        :param:`test_type:` type of the test
         :param:`database:` object that manages the interaction with the database
         :param:`file_paths_list:` list of file paths that store the paths to the test folders
         """
@@ -59,21 +74,16 @@ class Interaction(object):
 
         # execution of each file in the list
         for i, fil in enumerate(file_paths_list):
-            """# retrieve the path of the test folder
-            test_file = open(fil, 'r')
-            test_folder_path = test_file.readlines()[0].rstrip()
-            test_file.close()"""
-
             # creation of a folder for the test report
             file_name = os.path.basename(fil)
             folder = TestReportFolder(file_name)
 
             # creation of test items depending on each test
             manage_files = ManageSpecificFiles()
-            test_type, wanted_prg = manage_files.create_temp_test_pieces_file(fil, i, folder.get_now())
+            wanted_prg = manage_files.create_temp_test_pieces_file(fil, i, folder.get_now())
 
             # launches the general precondition for launching a test
-            loaded_prg = Precondition(database).start_precondition()
+            loaded_prg = Precondition(database).start_precondition_prod_test()
             time.sleep(6)
             self.__rc_window_foreground(CONSTANT_RC_WINDOW_NAME)
             time.sleep(1)
@@ -87,10 +97,14 @@ class Interaction(object):
                 Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
 
                 # create report
-                ManageReportFile(database, folder.get_folder_path(), fil, folder.get_now(), start_time.strftime(CONSTANT_SHORT_FORMAT_DATES_DATABASE), i).create_report_file()
+                ManageReportFile(
+                    database, 
+                    folder.get_folder_path(), 
+                    fil
+                ).create_report_file_prod_test(folder.get_now(), start_time.strftime(CONSTANT_SHORT_FORMAT_DATES_DATABASE))
 
             # launches the general postcondition to stop a test
-            PostCondition().start_postcondition(database, folder.get_folder_path(), trace_file)
+            PostCondition(database).start_postcondition_prod_test(folder.get_folder_path(), trace_file)
 
             # deletion of the test pieces
             manage_files.delete_temp_test_pieces_file(fil, i)
