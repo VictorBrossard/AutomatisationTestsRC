@@ -12,8 +12,6 @@ from FilesManagement.Files.TestPiecesFile import TestPiecesFile
 
 from FilesManagement.Folders.ManageFolders import ManageFolders
 
-from Database.Database import Database
-
 from Interaction.Command import Command
 
 #-----------------------------------------------------------------------------------------------------
@@ -27,13 +25,12 @@ def main(args):
     ManageFolders().create_soft_folders()
     ManageSpecificFiles().create_soft_settings_file()
     TestPiecesFile()
-    database = Database()
 
     if args == []:
-        test = MainInterface(database)
+        test = MainInterface()
         test.mainloop()
     else:
-        Command(database).translations_args(args)
+        Command().translations_args(args)
 
     
 # Execution of the main function

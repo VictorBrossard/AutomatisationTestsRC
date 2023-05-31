@@ -6,11 +6,13 @@
 import subprocess
 import os
 
-from GraphicInterface.MessageBox import MessageBox
-
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
+from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
 from Useful.UsefulFunction import is_soft_open
+
+from Useful.AllConstant import CONSTANT_SETTINGS_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_NAME_SETTINGS_FILE
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -38,11 +40,11 @@ class ManageSoftwares(object):
 
         try:
             # Opening the software 
-            os.chdir(simu_path)                                                 # Change the current working directory by giving the path
-            subprocess.run(['start', simu_exe], shell=True)                     # Open the software using the start command
+            os.chdir(simu_path)                                 # Change the current working directory by giving the path
+            subprocess.run(['start', simu_exe], shell=True)     # Open the software using the start command
         except Exception as e:
-            MessageBox("ERREUR Chemin Simulateur", f"[ERREUR] {e}").mainloop()  # Displaying the error message for the user
-            #self.__start_simu()
+            print(f"[ERREUR] {e}")                              # Displaying the error message for the user
+            ManageAnyFile().delete_file(f"{CONSTANT_SETTINGS_FOLDER_PATH}\\{CONSTANT_NAME_SETTINGS_FILE}")
             
     
     def __start_rc(self):
@@ -56,11 +58,11 @@ class ManageSoftwares(object):
 
         try:
             # Opening the software
-            os.chdir(rc_path)                                           # Change the current working directory by giving the path
-            subprocess.run(['start', rc_exe], shell=True)               # Open the software using the start command
+            os.chdir(rc_path)                               # Change the current working directory by giving the path
+            subprocess.run(['start', rc_exe], shell=True)   # Open the software using the start command
         except Exception as e:
-            MessageBox("ERREUR Chemin RC", f"[ERREUR] {e}").mainloop()  # Displaying the error message for the user
-            #self.__start_rc()        
+            print(f"[ERREUR] {e}")                          # Displaying the error message for the user
+            ManageAnyFile().delete_file(f"{CONSTANT_SETTINGS_FOLDER_PATH}\\{CONSTANT_NAME_SETTINGS_FILE}")      
 
 
     def open_soft(self):

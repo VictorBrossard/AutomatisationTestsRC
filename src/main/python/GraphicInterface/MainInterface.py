@@ -5,7 +5,6 @@
 # Import of files useful for code execution
 import tkinter as tk
 import ctypes
-import os
 
 from tkinter import ttk
 
@@ -27,7 +26,7 @@ class MainInterface(tk.Tk):
     :class:`MainInterface` manages the main interface of the project
     """
 
-    def __init__(self, database: Database):
+    def __init__(self):
         """ `-`
         `Type:` Constructor
         :param:`database:` object that manages the interaction with the database
@@ -36,7 +35,7 @@ class MainInterface(tk.Tk):
         # Parent constructor
         super().__init__()
 
-        self.data = database # Database object
+        self.data = Database() # Database object
 
         # Window size and position
         height = 600
@@ -110,7 +109,7 @@ class MainInterface(tk.Tk):
             user_entry_list[0]
         ])
 
-        self.__init__(self.data)
+        self.__init__()
         self.mainloop()
 
 
@@ -121,6 +120,6 @@ class MainInterface(tk.Tk):
         """
 
         self.destroy()
-        Interaction().test_pieces()
-        self.__init__(self.data)
+        Interaction().create_test_piece()
+        self.__init__()
         self.mainloop()

@@ -107,7 +107,7 @@ class Interaction(object):
             PostCondition(database).start_postcondition_prod_test(folder.get_folder_path(), trace_file)
 
 
-    def test_pieces(self):
+    def create_test_piece(self):
         """ `+`
         `Type:` Procedure
         `Description:` record a test piece

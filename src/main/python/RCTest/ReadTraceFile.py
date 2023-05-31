@@ -249,10 +249,14 @@ class ReadTraceFile(object):
             return
 
         # decomposition of the tuple to calculate the max production time
-        unit_time = float(max_time_tuple[0][0])
-        nb_cards_to_made = int(max_time_tuple[0][1])
-        time_for_a_card = unit_time/1000
-        time_for_cards = time_for_a_card * nb_cards_to_made - 3 # the 3 corresponds to the waiting time for the start of the function
+        try:
+            unit_time = float(max_time_tuple[0][0])
+            nb_cards_to_made = int(max_time_tuple[0][1])
+            time_for_a_card = unit_time/1000
+            time_for_cards = time_for_a_card * nb_cards_to_made - 3 # the 3 corresponds to the waiting time for the start of the function
+        except Exception as e:
+            print(f"[ERREUR] {e}")
+            return
 
         card_made = 0
 

@@ -25,14 +25,12 @@ class Command(object):
     :class:`Command` handles the arguments after the main class when executing the program with a line of code
     """
     
-    def __init__(self, database: Database):
+    def __init__(self):
         """ `-`
         `Type:` Constructor
-        :param:`database:` object that manages the interaction with the database
         """
 
-        self.database = database
-        self.interaction = Interaction()
+        pass
 
 
     ###################################### Command ######################################
@@ -50,19 +48,27 @@ class Command(object):
             return
         
         # help command
-        if args[0] == "-help":
+        if args[0] == CONSTANT_USER_COMMAND[0]:
             self.__help_command()
 
         # start command
-        if args[0] == "-start":
-            self.__start_command(args)
+        if args[0] == CONSTANT_USER_COMMAND[1]:
+            self.start_command(args)
         
         # prg command
-        if args[0] == "-prg":
+        if args[0] == CONSTANT_USER_COMMAND[2]:
             self.__prg_command()
 
+        # test piece command
+        if args[0] == CONSTANT_USER_COMMAND[3]:
+            self.__test_piece_command()
 
-    def __start_command(self, args: list[str]):
+        # test list command
+        if args[0] == CONSTANT_USER_COMMAND[4]:
+            self.__test_list_command()
+
+
+    def start_command(self, args: list[str]):
         """ `-`
         `Type:` Procedure
         `Description:` run one or more tests in a row
@@ -71,6 +77,10 @@ class Command(object):
         `Command:` py main.py -start "path of the file"
 
         """
+
+        # Intialization of variables
+        database = Database()
+        interaction = Interaction()
 
         # verification of the number of arguments
         if len(args) > 2:
@@ -116,7 +126,7 @@ class Command(object):
             for _ in range(0, int(decompose_line[1])):
                 file_paths_list.append(new_path_folder)
 
-            self.interaction.execute_test(user_entry_list[0], self.database, file_paths_list)
+            interaction.execute_test(user_entry_list[0], database, file_paths_list)
 
             # deletion of files and folders temporarily created for testing purposes
             manage_folder.delete_inside_folder(new_path_folder)
@@ -124,7 +134,7 @@ class Command(object):
 
             file_paths_list.clear()
 
-        self.database.close_connection()
+        database.close_connection()
 
     
     def __help_command(self):
@@ -141,8 +151,8 @@ class Command(object):
         for command in CONSTANT_USER_COMMAND:
             if command == "-start":
                 print(". -start [chemin du fichier qui contient les instructions d'exécution des tests]")
-            elif command == "-prg":
-                print(". -prg")
+            else:
+                print(f". {command}")
 
 
     def __prg_command(self):
@@ -160,6 +170,33 @@ class Command(object):
 
         for prg in prg_list:
             print(f". {prg}")
+
+
+    def __test_piece_command(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` launches the creation of a test piece
+
+        `Command:` py main.py -testpiece
+        
+        """
+
+        Interaction().create_test_piece()
+
+
+    def __test_list_command(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` displays all possible tests
+
+        `Command:` py main.py -testlist
+        
+        """
+
+        print("Test disponible :")
+
+        for test in CONSTANT_TEST_NAME:
+            print(f". {test}")
 
 
     ###################################### Function to assist command execution ######################################

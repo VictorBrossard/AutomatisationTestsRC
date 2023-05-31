@@ -25,7 +25,11 @@ CONSTANT_TRACE_FILE_NAME = "ieee"
 # ManageFolders
 
 def find_path_to_store_files(stop_path: str) -> str:
-    """
+    """ `+`
+    `Type:` Procedure
+    `Description:` goes back up the parent path depending on where you want to stop
+    :param:`stop_path:` path to stop at
+    `Return:` the whole path
     """
 
     parent_path = sys.path[0]
@@ -60,7 +64,7 @@ CONSTANT_KEYBOARD_SHORTCUTS = ["ctrl", "ctrl_l", "ctrl_r", "alt", "alt_r", "alt_
 #######################################################################################################
 
 # Command
-CONSTANT_USER_COMMAND = ["-start", "-help", "-prg"]
+CONSTANT_USER_COMMAND = ["-help", "-start", "-prg", "-testpiece", "-testlist"]
 CONSTANT_TEST_SETTINGS_FILE_NAME = "test_settings.txt"
 
 #######################################################################################################
