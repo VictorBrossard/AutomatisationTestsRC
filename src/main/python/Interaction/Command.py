@@ -118,6 +118,7 @@ class Command(object):
 
             self.interaction.execute_test(user_entry_list[0], self.database, file_paths_list)
 
+            # deletion of files and folders temporarily created for testing purposes
             manage_folder.delete_inside_folder(new_path_folder)
             manage_folder.delete_folder(new_path_folder)
 
