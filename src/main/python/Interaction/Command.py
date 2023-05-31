@@ -121,6 +121,8 @@ class Command(object):
             manage_folder.delete_inside_folder(new_path_folder)
             manage_folder.delete_folder(new_path_folder)
 
+            file_paths_list.clear()
+
         self.database.close_connection()
 
     

@@ -6,7 +6,6 @@
 import os
 
 from Useful.AllConstant import CONSTANT_INIT_PATH
-from Useful.AllConstant import CONSTANT_MAIN_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_FILES_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_TESTS_FOLDER_PATH
 
@@ -51,9 +50,7 @@ class ManageFolders(object):
         `Description:` creates all the folders where we will store our files
         """
 
-        self.create_folder("AutomatisationRC", CONSTANT_INIT_PATH)
-
-        self.create_folder("Files", CONSTANT_MAIN_FOLDER_PATH)
+        self.create_folder("software files", CONSTANT_INIT_PATH)
 
         self.create_folder("tests", CONSTANT_FILES_FOLDER_PATH)
         self.create_folder("settings", CONSTANT_FILES_FOLDER_PATH)

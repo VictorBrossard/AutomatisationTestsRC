@@ -107,7 +107,7 @@ class Interaction(object):
             PostCondition(database).start_postcondition_prod_test(folder.get_folder_path(), trace_file)
 
             # deletion of the test pieces
-            manage_files.delete_temp_test_pieces_file(fil, i)
+            #manage_files.delete_temp_test_pieces_file(fil, i)
 
 
     def test_pieces(self):

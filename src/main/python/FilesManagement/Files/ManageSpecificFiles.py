@@ -246,6 +246,3 @@ class ManageSpecificFiles(ManageAnyFile):
         os.remove(f"{test_folder_path}\\card_to_make.txt")
         os.remove(f"{test_folder_path}\\program_name.txt")
         os.remove(f"{test_folder_path}\\last_execution.txt")
-
-        for element in os.listdir(test_folder_path):
-            print(element)

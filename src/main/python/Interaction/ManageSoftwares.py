@@ -98,12 +98,12 @@ class ManageSoftwares(object):
             if os.path.isfile(file_to_delete):
                 os.remove(file_to_delete)
         except Exception as e:
-            MessageBox("ERREUR Fermeture RC", f"[ERREUR] {e}").mainloop()       # Displaying the error message for the user
+            print(f"[ERREUR] {e}")                                              # Displaying the error message for the user
             return
 
         try:
             if is_soft_open(simu_exe):
-                subprocess.run(['taskkill', '/f', '/im', simu_exe], shell=True)     # Shell command to close the simulator
+                subprocess.run(['taskkill', '/f', '/im', simu_exe], shell=True) # Shell command to close the simulator
         except Exception as e:
-            MessageBox("ERREUR Fermeture Simulateur", f"[ERREUR] {e}").mainloop()   # Displaying the error message for the user
+            print(f"[ERREUR] {e}")                                              # Displaying the error message for the user
             return

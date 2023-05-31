@@ -3,8 +3,6 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
-import ctypes
-import sys
 import subprocess
 import os
 

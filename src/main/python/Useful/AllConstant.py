@@ -4,6 +4,7 @@
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
 import os
+import sys
 
 #-----------------------------------------------------------------------------------------------------
 # Initialization of constants
@@ -22,11 +23,21 @@ CONSTANT_TRACE_FILE_NAME = "ieee"
 #######################################################################################################
 
 # ManageFolders
-CONSTANT_INIT_PATH = f"C:\\Users\\{os.getlogin()}\\Documents"
 
-CONSTANT_MAIN_FOLDER_PATH = CONSTANT_INIT_PATH + "\\AutomatisationRC"
+def find_path_to_store_files(stop_path: str) -> str:
+    """
+    """
 
-CONSTANT_FILES_FOLDER_PATH = CONSTANT_MAIN_FOLDER_PATH + "\\Files"
+    parent_path = sys.path[0]
+
+    while os.path.basename(parent_path) != stop_path:
+        parent_path = os.path.dirname(parent_path)
+
+    return parent_path
+
+CONSTANT_INIT_PATH = find_path_to_store_files("AutomatisationTestsRC")
+
+CONSTANT_FILES_FOLDER_PATH = CONSTANT_INIT_PATH + "\\software files"
 
 CONSTANT_TESTS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\tests" 
 CONSTANT_SETTINGS_FOLDER_PATH = CONSTANT_FILES_FOLDER_PATH + "\\settings"
