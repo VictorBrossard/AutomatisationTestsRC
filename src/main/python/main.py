@@ -14,6 +14,8 @@ from FilesManagement.Folders.ManageFolders import ManageFolders
 
 from Interaction.Command import Command
 
+from Database.Database import Database
+
 #-----------------------------------------------------------------------------------------------------
 
 def main(args):
@@ -27,7 +29,8 @@ def main(args):
     TestPiecesFile()
 
     if args == []:
-        test = MainInterface()
+        data = Database()
+        test = MainInterface(data)
         test.mainloop()
     else:
         Command().translations_args(args)

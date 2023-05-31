@@ -26,7 +26,7 @@ class MainInterface(tk.Tk):
     :class:`MainInterface` manages the main interface of the project
     """
 
-    def __init__(self):
+    def __init__(self, database: Database):
         """ `-`
         `Type:` Constructor
         :param:`database:` object that manages the interaction with the database
@@ -35,7 +35,7 @@ class MainInterface(tk.Tk):
         # Parent constructor
         super().__init__()
 
-        self.data = Database() # Database object
+        self.data = database # Database object
 
         # Window size and position
         height = 600
@@ -109,7 +109,7 @@ class MainInterface(tk.Tk):
             user_entry_list[0]
         ])
 
-        self.__init__()
+        self.__init__(self.data)
         self.mainloop()
 
 
@@ -121,5 +121,5 @@ class MainInterface(tk.Tk):
 
         self.destroy()
         Interaction().create_test_piece()
-        self.__init__()
+        self.__init__(self.data)
         self.mainloop()
