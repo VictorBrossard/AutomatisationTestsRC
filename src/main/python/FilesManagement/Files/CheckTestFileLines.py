@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : 
+# Description   : class that checks whether the line in the file containing the tests to be performed is correct
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution 
@@ -11,7 +11,7 @@ from Useful.UsefulFunction import get_program_list
 
 class CheckTestFileLines(object):
     """ `+`
-    :class:`CheckTestFileLines`
+    :class:`CheckTestFileLines` checks whether the line in the file containing the tests to be performed is correct
     """
     
     def __init__(self):

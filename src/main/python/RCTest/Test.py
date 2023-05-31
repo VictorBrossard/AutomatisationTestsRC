@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : class that manages the running of a test
+# Description   : Class that manages the running of a test
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
