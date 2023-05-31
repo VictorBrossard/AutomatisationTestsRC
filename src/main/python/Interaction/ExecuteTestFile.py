@@ -72,8 +72,7 @@ class ExecuteTestFile(object):
                 self.__find_action(now_word_list, before_word_list)
                 before_word_list = now_word_list
 
-            self.keyboard_listener.stop()
-            self.test_file.close()
+            self.__stop_all()
         except Exception:
             pass
 
@@ -286,10 +285,19 @@ class ExecuteTestFile(object):
             key_name = key.name
 
         if key_name == self.settings.get_line(5): # key that stops recording
-            self.keyboard_listener.stop()
-            self.test_file.close()
+            self.__stop_all()
             ManageSoftwares().close_soft()
             sys.exit()
 
         """elif key == Key.print_screen:
             Screenshot()"""
+        
+
+    def __stop_all(self):
+        """ `-`
+        `Type:` Procedure
+        `Description:` turn off all listeners and controllers and close the file
+        """
+
+        self.keyboard_listener.stop()
+        self.test_file.close()

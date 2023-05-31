@@ -7,11 +7,11 @@ import shutil
 
 from Interaction.ManageSoftwares import ManageSoftwares
 
+from RCTest.Test import Test
+
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 
 from Database.Database import Database
-
-from RCTest.ReadTraceFile import ReadTraceFile
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ class PostCondition(object):
         self.softwares = ManageSoftwares()
 
 
-    def start_postcondition_prod_test(self, folder_path: str, trace_file: ReadTraceFile):
+    def start_postcondition_prod_test(self, folder_path: str, test: Test):
         """ `+`
         `Type:` Procedure
         `Description:` launches the selected postcondition
@@ -40,7 +40,7 @@ class PostCondition(object):
         """
 
         # Close Softwares
-        trace_file.launch_test_file("close_rc.txt")
+        test.launch_test_file("close_rc.txt")
         self.softwares.close_soft()
 
         self.data.save_all_tuples(f"{folder_path}\\database")

@@ -15,6 +15,7 @@ from Interaction.Interaction import Interaction
 from Useful.UsefulFunction import get_program_list
 
 from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
+from FilesManagement.Files.CheckTestFileLines import CheckTestFileLines
 
 from FilesManagement.Folders.ManageFolders import ManageFolders
 
@@ -31,9 +32,6 @@ class Command(object):
         """
 
         pass
-
-
-    ###################################### Command ######################################
 
 
     def translations_args(self, args: list[str]):
@@ -100,39 +98,38 @@ class Command(object):
         file_paths_list = []
         manage_files = ManageSpecificFiles()
         manage_folder = ManageFolders()
+        check_lines = CheckTestFileLines()
+        has_a_problem = False
 
         # decomposition of each line of the file
         for i, line in enumerate(lines):
             decompose_line = line.split(";")
 
-            # protects line breaks
-            if decompose_line[0] == "\n":
-                print(f"[ERREUR] Espace à la ligne {i+1}.")
-                return
-
-            user_entry_list, is_correct = self.__check_line_informations(decompose_line)
+            user_entry_list, is_line_correct = check_lines.check_line_informations(decompose_line)
 
             # guard that prevents errors
-            if not is_correct or user_entry_list == []:
+            if not is_line_correct or user_entry_list == []:
                 print(f"[ERREUR] Fichier mal rempli à la ligne {i+1}.")
-                return
+                has_a_problem = True
             
-            # creates a temporary folder to store all test pieces 
-            new_path_folder = manage_folder.create_folder(f"{user_entry_list[0]}", CONSTANT_EXECUTION_FOLDER_PATH)
+            if not has_a_problem:
+                # creates a temporary folder to store all test pieces 
+                manage_folder.delete_inside_folder(CONSTANT_EXECUTION_FOLDER_PATH)
+                new_path_folder = manage_folder.create_folder(f"{user_entry_list[0]}", CONSTANT_EXECUTION_FOLDER_PATH)
 
-            manage_files.create_file(new_path_folder, CONSTANT_TEST_SETTINGS_FILE_NAME, user_entry_list)
+                manage_files.create_file(new_path_folder, CONSTANT_TEST_SETTINGS_FILE_NAME, user_entry_list)
 
-            # insertion of the test in the list according to the number put in the file
-            for _ in range(0, int(decompose_line[1])):
-                file_paths_list.append(new_path_folder)
+                # insertion of the test in the list according to the number put in the file
+                for _ in range(0, int(decompose_line[1])):
+                    file_paths_list.append(new_path_folder)
 
-            interaction.execute_test(user_entry_list[0], database, file_paths_list)
+                interaction.execute_test(user_entry_list[0], database, file_paths_list)
 
-            # deletion of files and folders temporarily created for testing purposes
-            manage_folder.delete_inside_folder(new_path_folder)
-            manage_folder.delete_folder(new_path_folder)
+                # deletion of files and folders temporarily created for testing purposes
+                manage_folder.delete_inside_folder(new_path_folder)
+                manage_folder.delete_folder(new_path_folder)
 
-            file_paths_list.clear()
+                file_paths_list.clear()
 
         database.close_connection()
 
@@ -197,48 +194,3 @@ class Command(object):
 
         for test in CONSTANT_TEST_NAME:
             print(f". {test}")
-
-
-    ###################################### Function to assist command execution ######################################
-
-
-    def __check_line_informations(self, line: list[str]) -> tuple[list[str], bool]:
-        """ `-`
-        `Type:` Function
-        `Description:` executes the correct function according to the test
-        `Return:` bool
-        """
-
-        if line[0] == CONSTANT_TEST_NAME[0]:
-            return self.__check_line_informations_prod_test(line)
-        
-        return ([], False)
-
-
-    def __check_line_informations_prod_test(self, line: list[str]) -> tuple[list[str], bool]:
-        """ `-`
-        `Type:` Function
-        `Description:` checks that all the information in the given line is correct
-        `Return:` bool
-        """
-
-        try:
-            user_entry_list = [
-                line[0], # test name
-                line[2], # number of cards to produce
-                line[3], # number of cards made
-                line[4]  # program to run
-            ]
-
-            is_correct = (
-                line[0] in CONSTANT_TEST_NAME               # name of the test file
-                and int(line[1]) > 0                        # number of test iterations
-                and int(line[2]) > 0                        # number of cards to produce
-                and int(line[3]) >= 0                       # number of cards made
-                and line[4].rstrip() in get_program_list()  # program to run
-            )
-
-            return (user_entry_list, is_correct)
-            
-        except Exception:
-            return ([], False)

@@ -15,15 +15,15 @@ from Interaction.InputRecorder import InputRecorder
 from Interaction.ManageSoftwares import ManageSoftwares
 
 from FilesManagement.Folders.TestReportFolder import TestReportFolder
-from FilesManagement.Folders.ManageFolders import ManageFolders
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
-from FilesManagement.Files.ManageReportFile import ManageReportFile
+from FilesManagement.Files.ReportFiles.ProductionReportFile import ProductionReportFile
 
 from RCTest.Precondition import Precondition
 from RCTest.PostCondition import PostCondition
-from RCTest.ReadTraceFile import ReadTraceFile
+
+from RCTest.Tests.ProductionTest import ProductionTest
 
 from Database.Database import Database
 
@@ -89,22 +89,22 @@ class Interaction(object):
             time.sleep(1)
 
             # test execution
-            trace_file = ReadTraceFile(fil, database, folder.get_folder_name(), loaded_prg, wanted_prg)
-            start_time = trace_file.launch_prod_test()
+            test = ProductionTest(fil, database, folder.get_folder_name(), loaded_prg, wanted_prg)
+            start_time = test.launch_test()
 
             if start_time is not None:
                 # take a screenshot
                 Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
 
                 # create report
-                ManageReportFile(
+                ProductionReportFile(
                     database, 
                     folder.get_folder_path(), 
                     fil
-                ).create_report_file_prod_test(folder.get_now(), start_time.strftime(CONSTANT_SHORT_FORMAT_DATES_DATABASE))
+                ).create_report_file_test(folder.get_now(), start_time.strftime(CONSTANT_SHORT_FORMAT_DATES_DATABASE))
 
             # launches the general postcondition to stop a test
-            PostCondition(database).start_postcondition_prod_test(folder.get_folder_path(), trace_file)
+            PostCondition(database).start_postcondition_prod_test(folder.get_folder_path(), test)
 
 
     def create_test_piece(self):

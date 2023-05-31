@@ -1,5 +1,5 @@
 # Author        : Victor BROSSARD
-# Description   : Class that performs all the tests with the database
+# Description   : Class that performs all the production tests with the database
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
@@ -13,9 +13,9 @@ from Useful.AllConstant import CONSTANT_SHORT_FORMAT_DATES_DATABASE
 
 #-----------------------------------------------------------------------------------------------------
 
-class CheckTest(object):
+class CheckProductionTest(object):
     """ `+`
-    :class:`CheckTest` performs all the tests with the database
+    :class:`CheckProductionTest` performs all the production tests with the database
     """
 
     def __init__(self, database: Database, test_name: str):
