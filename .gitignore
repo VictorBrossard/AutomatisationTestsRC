@@ -3,3 +3,6 @@ CodeTest.py
 
 # Folder created with the software
 software files/
+
+# Python Cache
+*.pyc
