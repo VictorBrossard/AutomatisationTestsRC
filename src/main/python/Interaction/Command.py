@@ -193,4 +193,7 @@ class Command(object):
         print("Test disponible :")
 
         for test in CONSTANT_TEST_NAME:
-            print(f". {test}")
+            if test == "Production":
+                print(f". {test} : Production;'nombre d'itération du test';'nombre de cartes à faire';'nombre de cartes faites';'programme à utiliser'")
+            else:
+                print(f". {test}")
