@@ -74,12 +74,13 @@ class CheckProductionTest(object):
         return is_okay
 
 
-    def nb_cards_passed_machine(self, content_list: list, card_to_make: str) -> bool:
+    def nb_cards_passed_machine(self, content_list: list, card_to_make: str, card_made: str) -> bool:
         """ `+`
         `Type:` Procedure
         `Description:` verification of the number of cards passed through the machine
         :param:`content_list:` file content
         :param:`card_to_made:` card to make
+        :param:`card_made:` card made
         `Return:` status of the entire test
         """
 
@@ -94,17 +95,19 @@ class CheckProductionTest(object):
                 [self.test_name]
             )
             
-            result = card_tuples[0][0]
-            if result == card_to_make:
+            result = int(card_tuples[0][0])
+            cards_expected = int(card_to_make) - int(card_made)
+
+            if result == cards_expected:
                 content_list.append("-> Nombre de cartes passées dans la machine => OK")
                 content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {card_to_make}")
+                content_list.append(f"   - Valeur expectée : {cards_expected}")
 
                 is_okay = True # status of the test
             else:
                 content_list.append("-> Nombre de cartes passées dans la machine => NOK")
                 content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {card_to_make}")
+                content_list.append(f"   - Valeur expectée : {cards_expected}")
 
                 is_okay = False # status of the test
         except Exception as e:
@@ -117,12 +120,13 @@ class CheckProductionTest(object):
         return is_okay
 
 
-    def nb_produced_cards(self, content_list: list, card_to_make: str) -> bool:
+    def nb_produced_cards(self, content_list: list, card_to_make: str, card_made: str) -> bool:
         """ `+`
         `Type:` Procedure
         `Description:` verification of the number of fully produced cards
         :param:`content_list:` file content
         :param:`card_to_made:` card to make
+        :param:`card_made:` card made
         `Return:` status of the entire test
         """
 
@@ -137,17 +141,19 @@ class CheckProductionTest(object):
                 [self.test_name]
             )
             
-            result = card_made_tuples[0][0]
-            if result == card_to_make:
+            result = int(card_made_tuples[0][0])
+            cards_expected = int(card_to_make) - int(card_made)
+
+            if result == cards_expected:
                 content_list.append("-> Nombre de cartes produites entièrement => OK")
                 content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {card_to_make}")
+                content_list.append(f"   - Valeur expectée : {cards_expected}")
 
                 is_okay = True # status of the test
             else:
                 content_list.append("-> Nombre de cartes produites entièrement => NOK")
                 content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {card_to_make}")
+                content_list.append(f"   - Valeur expectée : {cards_expected}")
 
                 is_okay = False # status of the test
         except Exception as e:

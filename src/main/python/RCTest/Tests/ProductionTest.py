@@ -8,6 +8,7 @@ import datetime
 
 from Useful.AllConstant import CONSTANT_TEST_PIECES_FOLDER_PATH
 from Useful.AllConstant import CONSTANT_START_PROD_FILE
+from Useful.AllConstant import CONSTANT_TEST_SETTINGS_FILE_NAME
 
 from Interaction.ExecuteTestFile import ExecuteTestFile
 
@@ -153,15 +154,22 @@ class ProductionTest(Test):
         # verification that there were no bugs in the execution of the command
         if len(max_time_tuple) != 1:
             return
+        
+        fil = open(f"{self.test_folder_path}\\{CONSTANT_TEST_SETTINGS_FILE_NAME}")
+        settings_lines = fil.readlines()
+        fil.close()
 
         # decomposition of the tuple to calculate the max production time
         try:
             unit_time = float(max_time_tuple[0][0])
-            nb_cards_to_made = int(max_time_tuple[0][1])
+            nb_cards_to_made = int(settings_lines[1]) - int(settings_lines[2])
             time_for_a_card = unit_time/1000
             time_for_cards = time_for_a_card * nb_cards_to_made - 3 # the 3 corresponds to the waiting time for the start of the function
         except Exception as e:
             print(f"[ERREUR] {e}")
+            return
+        
+        if nb_cards_to_made <= 0:
             return
 
         card_made = 0

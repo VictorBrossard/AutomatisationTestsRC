@@ -52,7 +52,7 @@ class ProductionReportFile(ManageReportFile):
         self.content_list.append(f"Programme : {settings[3]}\n")
 
         # contains tests that are stored in a temporary list because we have to write the general status of the tests to the file first
-        test_status_list.append(self.__create_card_section(settings[1]))
+        test_status_list.append(self.__create_card_section(settings[1], settings[2]))
         test_status_list.append(self.__create_date_section(time_create_folder, start_test_time))
         test_status_list.append(self.__create_component_section())
 
@@ -67,11 +67,12 @@ class ProductionReportFile(ManageReportFile):
         self.create_file(self.report_folder_path, "report.txt", self.content_list)
     
 
-    def __create_card_section(self, card_to_make: str):
+    def __create_card_section(self, card_to_make: str, card_made: str):
         """ `-`
         `Type:` Procedure
         `Description:` write in the report file the tests in the card section
         :param:`card_to_make:` card to make
+        :param:`card_made:` card made
         `Return:` status of the entire test
         """
 
@@ -84,10 +85,10 @@ class ProductionReportFile(ManageReportFile):
         test_status_list.append(self.check_test.nb_cards_to_be_produced(self.temp_content_list, card_to_make))
         
         # verification of the number of cards passed through the machine
-        test_status_list.append(self.check_test.nb_cards_passed_machine(self.temp_content_list, card_to_make))
+        test_status_list.append(self.check_test.nb_cards_passed_machine(self.temp_content_list, card_to_make, card_made))
 
         # verification of the number of fully produced cards
-        test_status_list.append(self.check_test.nb_produced_cards(self.temp_content_list, card_to_make))
+        test_status_list.append(self.check_test.nb_produced_cards(self.temp_content_list, card_to_make, card_made))
 
         # verification of the result status of the cards
         test_status_list.append(self.check_test.cards_result_status(self.temp_content_list))
