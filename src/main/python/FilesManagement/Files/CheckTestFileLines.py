@@ -26,7 +26,7 @@ class CheckTestFileLines(object):
         """ `+`
         `Type:` Function
         `Description:` executes the correct function according to the test
-        `Return:` bool
+        `Return:` a Boolean and the list of user data to be saved in the test settings folder
         """
 
         if line[0] == CONSTANT_TEST_NAME[0]:
@@ -39,7 +39,7 @@ class CheckTestFileLines(object):
         """ `-`
         `Type:` Function
         `Description:` checks that all the information in the given line is correct
-        `Return:` bool
+        `Return:` a Boolean and the list of user data to be saved in the test settings folder
         """
 
         try:

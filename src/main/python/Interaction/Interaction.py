@@ -84,9 +84,9 @@ class Interaction(object):
 
             # launches the general precondition for launching a test
             loaded_prg = Precondition(database).start_precondition_prod_test()
-            time.sleep(6)
+            time.sleep(8)
             self.__rc_window_foreground(CONSTANT_RC_WINDOW_NAME)
-            time.sleep(1)
+            time.sleep(2)
 
             # test execution
             test = ProductionTest(fil, database, folder.get_folder_name(), loaded_prg, wanted_prg)
