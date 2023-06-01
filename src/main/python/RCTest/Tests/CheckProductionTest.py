@@ -101,13 +101,13 @@ class CheckProductionTest(object):
             if result == cards_expected:
                 content_list.append("-> Nombre de cartes passées dans la machine => OK")
                 content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {cards_expected}")
+                content_list.append(f"   - Valeur attendue : {cards_expected}")
 
                 is_okay = True # status of the test
             else:
                 content_list.append("-> Nombre de cartes passées dans la machine => NOK")
                 content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {cards_expected}")
+                content_list.append(f"   - Valeur attendue : {cards_expected}")
 
                 is_okay = False # status of the test
         except Exception as e:
@@ -147,13 +147,13 @@ class CheckProductionTest(object):
             if result == cards_expected:
                 content_list.append("-> Nombre de cartes produites entièrement => OK")
                 content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {cards_expected}")
+                content_list.append(f"   - Valeur attendue : {cards_expected}")
 
                 is_okay = True # status of the test
             else:
                 content_list.append("-> Nombre de cartes produites entièrement => NOK")
                 content_list.append(f"   - Valeur obtenue : {result}")
-                content_list.append(f"   - Valeur expectée : {cards_expected}")
+                content_list.append(f"   - Valeur attendue : {cards_expected}")
 
                 is_okay = False # status of the test
         except Exception as e:
@@ -200,13 +200,13 @@ class CheckProductionTest(object):
                 if value == expected_value:
                     content_list.append("       -> Statut de 'result' => OK")
                     content_list.append(f"          - Valeur obtenue : {value}")
-                    content_list.append(f"          - Valeur expectée : {expected_value}")
+                    content_list.append(f"          - Valeur attendue : {expected_value}")
 
                     is_okay = is_okay == True # status of the test
                 else:
                     content_list.append("       -> Statut de 'result' => NOK")
                     content_list.append(f"          - Valeur obtenue : {value}")
-                    content_list.append(f"          - Valeur expectée : {expected_value}")
+                    content_list.append(f"          - Valeur attendue : {expected_value}")
 
                     is_okay = False # status of the test
         except Exception as e:
@@ -257,13 +257,13 @@ class CheckProductionTest(object):
             if diff <= tolerance:
                 content_list.append("-> Date de création de l'OF => OK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
-                content_list.append(f"   - Valeur expectée : {date2}")
+                content_list.append(f"   - Valeur attendue : {date2}")
 
                 is_okay = True # status of the test
             else:
                 content_list.append("-> Date de création de l'OF => NOK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
-                content_list.append(f"   - Valeur expectée : {date2}")
+                content_list.append(f"   - Valeur attendue : {date2}")
 
                 is_okay = False # status of the test
         except Exception as e:
@@ -463,13 +463,13 @@ class CheckProductionTest(object):
             if diff <= tolerance:
                 content_list.append("-> Date de mise en marche de la production => OK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
-                content_list.append(f"   - Valeur expectée : {date2}")
+                content_list.append(f"   - Valeur attendue : {date2}")
 
                 is_okay = True # status of the test
             else:
                 content_list.append("-> Date de mise en marche de la production => NOK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
-                content_list.append(f"   - Valeur expectée : {date2}")
+                content_list.append(f"   - Valeur attendue : {date2}")
 
                 is_okay = False # status of the test
         except Exception as e:
@@ -519,13 +519,13 @@ class CheckProductionTest(object):
             if diff <= tolerance:
                 content_list.append("-> Date de validation de l'OF => OK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
-                content_list.append(f"   - Valeur expectée : {date2}")
+                content_list.append(f"   - Valeur attendue : {date2}")
 
                 is_okay = True # status of the test
             else:
                 content_list.append("-> Date de validation de l'OF => NOK")
                 content_list.append(f"   - Valeur obtenue : {date1}")
-                content_list.append(f"   - Valeur expectée : {date2}")
+                content_list.append(f"   - Valeur attendue : {date2}")
 
                 is_okay = False # status of the test
         except Exception as e:
@@ -602,13 +602,13 @@ class CheckProductionTest(object):
                 if int(installed_components) == nb_components_per_card_expected:
                     content_list.append("       -> Nombre de composants posés par carte => OK")
                     content_list.append(f"          - Valeur obtenue : {installed_components}")
-                    content_list.append(f"          - Valeur expectée : {nb_components_per_card_expected}")
+                    content_list.append(f"          - Valeur attendue : {nb_components_per_card_expected}")
 
                     is_okay = is_okay == True # status of the test
                 else:
                     content_list.append("       -> Nombre de composants posés par carte => NOK")
                     content_list.append(f"          - Valeur obtenue : {installed_components}")
-                    content_list.append(f"          - Valeur expectée : {nb_components_per_card_expected}")
+                    content_list.append(f"          - Valeur attendue : {nb_components_per_card_expected}")
 
                     is_okay = False # status of the test
         except Exception as e:

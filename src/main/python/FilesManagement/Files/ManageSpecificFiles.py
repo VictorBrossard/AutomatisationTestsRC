@@ -16,6 +16,7 @@ from Useful.AllConstant import CONSTANT_NAME_SETTINGS_FILE
 from Useful.AllConstant import CONSTANT_NAME_DATABASE_FILE
 from Useful.AllConstant import CONSTANT_ENCRYPTION_KEY
 from Useful.AllConstant import CONSTANT_TEST_SETTINGS_FILE_NAME
+from Useful.AllConstant import CONSTANT_STOP_RECORD_KEY
 
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
@@ -90,7 +91,7 @@ class ManageSpecificFiles(ManageAnyFile):
             f"{user_entry_list[0]}",                        # Simulator Path
             f"{user_entry_list[1]}",                        # RC Path
             f"{CONSTANT_INIT_PATH}",                        # Init Folder Path
-            "tab",                                          # Key to end test recording
+            f"{CONSTANT_STOP_RECORD_KEY}",                  # Key to end test recording
             "C:\\EUROPLACER\\ep\\epi\\RCARRETPROPRE.txt",   # file that asks you to make a report when you kill RC
             "C:\\EUROPLACER\\ep\\tmp",                      # folder where there are traces of RC
             "C:\\EUROPLACER\\ep\\prg"                       # folder where there are programs of RC

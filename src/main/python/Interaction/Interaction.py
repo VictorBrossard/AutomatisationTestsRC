@@ -135,7 +135,7 @@ class Interaction(object):
 
         time.sleep(6) # we wait until the software is well opened
         self.__rc_window_foreground(CONSTANT_RC_WINDOW_NAME)
-        MessageBox("Enregistrement", "[INFO] L'enregistrement commence.").mainloop()
+        MessageBox("Enregistrement", "[INFO] Appuyer sur OK pour commencer l'enregistrement et appuyer sur tab pour le terminer.").mainloop()
         
         # recording of user's actions
         test_piece = InputRecorder(user_entry_list[0], CONSTANT_TEST_PIECES_FOLDER_PATH)

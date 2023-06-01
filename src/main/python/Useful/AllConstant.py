@@ -13,6 +13,7 @@ import sys
 CONSTANT_NAME_SETTINGS_FILE = "settings.txt"
 CONSTANT_NAME_DATABASE_FILE = "database_settings.txt"
 CONSTANT_ENCRYPTION_KEY = "GEJvRguUGA1y8cPK"
+CONSTANT_STOP_RECORD_KEY = "tab"
 
 #######################################################################################################
 
