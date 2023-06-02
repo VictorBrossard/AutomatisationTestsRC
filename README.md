@@ -12,7 +12,7 @@ Entreprise : Europlacer
 
 4. Coder différents cas de tests en fonction du temps restant.
 
-## Explictation du projet
+## Explication du projet
 Voir le fichier Documentation
 
 ## Convention du projet
