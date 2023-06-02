@@ -12,6 +12,9 @@ Entreprise : Europlacer
 
 4. Coder différents cas de tests en fonction du temps restant.
 
+## Explictation du projet
+Voir le fichier Documentation
+
 ## Convention du projet
 ### Visibilité des méthodes
 Si une méthode ou une classe commence par "__" alors c'est une méthode "privé".
@@ -26,9 +29,7 @@ Dans les commentaires des méthodes, le premier caractère signifie :
 ### Choses à savoir
 Les combinaisons de touches supérieures à trois touches en même temps ne sont pas disponible.
 
-Le scroll dans l'interface loop fonctionne qui si notre curseur n'est pas sur un texte ou une entrée.
-
-Le bouton shift et tab reste écris dans le fichier même s'il est pas utile.
+Le bouton shift et tab reste écris dans le fichier même s'il n'est pas utile.
 
 ### Utilisation de l'interface UserEntryPopUp
 Cette interface peut afficher des entrées de textes, des entrées d'entiers et des comboboxs.
