@@ -54,7 +54,7 @@ class ManipulationSettingsFile(object):
     def manage_file(self, settings_list: list):
         """ `+`
         `Type:` Procedure 
-        `Description:` create the parameter file if it does not exist otherwise we modify it
+        `Description:` create the parameter file if it does not exist otherwise we modify it. Don't know if function works
         :param:`settings_list:` list of all parameters
         """
 

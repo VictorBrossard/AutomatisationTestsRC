@@ -28,9 +28,11 @@ class Database(object):
         `Type:` Constructor
         """
 
+        # creation of the file containing the information supplied by the user
         self.manage_file = ManageSpecificFiles()
         self.manage_file.create_database_settings_file()
 
+        # retrieve lines from file
         settings_database = self.manage_file.get_database_lines()
 
         self.username = settings_database[0]
@@ -51,7 +53,7 @@ class Database(object):
     def __connect(self, user: str, password: str, host: str, port: int, database: str):
         """ `+`
         `Type:` Procedure
-        `Description:` Connect our program to mariadb
+        `Description:` Connect our program to the database
         :param:`user:` user ID of the database
         :param:`password:` user password of the database
         :param:`host:` host ip
@@ -70,6 +72,7 @@ class Database(object):
                 database=database
             )
         except mariadb.Error as e:
+            # reconnection request in case of failure
             MessageBox("ERREUR Connection", f"[ERREUR] Connection à la base de donnée : {e}").mainloop()
             question = SimpleQuestionInterface("Reconnection", "Voulez-vous essayer de vous reconnecter ?")
             question.mainloop()
@@ -96,26 +99,6 @@ class Database(object):
             self.connector.close()
         except Exception:
             return
-
-
-    def reconnect(self):
-        """ `+`
-        `Type:` Procedure
-        `Description:` reconnections to the database using the information we already had
-        """
-
-        try:
-            settings_database = self.manage_file.get_database_lines()
-
-            self.cursor = self.__connect(
-                settings_database[0],       # Username
-                settings_database[1],       # Password
-                settings_database[2],       # Host
-                int(settings_database[3]),  # Port
-                self.name_database          # Database
-            )
-        except Exception:
-            self.__init__()
 
 
     def deletes_all_tuples(self):
@@ -227,6 +210,7 @@ class Database(object):
         `Return:` all data retrieved by the SQL command
         """
 
+        # SQL command execution
         self.cursor.execute(
             command,
             tuple(variable_list)
@@ -235,6 +219,7 @@ class Database(object):
         rows = self.cursor.fetchall()
         str_rows_list = []
 
+        # List all data
         for row in rows:
             str_row = ",".join([str(x) for x in row])
             mini_list = str_row.split(',')
@@ -253,6 +238,7 @@ class Database(object):
         :param:`varaible_list:` list of variables in the command
         """
 
+        # SQL command execution
         self.cursor.execute(
             command,
             tuple(variable_list)
@@ -261,6 +247,7 @@ class Database(object):
         rows = self.cursor.fetchall()
         str_rows_list = []
 
+        # List all data
         for row in rows:
             str_row = ",".join([str(x) for x in row])
             mini_list = str_row.split(',')

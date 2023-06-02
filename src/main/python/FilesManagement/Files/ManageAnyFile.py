@@ -74,6 +74,6 @@ class ManageAnyFile(object):
             print(f"[ERREUR] {e}")
             return []
         
-        lines_without_whitespace = [s.strip() for s in lines]
+        lines_without_whitespace = [s.strip() for s in lines] # eliminates '\n' of each lines
         
         return lines_without_whitespace

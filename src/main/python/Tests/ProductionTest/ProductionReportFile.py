@@ -7,7 +7,7 @@ from Database.Database import Database
 
 from FilesManagement.Files.ManageReportFile import ManageReportFile
 
-from RCTest.Tests.CheckProductionTest import CheckProductionTest
+from Tests.ProductionTest.CheckProductionTest import CheckProductionTest
 
 from Useful.AllConstant import CONSTANT_TEST_SETTINGS_FILE_NAME
 
@@ -26,6 +26,7 @@ class ProductionReportFile(ManageReportFile):
         :param:`test_folder_path:` path of the test file to be analyzed
         """
 
+        # parent constructor
         super().__init__(database, report_folder_path, test_folder_path)
         
         self.check_test = CheckProductionTest(self.data, self.test_name)

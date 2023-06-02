@@ -95,6 +95,7 @@ class MainInterface(tk.Tk):
 
         self.destroy()
 
+        # requests the execution path of the test file from the user
         pop_up = UserEntryPopUp(
             "Chemin du fichier",
             ["Chemin du fichier qui contient les tests à exécuter :"],

@@ -60,6 +60,8 @@ class ProductionTest(Test):
             if name_file == "":
                 break
 
+            time.sleep(1)
+
             self.launch_test_file(name_file)
 
         return self.start_time

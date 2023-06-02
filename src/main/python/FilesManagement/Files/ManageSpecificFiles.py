@@ -10,13 +10,20 @@ import hashlib
 
 from cryptography.fernet import Fernet
 
-from Useful.AllConstant import CONSTANT_SETTINGS_FOLDER_PATH # path where we store the settings file
 from Useful.AllConstant import CONSTANT_INIT_PATH
-from Useful.AllConstant import CONSTANT_NAME_SETTINGS_FILE
 from Useful.AllConstant import CONSTANT_NAME_DATABASE_FILE
 from Useful.AllConstant import CONSTANT_ENCRYPTION_KEY
 from Useful.AllConstant import CONSTANT_TEST_SETTINGS_FILE_NAME
+
+# Settings File
+from Useful.AllConstant import CONSTANT_SETTINGS_FOLDER_PATH # path where we store the settings file
+from Useful.AllConstant import CONSTANT_NAME_SETTINGS_FILE
 from Useful.AllConstant import CONSTANT_STOP_RECORD_KEY
+from Useful.AllConstant import CONSTANT_SIMULATOR_SOFT_NAME
+from Useful.AllConstant import CONSTANT_RC_SOFT_NAME
+from Useful.AllConstant import CONSTANT_RC_STOP_FILE_NAME
+from Useful.AllConstant import CONSTANT_TMP_FOLDER_PATH
+from Useful.AllConstant import CONSTANT_PRG_FOLDER_PATH
 
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
@@ -41,7 +48,7 @@ class ManageSpecificFiles(ManageAnyFile):
     def create_execution_file(self, path: str, file_name: str, str_to_transform: str):
         """ `+`
         `Type:` Porcedure
-        `Description:`
+        `Description:` creates files that can be executed for the ExcuteTestFile object
         :param:`path:` folder where we will store the file
         :param:`file_name:` name of the file you are creating
         :param:`str_to_transform:` string to transform into a file InputRecorder
@@ -53,7 +60,7 @@ class ManageSpecificFiles(ManageAnyFile):
         # creation of the instruction list
         for chr in str_to_transform:
             file_line_list.append(f"Key;{chr};{tme}")
-            tme = tme + 0.001
+            tme = tme + 0.001 # waiting time between each instruction
 
         if os.path.exists(f"{path}\\{file_name}"):
             os.remove(f"{path}\\{file_name}")
@@ -86,15 +93,15 @@ class ManageSpecificFiles(ManageAnyFile):
                 return
 
         settings_list = [
-            "Simulat.exe",                                  # Simulator software name
-            "rc5.exe",                                      # RC software name
-            f"{user_entry_list[0]}",                        # Simulator Path
-            f"{user_entry_list[1]}",                        # RC Path
-            f"{CONSTANT_INIT_PATH}",                        # Init Folder Path
-            f"{CONSTANT_STOP_RECORD_KEY}",                  # Key to end test recording
-            "C:\\EUROPLACER\\ep\\epi\\RCARRETPROPRE.txt",   # file that asks you to make a report when you kill RC
-            "C:\\EUROPLACER\\ep\\tmp",                      # folder where there are traces of RC
-            "C:\\EUROPLACER\\ep\\prg"                       # folder where there are programs of RC
+            CONSTANT_SIMULATOR_SOFT_NAME,       # Simulator software name
+            CONSTANT_RC_SOFT_NAME,              # RC software name
+            f"{user_entry_list[0]}",            # Simulator Path
+            f"{user_entry_list[1]}",            # RC Path
+            CONSTANT_INIT_PATH,                 # Init Folder Path
+            CONSTANT_STOP_RECORD_KEY,           # Key to end test recording
+            CONSTANT_RC_STOP_FILE_NAME,         # file that asks you to make a report when you kill RC
+            CONSTANT_TMP_FOLDER_PATH,           # folder where there are traces of RC
+            CONSTANT_PRG_FOLDER_PATH            # folder where there are programs of RC
         ]   
 
         self.create_file(CONSTANT_SETTINGS_FOLDER_PATH, CONSTANT_NAME_SETTINGS_FILE, settings_list)

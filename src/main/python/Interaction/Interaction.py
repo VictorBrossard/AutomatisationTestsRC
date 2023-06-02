@@ -18,12 +18,12 @@ from FilesManagement.Folders.TestReportFolder import TestReportFolder
 
 from FilesManagement.Files.ManipulationSettingsFile import ManipulationSettingsFile
 from FilesManagement.Files.ManageSpecificFiles import ManageSpecificFiles
-from FilesManagement.Files.ReportFiles.ProductionReportFile import ProductionReportFile
 
 from RCTest.Precondition import Precondition
 from RCTest.PostCondition import PostCondition
 
-from RCTest.Tests.ProductionTest import ProductionTest
+from Tests.ProductionTest.ProductionTest import ProductionTest
+from Tests.ProductionTest.ProductionReportFile import ProductionReportFile
 
 from Database.Database import Database
 
@@ -67,6 +67,34 @@ class Interaction(object):
         :param:`test_type:` type of the test
         :param:`database:` object that manages the interaction with the database
         :param:`file_paths_list:` list of file paths that store the paths to the test folders
+
+        `Partie obligatoire:`
+
+            if file_paths_list == []:
+            return
+
+            for i, fil in enumerate(file_paths_list):
+                file_name = os.path.basename(fil)
+                folder = TestReportFolder(file_name)
+
+                (création de fichier d'exécution si besoin)
+
+                Precondition(database).fonction_à_faire(..)
+
+                time.sleep(8) # Peut-être remplacer ce temps d'attente dans le futur par une lecture des traces
+                self.__rc_window_foreground(CONSTANT_RC_WINDOW_NAME)
+                time.sleep(2)
+
+                test = ...Test(...)
+                test.launch_test(...)
+
+                # Si besoin d'un screenshot
+                Screenshot().take_screenshot(folder.get_screenshot_folder_path(), "screenshot_report")
+
+                # Si besoin d'un rapport
+                ....ReportFile(database, folder.get_folder_path(), fil).create_report_file_test(...)
+
+                PostCondition(..).fonction_à_faire(..)
         """
 
         if file_paths_list == []:

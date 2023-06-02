@@ -13,7 +13,14 @@ import sys
 CONSTANT_NAME_SETTINGS_FILE = "settings.txt"
 CONSTANT_NAME_DATABASE_FILE = "database_settings.txt"
 CONSTANT_ENCRYPTION_KEY = "GEJvRguUGA1y8cPK"
+
+# Settings File
+CONSTANT_SIMULATOR_SOFT_NAME = "Simulat.exe"
+CONSTANT_RC_SOFT_NAME = "rc5.txt"
 CONSTANT_STOP_RECORD_KEY = "tab"
+CONSTANT_RC_STOP_FILE_NAME = "C:\\EUROPLACER\\ep\\epi\\RCARRETPROPRE.txt"
+CONSTANT_TMP_FOLDER_PATH = "C:\\EUROPLACER\\ep\\tmp"
+CONSTANT_PRG_FOLDER_PATH = "C:\\EUROPLACER\\ep\\prg"
 
 #######################################################################################################
 
@@ -81,6 +88,7 @@ CONSTANT_NB_TEST_PIECES_FILES = 16
 #######################################################################################################
 
 # Test name
+# contains all available test types
 CONSTANT_TEST_NAME = [
     "Production"
 ]
@@ -91,9 +99,9 @@ CONSTANT_TEST_NAME = [
 
 # line of the trace file that we want to find to be able to execute certain files
 CONSTANT_TRACE_DICTIONNARY = {
-    "ClgMyDialog::OnInitDialog() : PRDBD_IDD_SUIVI_LOT" : "name.txt",                   # "ouverture de l'interface de saisie de lot"
-    "CFX Trace : CTrSui::RecipeActivated" : CONSTANT_START_PROD_FILE,                   # "validation de l'interface de saisie de lot"
-    "ClgMyDialog::OnInitDialog() : PRG_IDD_SELECTION" : "program_name.txt",             # "ouverture de l'interface de changement de programme"
-    "ClgMyDialog::OnInitDialog() : RC_IDD_LOCAL_LIST" : "local_list_boxes.txt",         # "ouvrir l'interface de liste locale pour les boîtes"
-    #"ClgMyDialog::OnDestroy() : IU_IDD_MAINMENU_PROD" : "destroy"                      # "fermeture de RC"
+    "ClgMyDialog::OnInitDialog() : PRDBD_IDD_SUIVI_LOT"     : "name.txt",               # "ouverture de l'interface de saisie de lot"
+    "CFX Trace : CTrSui::RecipeActivated"                   : CONSTANT_START_PROD_FILE, # "validation de l'interface de saisie de lot"
+    "ClgMyDialog::OnInitDialog() : PRG_IDD_SELECTION"       : "program_name.txt",       # "ouverture de l'interface de changement de programme"
+    "ClgMyDialog::OnInitDialog() : RC_IDD_LOCAL_LIST"       : "local_list_boxes.txt",   # "ouvrir l'interface de liste locale pour les boîtes"
+    #"ClgMyDialog::OnDestroy() : IU_IDD_MAINMENU_PROD"      : "destroy"                 # "fermeture de RC"
 }

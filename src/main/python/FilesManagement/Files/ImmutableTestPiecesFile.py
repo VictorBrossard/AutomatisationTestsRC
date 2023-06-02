@@ -3,8 +3,6 @@
 
 #-----------------------------------------------------------------------------------------------------
 # Import of files useful for code execution
-import os
-
 from FilesManagement.Files.ManageAnyFile import ManageAnyFile
 
 from FilesManagement.Folders.ManageFolders import ManageFolders
@@ -14,9 +12,9 @@ from Useful.AllConstant import CONSTANT_NB_TEST_PIECES_FILES
 
 #-----------------------------------------------------------------------------------------------------
 
-class TestPiecesFile(ManageAnyFile):
+class ImmutableTestPiecesFile(ManageAnyFile):
     """ `+`
-    :class:`TestPiecesFile` creates the useful test pieces to do the real tests
+    :class:`ImmutableTestPiecesFile` creates the useful test pieces to do the real tests
     """
     
     def __init__(self):
